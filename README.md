@@ -21,21 +21,23 @@ This is sufficient to solve the xor problem (there's 1 hidden layer rather than 
 This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the second input to the hidden layer and 4 linking the hidden layer to the output).   
 It also has 5 biases (4 for the hidden layer and 1 for the output).  
 
-An example I trained earlier has the following weights:
-1st layer:
-[[ 0.1926,  0.0928],  
-[-0.3232, -0.6680],  
-[-0.4842, -0.3048],  
-[ 0.3850,  0.2794]]  
+An example I trained earlier has the following weights:  
+1st layer:  
+[[ 1.0579, -1.0332],  
+[-0.0502,  0.2102],  
+[-1.0009,  1.0331],  
+[-0.5001, -0.4604]]   
 
- 2nd layer:
-[[-0.2273, -0.2576,  0.0994,  0.1457]]  
+ 2nd layer:  
+[[ 0.9285, -0.3533,  1.0398,  0.3237]]  
 
  Biases:  
  Hidden Layer:  
- [0.3412, -0.4027, -0.2282,  0.7551]  
+ [-6.1993e-08,  9.1451e-01, -1.0491e-08, -3.6663e-01]   
  Output:  
- [0.4501]  
+[0.3231]   
+
+ Now let's have a look at 
 
 The neural network is an mlp which has 2 hidden layers and width 4. It has final loss 1.1590728377086634e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.
 This is for layer {i}:
