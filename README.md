@@ -23,19 +23,19 @@ It also has 5 biases (4 for the hidden layer and 1 for the output).
 
 An example I trained earlier has the following weights:
 1st layer:
-[[-0.6412,  0.2686],
- [ 1.0220, -1.0689],
- [-0.6602,  0.7654],
- [-1.1302,  1.0317]]
+[[ 0.1926,  0.0928],  
+[-0.3232, -0.6680],  
+[-0.4842, -0.3048],  
+[ 0.3850,  0.2794]]  
 
  2nd layer:
+[[-0.2273, -0.2576,  0.0994,  0.1457]]  
 
-
-
- Biases:
- Hidden Layer:
- Output:
-
+ Biases:  
+ Hidden Layer:  
+ [0.3412, -0.4027, -0.2282,  0.7551]  
+ Output:  
+ [0.4501]  
 
 The neural network is an mlp which has 2 hidden layers and width 4. It has final loss 1.1590728377086634e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.
 This is for layer {i}:
