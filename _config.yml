@@ -5,7 +5,7 @@ baseurl: "/" # The subpath of your site, e.g. /blog
 url: "https://arkleseisure.github.io" # Your GitHub Pages URL
 
 # GitHub settings
-github_username: yourusername
+github_username: Arkleseisure
 repository: yourrepositoryname
 
 # Author settings
