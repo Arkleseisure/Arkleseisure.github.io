@@ -1,7 +1,7 @@
 # Site settings
-title: "Your Website Title"
+title: "Interpreting MNIST with ChatGPT: a project"
 description: "A short description of your site"
-baseurl: "" # The subpath of your site, e.g. /blog
+baseurl: "/mnistinterp" # The subpath of your site, e.g. /blog
 url: "https://arkleseisure.github.io" # Your GitHub Pages URL
 
 # GitHub settings
