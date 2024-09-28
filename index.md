@@ -1,8 +1,14 @@
 ---
 layout: default
 title: Home
-description: "Welcome to my website"
 ---
 
-<h2>Welcome to My Website</h2>
-<p>This is the home page of my GitHub Pages site. I’m still working on the content, but stay tuned for updates!</p>
+# Welcome to My Website
+
+This is the home page of my GitHub Pages site, and it’s written in Markdown!
+
+- Item 1
+- Item 2
+- Item 3
+
+[Go to the contact page](contact.html)
