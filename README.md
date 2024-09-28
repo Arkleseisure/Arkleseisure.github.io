@@ -2,8 +2,8 @@ This is a project for the BlueDot Alignment course attempting to automate interp
 This is attempted on 2 problems: the XOR problem and the MNIST dataset.
 
 **XOR Neural Networks**
-The XOR (exclusive or) problem is defined as follows:
-2 binary inputs  
+The XOR (exclusive or) problem is defined as follows:  
+2 binary inputs   
 1 output  
 
 0 xor 0 = 0  
