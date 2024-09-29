@@ -13,3 +13,5 @@ MNIST is a dataset of handwritten digits, all in greyscale. They look something 
 The goal of course is to classify the digit correctly. For this, we have 10 outputs, each corresponding to a possible digit. These outputs are then passed through the "softmax" function, which turns them into a probability distribution. Mathematically, this is defined as $softmax(x_i) = \frac{e^{x_i}}{sum(e^{x_j})}$.
 
 
+
+
