@@ -23,10 +23,20 @@ Now, a note on polysemanticity. This is a phenomenon which has been noticed in m
 Just as some neurons have multiple different meanings, some have none. These we call 'dead neurons', and are 0 for any given (normal) input. The reason for their existence is not that this is the optimal way to solve the problem, but rather a random result of the training process, where in ReLU neural networks some neurons get trapped in this state (I am currently doing a separate project researching this pheneomenon). For our purposes, any neuron which doesn't activate at all during testing will be considered dead and automatically labelled as such, without wasting valuable chatgpt time. 
 
 ## Similarities and differences with XOR
-As a reminder, for the XOR neural network we 
+As a reminder, for the XOR neural network we gave ChatGPT the following information:  
+1. Background prompt (info about the general network)   
+2. Activation wise prompt (prompt with information about each of the activations)  
+3. Final layer prompt (explain how the final set of activations connects to the output)
+
+For MNIST, the following changes are made:
+1. Each activation prompt is sent to the API separately. This is due to size restrictions which can start occurring, especially since language models are known to work less well when large prompts are present.
+2. Each activation prompt contains the background prompt for the network.
+3. Layer wise prompts are now used to condense the activation responses into a single useable list which contains the functionality of each activation in the layer.
+4. Activation prompts from later layers only include the top 10 most important connections to the previous layer (in terms of weight magnitude), so as to condense the size of the prompt. 
+5. The final layer/summary prompt now takes in the condensed layer responses and the most important weights for the final layer (again, the top 10).
 
 
-## Feature prompt
+## Activation prompt
 The neural network we are evaluating has the following properties:
 It is an MLP neural network with 1 hidden layers and width 6.
 It is trained on the MNIST dataset and uses relu activations.
@@ -67,7 +77,7 @@ The following image is an input specifically designed to maximise the output of 
 Please give an interpretation of what you think this feature means, and use reasoning based on the data and the image given.
 The interpretation must be precise enough to be able to accurately reconstruct which images would trigger this neuron, e.g., 'This neuron activates for the 90 degrees of curve from 0 to 90 degrees.'
 
-## Feature response
+## Activation response
 Based on the given activations and image, the neuron appears to highly activate for digits resembling a "4" or "9." Here's the reasoning and interpretation:
 
 1. **High Activation Values for Labels 0, 4, and 9**:
