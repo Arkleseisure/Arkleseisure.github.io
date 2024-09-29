@@ -23,7 +23,7 @@ This is sufficient to solve the xor problem (there's 1 hidden layer rather than 
 This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the second input to the hidden layer and 4 linking the hidden layer to the output).   
 It also has 5 biases (4 for the hidden layer and 1 for the output).  
 
-An example I trained earlier has the following parameters:
+An example I trained earlier has the following parameters:  
 Weights:  
 1st layer:  
 [[-0.5674,  0.2844],  
@@ -54,7 +54,8 @@ Weights:
 We see that Neurons 2 and 4 are essentially redundant: they each contribute to the output and all we need is a linear combination of them to produce the correct thing. Equally we see that Neuron 1 is there to adjust the output to a reasonable number. In other runs, we often see some neurons dieing (i.e never activating), allowing the network a more condensed interpretation. 
 
 ***Interpreting XOR Neural Networks***  
-What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner.  
-This is rather painful to do by hand, as I'm sure you know if you just carefully followed what I did (don't worry I really won't judge you if you just skipped to the end).  
+What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner. This is rather painful to do by hand, as I'm sure you know if you just carefully followed what I did (don't worry I really won't judge you if you just skipped to the end). It would be really nice if we could automate it. Thankfully I think my friend ChatGPT can help. If we can give him the right information and prompt him correctly, we'll see what he can do.
+
+First though if we want to 
 
 
