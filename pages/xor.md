@@ -60,7 +60,7 @@ What we've just done is what I mean when I say "Fully interpreting" neural netwo
 
 First though if we want this to be a fully scalable method, we need something which will work better than just a set of weights - much as these are technically enough to figure out what the network is doing, for anything more than the 4 neurons we just discussed it's just plain confusing. 
 
-For this we'll consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose of this is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. Although not that interesting in the context of the XOR problem, especially with only one layer, as we'll see with MNIST later, this makes it far easier to interpret image classifiers.
+For this we'll consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose of this is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. The regularisation used here is the L2 norm, and is needed to ensure that the input values don't go crazy. Although not that interesting in the context of the XOR problem, especially with only one layer, we'll see with MNIST later that activation maximisation makes it far easier to interpret image classifiers.
 
 Another piece of information which is useful for understanding larger networks is looking at the type of inputs that the neuron activates for. For XOR, this is as simple as just listing the 4 possible inputs and the activations of the neuron for each of them, but for larger networks we shall have to become more creative, as we'll see with MNIST.
 
@@ -110,9 +110,13 @@ Input: [0, 0], Output: 1.0207295417785645e-06
 Input: [0, 1], Output: 0.9999996423721313  
 Input: [1, 0], Output: 0.9999988079071045  
 Input: [1, 1], Output: 3.725290298461914e-07  
- Finally summarise overall how the network works.  
+ Finally summarise overall how the network works. 
+
+ We include the summary prompt in the hope that if ChatGPT is good enough at evaluating the network, we'll just be able to read the summary at the end and understand how the network works.
 
 ## ChatGPT response
+Now finally let's have a look at how ChatGPT responds to our prompt for the neural network we analysed above.
+
  To interpret the functioning of this neural network, let's break down the roles of each feature in the hidden layer, their contributions, and how the final layer synthesizes these to produce the output.
 
 ### Feature Analysis
