@@ -1,23 +1,20 @@
 # Site settings
-title: "Interpreting MNIST with ChatGPT: a project"
-description: "A short description of your site"
+title: "Automating interpretability with ChatGPT"
+description: "A project aiming to interpret the functionality of neural networks from end to end."
 baseurl: "/" # The subpath of your site, e.g. /blog
-url: "https://arkleseisure.github.io" # Your GitHub Pages URL
+url: "https://arkleseisure.github.io"
 
 # GitHub settings
 github_username: Arkleseisure
-repository: yourrepositoryname
 
 # Author settings
 author:
   name: "Sean Herrington"
   email: "hughsean.herrington@gmail.com"
 
-# Social links (optional)
+# Social links
 social:
-  twitter: yourtwitterhandle
-  github: yourusername
-  linkedin: yourlinkedinprofile
+  github: github.com/Arkleseisure
 
 # Build settings
 markdown: kramdown
@@ -25,5 +22,4 @@ theme: minima # This is a common GitHub Pages theme. You can change it to anothe
 plugins:
   - jekyll-feed
 
-# Customization (optional)
 # Add any other settings for layouts, styles, or content here
