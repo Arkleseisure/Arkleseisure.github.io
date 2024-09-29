@@ -74,7 +74,7 @@ Avg label 9: 18.319867913045137, std: 5.739438847200249
 The following image is an input specifically designed to maximise the output of the neuron. *(The image would then be one such as shown above)*  
 
 **Task prompt**
-*Giving a precise explanation of a task with examples allows the network to give a more taylored response.*  
+*Giving a precise explanation of a task with examples allows the network to give a more tailored response.*  
 Please give an interpretation of what you think this feature means, and use reasoning based on the data and the image given.
 The interpretation must be precise enough to be able to accurately reconstruct which images would trigger this neuron, e.g., 'This neuron activates for the 90 degrees of curve from 0 to 90 degrees.'
 
