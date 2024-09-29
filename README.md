@@ -39,20 +39,19 @@ Weights:
  Output:  
 [-0.0971]   
 
- Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):
- Neuron 1 (Weights [-0.5674,  0.2844], Bias 5.6738e-01):  Activates when the second input is 1
- Neuron 2 (Weights [-0.8620,  0.8800], Bias -1.8065e-02): Activates when the second input is 1, but not when both are.
- Neuron 3 (Weights [ 0.7420, -0.9673], Bias 5.6761e-01):  Activates slightly when both are 0, more when first input is 1, less when the second input is also 1.
- Neuron 4 (Weights [-1.0114,  1.0114], Bias -7.1264e-08): Activates when the second input is 1 but not the first.
+ Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):  
+ Neuron 1 (Weights [-0.5674,  0.2844], Bias 5.6738e-01):  Activates when the second input is 1  
+ Neuron 2 (Weights [-0.8620,  0.8800], Bias -1.8065e-02): Activates when the second input is 1, but not when both are.  
+ Neuron 3 (Weights [ 0.7420, -0.9673], Bias 5.6761e-01):  Activates slightly when both are 0, more when first input is 1, less when the second input is also 1.  
+ Neuron 4 (Weights [-1.0114,  1.0114], Bias -7.1264e-08): Activates when the second input is 1 but not the first.  
 
- Now the output is constructed from these as follows (Weights [-0.6669,  0.7351,  0.8377,  1.0199], Bias -0.0971):
- Neuron 1 suppresses the output of (0, 1) and (0, 0)
- Neuron 2 contributes for the input (0, 1)
- Neuron 3 contributes for the input (1, 0) and (0, 0)
- Neuron 4 contributes for the input (0, 1)
+ Now the output is constructed from these as follows (Weights [-0.6669,  0.7351,  0.8377,  1.0199], Bias -0.0971):  
+ Neuron 1 suppresses the output of (0, 1) and (0, 0)  
+ Neuron 2 contributes for the input (0, 1)  
+ Neuron 3 contributes for the input (1, 0) and (0, 0)  
+ Neuron 4 contributes for the input (0, 1)  
 
-We see that Neurons 2 and 4 are essentially redundant: they each contribute to the output and all we need is a linear combination of them to produce the correct thing. 
-Equally we see that Neuron 1 is there to adjust the output to a reasonable number. In other runs, we often see some neurons dieing (i.e never activating), allowing the network a more condensed interpretation. 
+We see that Neurons 2 and 4 are essentially redundant: they each contribute to the output and all we need is a linear combination of them to produce the correct thing. Equally we see that Neuron 1 is there to adjust the output to a reasonable number. In other runs, we often see some neurons dieing (i.e never activating), allowing the network a more condensed interpretation. 
 
 ***Interpreting XOR Neural Networks***  
 What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner.  
