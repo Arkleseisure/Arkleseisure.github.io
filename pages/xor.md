@@ -61,81 +61,84 @@ What we've just done is what I mean when I say "Fully interpreting" neural netwo
 First though if we want to 
 
 
-The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.
-This is for layer {i}:
- These are the weights for feature 1:
- [-0.5673814415931702, 0.2843979299068451]
- This is the bias for feature 1:
- 0.5673814415931702
- This is the feature's response to some input data:
- Input: [0, 0]
- Feature response: 0.5673814415931702
- Input: [0, 1]
- Feature response: 0.0
- Input: [1, 0]
- Feature response: 0.567607581615448
- Input: [1, 1]
- Feature response: 0.0
- This is an input designed to maximise the output of the feature:
- Input: [-0.28368857502937317, 0.1421663910150528], Output activation of feature: 0.7687729001045227
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.
- These are the weights for feature 2:
- [-0.8619637489318848, 0.8800289034843445]
- This is the bias for feature 2:
- -0.018065139651298523
- This is the feature's response to some input data:
- Input: [0, 0]
- Feature response: 0.8517793416976929
- Input: [0, 1]
- Feature response: 0.8619637489318848
- Input: [1, 0]
- Feature response: 0.0
- Input: [1, 1]
- Feature response: 1.011381983757019
- This is an input designed to maximise the output of the feature:
- Input: [-0.4309721291065216, 0.43996816873550415], Output activation of feature: 0.7406018972396851
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.
- These are the weights for feature 3:
- [0.7420472502708435, -0.9673476815223694]
- This is the bias for feature 3:
- 0.567607581615448
- This is the feature's response to some input data:
- Input: [0, 0]
- Feature response: 0.0
- Input: [0, 1]
- Feature response: 0.0
- Input: [1, 0]
- Feature response: 1.3096548318862915
- Input: [1, 1]
- Feature response: 0.0
- This is an input designed to maximise the output of the feature:
- Input: [0.37098994851112366, -0.48372042179107666], Output activation of feature: 1.3108254671096802
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.
- These are the weights for feature 4:
- [-1.0113822221755981, 1.0113821029663086]
- This is the bias for feature 4:
- -7.126364920395645e-08
- This is the feature's response to some input data:
- Input: [0, 0]
- Feature response: 0.2843979299068451
- Input: [0, 1]
- Feature response: 1.4901161193847656e-08
- Input: [1, 0]
- Feature response: 0.3423071503639221
- Input: [1, 1]
- Feature response: 0.0
- This is an input designed to maximise the output of the feature:
- Input: [-0.5056922435760498, 0.5056483745574951], Output activation of feature: 1.022851824760437
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.
- Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:
- Final layer weights: [[-0.6669246554374695, 0.7351352572441101, 0.8376786112785339, 1.019875168800354]]
- Final layer biases: [-0.09707102924585342]
- Outputs:
-Input: [0, 0], Output: 1.0207295417785645e-06
-Input: [0, 1], Output: 0.9999996423721313
-Input: [1, 0], Output: 0.9999988079071045
-Input: [1, 1], Output: 3.725290298461914e-07
- Finally summarise overall how the network works.
+## The Prompt
+For the neural network we dissected aboue, the prompt we would give ChatGPT looks like this:
+
+The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
+This is for layer {i}:  
+ These are the weights for feature 1:  
+ [-0.5673814415931702, 0.2843979299068451]  
+ This is the bias for feature 1:  
+ 0.5673814415931702  
+ This is the feature's response to some input data:  
+ Input: [0, 0]  
+ Feature response: 0.5673814415931702  
+ Input: [0, 1]  
+ Feature response: 0.0  
+ Input: [1, 0]  
+ Feature response: 0.567607581615448  
+ Input: [1, 1]  
+ Feature response: 0.0  
+ This is an input designed to maximise the output of the feature:  
+ Input: [-0.28368857502937317, 0.1421663910150528], Output activation of feature: 0.7687729001045227  
+ Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+ These are the weights for feature 2:  
+ [-0.8619637489318848, 0.8800289034843445]  
+ This is the bias for feature 2:  
+ -0.018065139651298523  
+ This is the feature's response to some input data:  
+ Input: [0, 0]  
+ Feature response: 0.8517793416976929  
+ Input: [0, 1]  
+ Feature response: 0.8619637489318848  
+ Input: [1, 0]  
+ Feature response: 0.0  
+ Input: [1, 1]  
+ Feature response: 1.011381983757019  
+ This is an input designed to maximise the output of the feature:  
+ Input: [-0.4309721291065216, 0.43996816873550415], Output activation of feature: 0.7406018972396851 
+ Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+ These are the weights for feature 3:  
+ [0.7420472502708435, -0.9673476815223694]  
+ This is the bias for feature 3:  
+ 0.567607581615448  
+ This is the feature's response to some input data:  
+ Input: [0, 0]  
+ Feature response: 0.0  
+ Input: [0, 1]  
+ Feature response: 0.0  
+ Input: [1, 0]  
+ Feature response: 1.3096548318862915  
+ Input: [1, 1]  
+ Feature response: 0.0  
+ This is an input designed to maximise the output of the feature:  
+ Input: [0.37098994851112366, -0.48372042179107666], Output activation of feature: 1.3108254671096802  
+ Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+ These are the weights for feature 4:  
+ [-1.0113822221755981, 1.0113821029663086]   
+ This is the bias for feature 4:  
+ -7.126364920395645e-08  
+ This is the feature's response to some input data:  
+ Input: [0, 0]   
+ Feature response: 0.2843979299068451  
+ Input: [0, 1]  
+ Feature response: 1.4901161193847656e-08  
+ Input: [1, 0]  
+ Feature response: 0.3423071503639221  
+ Input: [1, 1]  
+ Feature response: 0.0  
+ This is an input designed to maximise the output of the feature:  
+ Input: [-0.5056922435760498, 0.5056483745574951], Output activation of feature: 1.022851824760437  
+ Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+ Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
+ Final layer weights: [[-0.6669246554374695, 0.7351352572441101, 0.8376786112785339, 1.019875168800354]]  
+ Final layer biases: [-0.09707102924585342]  
+ Outputs:  
+Input: [0, 0], Output: 1.0207295417785645e-06  
+Input: [0, 1], Output: 0.9999996423721313  
+Input: [1, 0], Output: 0.9999988079071045  
+Input: [1, 1], Output: 3.725290298461914e-07  
+ Finally summarise overall how the network works.  
 
 
  To interpret the functioning of this neural network, let's break down the roles of each feature in the hidden layer, their contributions, and how the final layer synthesizes these to produce the output.
