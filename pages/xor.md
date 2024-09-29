@@ -28,32 +28,32 @@ It also has 5 biases (4 for the hidden layer and 1 for the output).
 An example I trained earlier has the following parameters:  
 **Weights**:  
 ***1st layer***:  
-[[-0.5674,  0.2844],  
-[-0.8620,  0.8800],  
-[ 0.7420, -0.9673],  
-[-1.0114,  1.0114]]  
+[[-0.7834, -0.7794],
+[-0.9649,  0.7730],
+[ 0.4980, -1.2739],
+[ 0.1256, -0.4764]]  
  ***2nd layer***:  
-[[-0.6669,  0.7351,  0.8377,  1.0199]]  
+[[-1.0414,  1.0336,  0.7825,  0.3891]]  
 
  **Biases**:  
  ***Hidden Layer***:  
- [ 5.6738e-01, -1.8065e-02,  5.6761e-01, -7.1264e-08]  
+ [ 0.7759,  0.1917,  0.7758, -0.1807] 
  ***Output***:  
-[-0.0971]   
+[0.0029]   
 
  Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):  
- Neuron 1 (Weights [-0.5674,  0.2844], Bias 5.6738e-01):  Activates when the second input is 1  
- Neuron 2 (Weights [-0.8620,  0.8800], Bias -1.8065e-02): Activates when the second input is 1, but not when both are.  
- Neuron 3 (Weights [ 0.7420, -0.9673], Bias 5.6761e-01):  Activates slightly when both are 0, more when first input is 1, less when the second input is also 1.  
- Neuron 4 (Weights [-1.0114,  1.0114], Bias -7.1264e-08): Activates when the second input is 1 but not the first.  
+ Neuron 1 (Weights [-0.7834, -0.7794], Bias 0.7759):  Activates for input [0, 0]
+ Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates when the second input is 1, but not when both are.  
+ Neuron 3 (Weights [ 0.4980, -1.2739], Bias 0.7758):  Activates slightly when both are 0, more when first input is 1, but not when the second input is also 1.  
+ Neuron 4 (Weights [ 0.1256, -0.4764], Bias -0.1807): Dead neuron.
 
- Now the output is constructed from these as follows (Weights [-0.6669,  0.7351,  0.8377,  1.0199], Bias -0.0971):  
- Neuron 1 suppresses the output of (0, 1) and (0, 0)  
+ Now the output is constructed from these as follows (Weights [-1.0414,  1.0336,  0.7825,  0.3891], Bias 0.0029):  
+ Neuron 1 suppresses the output of (0, 0)  
  Neuron 2 contributes for the input (0, 1)  
  Neuron 3 contributes for the input (1, 0) and (0, 0)  
- Neuron 4 contributes for the input (0, 1)  
+ Neuron 4 doesn't contribute 
 
-We see that Neurons 2 and 4 are essentially redundant: they each contribute to the output and all we need is a linear combination of them to produce the correct thing. Equally we see that Neuron 1 is there to adjust the output to a reasonable number. In other runs, we often see some neurons dieing (i.e never activating), allowing the network a more condensed interpretation. 
+We see that Neurons 1 and 3 are essentially redundant: Neuron 1 is there to account for the fact that Neuron 3 imperfectly represents the (1, 0) activation. Otherwise, 
 
 ## Interpreting XOR Neural Networks  
 What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner. This is rather painful to do by hand, as I'm sure you know if you just carefully followed what I did (don't worry I really won't judge you if you just skipped to the end). It would be really nice if we could automate it. Thankfully I think my friend ChatGPT can help. If we can give him the right information and prompt him correctly, we'll see what he can do.
@@ -68,8 +68,8 @@ Another piece of information which is useful for understanding larger networks i
 If we now return to the neural network I analysed earlier, we're going to see how one might go about prompting chatgpt to come to the same conclusions.
 
 ### Background prompt
-First, we need to ensure that ChatGPT knows what sort of network it's dealing with:
-*The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.*  
+*First, we need to ensure that ChatGPT knows what sort of network it's dealing with:*
+The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
 
 ### Neuron wise prompt
 When we analysed the xor network earlier, the easiest way to understand it was to look at it neuron by neuron. If we organise the information in a similar way, it will be easier for ChatGPT to interpret it in the same way. We go through the layers and list the neurons for each layer. Then for each neuron we include:  
@@ -77,39 +77,42 @@ Weights
 Bias  
 Response to inputs  
 Maximising input  
+
 This looks something like the following:
 
 This is for layer 1:  
  These are the weights for feature 1:  
- [-0.5673814415931702, 0.2843979299068451]  
+ [-0.7834176421165466, -0.7794498801231384]  
  This is the bias for feature 1:  
- 0.5673814415931702  
+ 0.7759184241294861  
  This is the feature's response to some input data:  
  Input: [0, 0]  
- Feature response: 0.5673814415931702  
+ Feature response: 0.7759184241294861  
  Input: [0, 1]  
  Feature response: 0.0  
  Input: [1, 0]  
- Feature response: 0.567607581615448  
+ Feature response: 0.0  
  Input: [1, 1]  
  Feature response: 0.0  
  This is an input designed to maximise the output of the feature:  
- Input: [-0.28368857502937317, 0.1421663910150528], Output activation of feature: 0.7687729001045227  
+ Input: [-0.3917100131511688, -0.38972726464271545], Output activation of feature: 1.386563777923584  
  Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+ These are the weights for feature 2:  
+ ...  
 
 We ask chatgpt at the end to explain its interpretation so we can pick it apart. This prompt is then repeated with data for the rest of the neurons.  
 
 ### Final layer prompt
-Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition tot the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.
-  
- Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
- Final layer weights: [[-0.6669246554374695, 0.7351352572441101, 0.8376786112785339, 1.019875168800354]]  
- Final layer biases: [-0.09707102924585342]  
- Outputs:  
-Input: [0, 0], Output: 1.0207295417785645e-06  
-Input: [0, 1], Output: 0.9999996423721313  
-Input: [1, 0], Output: 0.9999988079071045  
-Input: [1, 1], Output: 3.725290298461914e-07  
+*Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition tot the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.*
+ 
+Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:
+ Final layer weights: [[-1.0413832664489746, 1.0335971117019653, 0.7824711203575134, 0.38914060592651367]]
+ Final layer biases: [0.002885989611968398]
+ Outputs:
+Input: [0, 0], Output: -3.355019725859165e-05
+Input: [0, 1], Output: 0.9999251365661621
+Input: [1, 0], Output: 0.9995940923690796
+Input: [1, 1], Output: 0.002885989611968398
  Finally summarise overall how the network works. 
 
  We include the summary prompt in the hope that if ChatGPT is good enough at evaluating the network, we'll just be able to read the summary at the end and understand how the network works.
@@ -117,44 +120,58 @@ Input: [1, 1], Output: 3.725290298461914e-07
 ## ChatGPT response
 Now finally let's have a look at how ChatGPT responds to our prompt for the neural network we analysed above.
 
- To interpret the functioning of this neural network, let's break down the roles of each feature in the hidden layer, their contributions, and how the final layer synthesizes these to produce the output.
+To interpret the features and summarize how the network works, I'll examine each feature in the hidden layer based on the given weights, biases, and example inputs.
 
-### Feature Analysis
-#### Feature 1
-- **Weights:** [-0.567381, 0.284398], **Bias:** 0.567381
-- **Behavior:**
-  - Produces a fixed positive value (0.567381) when \(x_1 = 0\) and \(x_2 = 0\) or \(x_1 = 1\) and \(x_2 = 0\).
-  - Produces a value of 0 when \(x_2 = 1\), due to the ReLU activation negating negative inputs.
-  - Input [-0.283688, 0.142166] yields the highest output, suggesting an optimization around reversing weights effects.
-- **Interpretation:** Feature 1 is likely modeling an interaction where presence of \(x_2\) negatively impacts the response when weights are combined. It produces positive outcomes primarily from scenarios where \(x_2 = 0\).
+### Feature 1:
+- **Weights:** [-0.7834, -0.7794]
+- **Bias:** 0.7759
+- **Response Analysis:**
+  - When both inputs are 0, the feature outputs 0.7759 (just the bias).
+  - If either or both inputs are 1, the output is 0. This suggests that the weighted sum is negative and the ReLU activation forces it to 0.
+  - The input [-0.3917, -0.3897], maximizes the output to 1.3866.
 
-#### Feature 2
-- **Weights:** [-0.861964, 0.880029], **Bias:** -0.018065
-- **Behavior:**
-  - Responds with values influenced strongly by \(x_2\), nearly unaffected by \(x_1\) (e.g., 0.861964 when \(x_2 = 1\) regardless of \(x_1\)).
-  - Input [-0.430972, 0.439968] yields maximum response.
-- **Interpretation:** Feature 2 captures scenarios sensitive to changes in \(x_2\), almost acting as distinguishing presence of \(x_2\). When both inputs are high, feature outputs are also maximized indicating interactions between both variables.
+- **Interpretation:** Feature 1 is likely detecting cases where both inputs are close to 0, as it outputs its bias value whenever the input vector is far from positive values in both dimensions. The negative weights suggest that it suppresses any positive input.
 
-#### Feature 3
-- **Weights:** [0.742047, -0.967348], **Bias:** 0.567608
-- **Behavior:**
-  - Dominantly activates when \(x_1 = 1\) and \(x_2 = 0\), producing high output.
-  - Nullifies when \(x_2 = 1\), likely driven by the negative weight on \(x_2\).
-  - Maximal input [0.370990, -0.483720].
-- **Interpretation:** Feature 3 heavily weights positive \(x_1\) conditions while negating effects from \(x_2\). Sensibly aligns with detecting a unique meaning of conditions isolated to \(x_1\).
+### Feature 2:
+- **Weights:** [-0.9649, 0.7729]
+- **Bias:** 0.1917
+- **Response Analysis:**
+  - Output is 0.965 when the second input is 1 and the first is 0.
+  - Output is 0 if the first input is 1, reinforcing that the first input's negative weight cancels the potential positive impact from the second input.
+  - It’s maximized with input [-0.4824, 0.3865], further validating its interest in the disparity between both indices with a slight positive from bias.
 
-#### Feature 4
-- **Weights:** [-1.011382, 1.011382], **Bias:** -0.000000071263649204
-- **Behavior:**
-  - Activates minimally under all test inputs due to almost balancing weights.
-  - Best maximizes around balanced input [-0.505692, 0.505648].
-- **Interpretation:** Feature 4 represents a delicate balancing scenario, effectively acting when the input vector's characteristic aligns near-zero influence (given tight weight symmetry).
+- **Interpretation:** This feature likely measures the balance between the two inputs, focusing on when the second input is stronger than an offset defined primarily by larger magnitude of the first. Essentially, it’s activated strongly when the second input dominates the influence.
 
-### Final Layer Synthesis
-- **Final Weights:** [-0.666925, 0.735135, 0.837679, 1.019875], **Bias:** -0.097071
-- **Outputs Analysis:**
-  - The outputs are mapped binary-like: near 0 or near 1, effectively encoding state changes similar to XOR-like behavior.
-  - Inputs \(x = [0, 1]\) or \(x = [1, 0]\) output ~1, whereas \(x = [0, 0]\) or \(x = [1, 1]\) are near zero.
+### Feature 3:
+- **Weights:** [0.4980, -1.2739]
+- **Bias:** 0.7758
+- **Response Analysis:**
+  - Output is 1.2738 when the first input is 1.
+  - Output is 0 if the second input is 1, as its contribution becomes negative and surpasses the bias.
+  - Maximized with a careful balance, like [0.2490, -0.6369].
 
-### Overall Network Summary
-This MLP is designed to perform pattern recognition akin to an XOR-like operation on two binary inputs. Each feature is crafted to separately encapsulate discrete relationships between the input bits, mediated through targeted weight and bias structures followed by ReLU activations. The final layer aggregates these feature responses into a cohesive binary output, effectively acting as a logical decision mechanism matching XOR dynamics by contrasting paired input states.
+- **Interpretation:** Feature 3 seems to detect cases heavily influenced by the first input being positive while the second component isn’t significantly larger to turn the weighted sum negative.
+
+### Feature 4:
+- **Weights:** [0.1256, -0.4764]
+- **Bias:** -0.1807
+- **Response Analysis:**
+  - Output is always 0 for the given inputs.
+  - Maximized input still results in 0, indicating it remains inactive given the input ranges observed.
+
+- **Interpretation:** Feature 4 does not activate with the provided inputs strongly and is possibly redundant or sensitive to values outside the testing domain. It appears to have a low contribution given the weights and biases.
+
+### Summary of Network Functionality:
+- **Final Layer Analysis:**
+  - **Weights:** [-1.0414, 1.0336, 0.7825, 0.3891], Bias: 0.002886
+  - Outputs showcase a toggle pattern primarily activated when specific features in the first layer respond positively.
+
+- **Working Hypothesis:**
+  - The network likely operates to distinguish binary patterns where it is paramount to have a presence of activation from particular features.
+  - The outputs approximate 1 when the first or second input is dominant (but not both), reinforced by the positioning of responses around the units dimension of either feature 2 or 3.
+  - The bias is non-effectively low to maintain neutral as additional output logic, assisting primarily as a balancing tool.
+
+In conclusion, this MLP network is structured to predominantly activate and make distinctions amongst contrasting input patterns which represent unique configurations, relying heavily on alignment of inputs well enough to ‘trigger’ specific ordinance in its narrow-weighted hidden features, leading to the targeted outputs.
+
+## Conclusion
+Clearly we see that ChatGPT is well able to interpret the activations of the hidden layer neurons, but seems to have difficulty being precise enough in providing a summary. I believe it is likely that this is solvable with better prompts, and I leave that to further research, although some additional techniques have been used with the MNIST dataset.
