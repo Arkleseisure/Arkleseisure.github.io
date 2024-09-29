@@ -13,7 +13,7 @@ MNIST is a dataset of handwritten digits, all in greyscale. They look something 
 The goal of course is to classify the digit correctly. For this, we have 10 outputs, each corresponding to a possible digit. These outputs are then passed through the "softmax" function, which turns them into a probability distribution. Mathematically, this is defined as $softmax(x_i) = \frac{e^{x_i}}{sum(e^{x_j})}$. To keep interpreting the results as simple as possible, we will once again use a simple fully connected network.
 
 ## Interpreting an MNIST Neural Network
-When we looked at the XOR dataset, we saw that we were able to interpret the network just from its weights. This doesn't work for MNIST. Activation maximization, also introduced with XOR, does however. It also produces beautiful images like this one.  
+When we looked at the XOR dataset, we saw that we were able to interpret the network just from its weights. This doesn't work for MNIST. Activation maximization, also introduced with XOR, does however. It also produces modern art, such as this image:  
 ![I](/images/mnist_trigger_image.png "Activation maximization resulting image")
 
 What does this image represent? Well, to my eye, this looks like this neuron activates for the loop that appears at the bottom of some digits, such as in the digits 3, 5, 6, and 8. In particular, we can see that the dark section towards the middle hinders any digits which might otherwise activate the surroundings, such as the digit 4 for example. Equally noteworthy is the bright spot towards the top right of the image, which may be an example of polysemanticity in action - this example was taken from a very small network with a single hidden layer of 6 neurons. I imagine that this particular spot identifies images which reach far out into that corner, potentially helping to identify digits such as the number 7, which may activate that part of the image.
@@ -32,28 +32,49 @@ For MNIST, the following changes are made:
 1. Each activation prompt is sent to the API separately. This is due to size restrictions which can start occurring, especially since language models are known to work less well when large prompts are present.
 2. Each activation prompt contains the background prompt for the network.
 3. Layer wise prompts are now used to condense the activation responses into a single useable list which contains the functionality of each activation in the layer.
-4. Activation prompts from later layers only include the top 10 most important connections to the previous layer (in terms of weight magnitude), so as to condense the size of the prompt. 
-5. The final layer/summary prompt now takes in the condensed layer responses and the most important weights for the final layer (again, the top 10).
+4. Activation prompts from later layers only include the top 10 most important connections to the previous layer (in terms of weight magnitude), so as to condense the size of the prompt.  
+5. Activation prompts include a prompt describing the average output of each of the output classes.
+6. The final layer/summary prompt now takes in the condensed layer responses and the most important weights for the final layer (again, the top 10).
 
+
+## Background prompt
+An example background prompt is the follows:
+
+The neural network we are evaluating has the following properties:  
+It is an MLP neural network with 1 hidden layers and width 6.  
+It is trained on the MNIST dataset and uses relu activations.  
+The train accuracy of the final model is 0.61175, the train loss is 1.1200610458977949. The test accuracy of the final model is 0.6305, the test loss is 1.0969773648650782.
+
+The key thing is that all the main points that might not otherwise be known about the network are addressed.
 
 ## Activation prompt
-The neural network we are evaluating has the following properties:
-It is an MLP neural network with 1 hidden layers and width 6.
-It is trained on the MNIST dataset and uses relu activations.
-The train accuracy of the final model is 0.61175, the train loss is 1.1200610458977949. The test accuracy of the final model is 0.6305, the test loss is 1.0969773648650782.Your task is to evaluate what the following activation does.
-This activation is at depth 0, with the first layer outputs being labelled as depth 0.
-The following are the average and standard deviations of the activations for each output class:
-Avg label 0: 16.760561412142724, std: 5.126875526036485
-Avg label 1: 0.6375665275972019, std: 1.054784035971524
-Avg label 2: 1.4199343871325254, std: 2.9929772723077956
-Avg label 3: 1.9105483966589976, std: 3.2013420620190147
-Avg label 4: 19.85618057470212, std: 5.544845653758414
-Avg label 5: 9.586604956083182, std: 5.6778547974574884
-Avg label 6: 10.000887012240863, std: 3.1338584110363263
-Avg label 7: 14.530015394239143, std: 5.218367585080105
-Avg label 8: 8.26626239335608, std: 5.2008824643134455
-Avg label 9: 18.319867913045137, std: 5.739438847200249
-The following image is an input specifically designed to maximise the output of the neuron.
+A prompt for a single activation would consist of the background prompt, followed by
+
+**Activation specific background:**  
+*This just gives context as to where in the network the particular activation it is evaluating is*  
+Your task is to evaluate what the following activation does.  
+This activation is at depth 0, with the first layer outputs being labelled as depth 0.  
+
+**Activation mean and standard deviation for each output class:**  
+*These give intuitive information about what sort of features the activation might be picking up on from which sorts of numbers it usually contributes to*  
+The following are the average and standard deviations of the activations for each output class:  
+Avg label 0: 16.760561412142724, std: 5.126875526036485  
+Avg label 1: 0.6375665275972019, std: 1.054784035971524  
+Avg label 2: 1.4199343871325254, std: 2.9929772723077956  
+Avg label 3: 1.9105483966589976, std: 3.2013420620190147  
+Avg label 4: 19.85618057470212, std: 5.544845653758414  
+Avg label 5: 9.586604956083182, std: 5.6778547974574884  
+Avg label 6: 10.000887012240863, std: 3.1338584110363263  
+Avg label 7: 14.530015394239143, std: 5.218367585080105  
+Avg label 8: 8.26626239335608, std: 5.2008824643134455  
+Avg label 9: 18.319867913045137, std: 5.739438847200249  
+
+**Activation maximisation prompt:**
+*As described above, this is very useful*  
+The following image is an input specifically designed to maximise the output of the neuron. *(The image would then be one such as shown above)*  
+
+**Task prompt**
+*Giving a precise explanation of a task with examples allows the network to give a more taylored response*  
 Please give an interpretation of what you think this feature means, and use reasoning based on the data and the image given.
 The interpretation must be precise enough to be able to accurately reconstruct which images would trigger this neuron, e.g., 'This neuron activates for the 90 degrees of curve from 0 to 90 degrees.'
 
