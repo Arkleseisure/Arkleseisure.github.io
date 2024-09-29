@@ -51,12 +51,12 @@ The key thing is that all the main points that might not otherwise be known abou
 A prompt for a single activation would consist of the background prompt, followed by
 
 **Activation specific background:**  
-*This just gives context as to where in the network the particular activation it is evaluating is*  
+*This just gives context as to where in the network the particular activation it is evaluating is.*  
 Your task is to evaluate what the following activation does.  
 This activation is at depth 0, with the first layer outputs being labelled as depth 0.  
 
 **Activation mean and standard deviation for each output class:**  
-*These give intuitive information about what sort of features the activation might be picking up on from which sorts of numbers it usually contributes to*  
+*These give intuitive information about what sort of features the activation might be picking up on from which sorts of numbers it usually contributes to.*  
 The following are the average and standard deviations of the activations for each output class:  
 Avg label 0: 16.760561412142724, std: 5.126875526036485  
 Avg label 1: 0.6375665275972019, std: 1.054784035971524  
@@ -70,35 +70,17 @@ Avg label 8: 8.26626239335608, std: 5.2008824643134455
 Avg label 9: 18.319867913045137, std: 5.739438847200249  
 
 **Activation maximisation prompt:**
-*As described above, this is very useful*  
+*As described above, this is very useful.*  
 The following image is an input specifically designed to maximise the output of the neuron. *(The image would then be one such as shown above)*  
 
 **Task prompt**
-*Giving a precise explanation of a task with examples allows the network to give a more taylored response*  
-Please give an interpretation of what you think this feature means, and use reasoning based on the data and the image given.
-The interpretation must be precise enough to be able to accurately reconstruct which images would trigger this neuron, e.g., 'This neuron activates for the 90 degrees of curve from 0 to 90 degrees.'
-
-The neural network we are evaluating has the following properties:
-It is an MLP neural network with 1 hidden layers and width 6.
-It is trained on the MNIST dataset and uses relu activations.
-The train accuracy of the final model is 0.61175, the train loss is 1.1200610458977949. The test accuracy of the final model is 0.6305, the test loss is 1.0969773648650782.Your task is to evaluate what the following activation does.
-This activation is at depth 0, with the first layer outputs being labelled as depth 0.
-The following are the average and standard deviations of the activations for each output class:
-Avg label 0: 3.2745842411730095, std: 3.058592915760359
-Avg label 1: 9.57126359884129, std: 1.8684148049119251
-Avg label 2: 1.0154601797461509, std: 2.2670027086384246
-Avg label 3: 2.9892229450350047, std: 4.686846795010118
-Avg label 4: 14.128851687771151, std: 3.7568555723580297
-Avg label 5: 5.52164318121788, std: 4.591146921838101
-Avg label 6: 0.2319014746733386, std: 0.7470177494526855
-Avg label 7: 20.76452903228231, std: 6.075108233208982
-Avg label 8: 8.240234813697281, std: 4.786900208405407
-Avg label 9: 19.033858659220677, std: 4.665220201129677
-The following image is an input specifically designed to maximise the output of the neuron.
+*Giving a precise explanation of a task with examples allows the network to give a more taylored response.*  
 Please give an interpretation of what you think this feature means, and use reasoning based on the data and the image given.
 The interpretation must be precise enough to be able to accurately reconstruct which images would trigger this neuron, e.g., 'This neuron activates for the 90 degrees of curve from 0 to 90 degrees.'
 
 ## Activation response
+This is an example response to the activation prompt:
+
 Based on the given activations and image, the neuron appears to highly activate for digits resembling a "4" or "9." Here's the reasoning and interpretation:
 
 1. **High Activation Values for Labels 0, 4, and 9**:
@@ -129,60 +111,34 @@ The neuron likely activates for images containing a vertical line with a horizon
 The feature seems less representative of curves without accompanying vertical strokes (hence lower activation for 6 and 2). Designing images with strong vertical-horizontal intersections will likely activate this neuron, especially focusing on the top-left part of the digit canvas possibly, as suggested by the provided visualization image.
 
 ## Layer prompt
-The neural network we are evaluating has the following properties:
-It is an MLP neural network with 1 hidden layers and width 6.
-It is trained on the MNIST dataset and uses relu activations.
-The train accuracy of the final model is 0.61175, the train loss is 1.1200610458977949. The test accuracy of the final model is 0.6305, the test loss is 1.0969773648650782.You have attempted to interpret each of the activations in layer 0.
+
+**Background prompt**
+This is the same as before
+
+**List of Features and explanations**
+*Here we feed the summaries of the feature activations that have been found in the layer, e.g:*  
+
 The following is the summary of each activation that you gave:
 Feature 0:
 Dead neuron
 
-
 Feature 1:
 Dead neuron
 
-
 Feature 2:
-Based on the given activations and image, the neuron appears to highly activate for digits resembling a "4" or "9." Here's the reasoning and interpretation:
-
-1. **High Activation Values for Labels 0, 4, and 9**:
-   - The neuron shows high average activations for labels 0, 4, and 9, with particularly high values for label 4 (19.856) and label 9 (18.319).
-   - This suggests that the feature captured by this neuron is strongly associated with some part of these digits.
-
-2. **Image Analysis**:
-   - The visual pattern observed in the image seems to resemble curved shapes with a vertical component typical of digits "4" and "9."
-   - The circle and vertical line could correspond to the typical shapes found in these digits, such as the top loop of the "9" and the vertical and horizontal lines of the "4."
-
-Based on these observations, the neuron likely activates for features resembling the combination of vertical and curved lines typical of certain parts of the digits "4" and "9." Images containing such patterns will likely trigger this neuron. This activation pattern suggests sensitivity to specific lines and shapes common in these numbers.
-
+*Summary given by ChatGPT of feature 2*
 
 Feature 3:
 Dead neuron
 
-
 Feature 4:
-The neuron we are examining appears to be highly activated by specific patterns found in images corresponding to certain digits. Based on the data provided:
-
-- The highest average activation occurs for digits 7 (20.76), 9 (19.03), and 4 (14.13).
-- The lowest activations are for digits 6 (0.23) and 2 (1.02).
-
-From the visualization of the maximum activation input image, it seems to capture features aligned with particular structural nuances common in certain digits. Here's the interpretation of the feature likely emphasized by this neuron:
-
-### Interpretation:
-The neuron likely activates for images containing a vertical line with a horizontal line crossing it, similar to a "T" shape, which is a common characteristic in digits like 7 and parts of 4. It might also capture more complex shapes with this feature, affecting how it responds to similar crossings in 9, possibly at an angle or curvature.
-
-### Reconstruction Aids:
-1. **Digit 7**: The neuron can be triggered by the descending vertical stroke completed with a left-facing horizontal line on the top, resembling the structure of 7.
-2. **Digit 4**: Involves intersecting horizontal and vertical strokes often seen in the top half of the numeral 4.
-3. **Digit 9**: May be responding to the loops or curves starting from the vertical portion of 9.
-
-The feature seems less representative of curves without accompanying vertical strokes (hence lower activation for 6 and 2). Designing images with strong vertical-horizontal intersections will likely activate this neuron, especially focusing on the top-left part of the digit canvas possibly, as suggested by the provided visualization image.
-
+*Summary given by ChatGPT of feature 4*
 
 Feature 5:
 Dead neuron
 
-
+**Task Prompt**  
+*We then give a task prompt, giving specific information about how to do this summary.*  
 Now please give a summary of the most important features in the layer, feature by feature, and include all the details critical to predicting its activation. Feel free to ignore unimportant neurons such as dead neurons, and please include connections to previous layers in later layers.
 Example:
 Feature 1: Captures the horizontal top of digits, activating for digits such as 5 and 7 but not for the digit 4.
@@ -190,6 +146,8 @@ Feature 2: Captures the circular nature of digits such as 0, made by positive we
 Feature 4: Captures the absence of a center, made by a negative weight to feature 1 from layer 0 (presence of a center), which is amplified by other features such as a negative weight to feature 3, which captures the presence of a solid line down the middle.
 
 ## Layer response
+Here is an example response for the response from ChatGPT.
+
 Layer 0 summary:
 Based on the properties and analysis provided for the MLP neural network's activations in the hidden layer, here is a summary of the most important features, with details critical to predicting their activation:
 
@@ -217,112 +175,57 @@ The two active neurons in this layer contribute significantly to the network's a
 These neurons effectively capture essential structural features within the digits, aiding the model's decision-making process despite the relatively low accuracy and presence of dead neurons. Improving the network might involve refining these features or expanding capacity with additional functional neurons to enhance pattern recognition and prediction accuracy.
 
 ## Summary prompt
-The neural network we are evaluating has the following properties:
-It is an MLP neural network with 1 hidden layers and width 6.
-It is trained on the MNIST dataset and uses relu activations.
-The train accuracy of the final model is 0.61175, the train loss is 1.1200610458977949. The test accuracy of the final model is 0.6305, the test loss is 1.0969773648650782.You have summarized the functionality of each layer of the neural network.
-Here they are:
-Layer 0:
-Based on the properties and analysis provided for the MLP neural network's activations in the hidden layer, here is a summary of the most important features, with details critical to predicting their activation:
+Our final prompt is a summary prompt, which should prompt ChatGPT to provide us with a summary sufficient to understand how the neural network works, by combining the information from the layer summaries with their connections to the outputs of the network, to give a full impression of how the network actually finds the answer.
 
-### Feature 2:
-- **Activation Characteristics**: This neuron appears to activate strongly for patterns commonly found in digits "4" and "9."
-- **Pattern Details**: The high activation suggests sensitivity to vertical and curved line combinations. Specifically, it is likely responding to:
-  - The vertical line often found in both digits.
-  - The curved portion that could represent the top loop of "9" or parts of "4."
-- **Digit Activation**: High average activation values for labels 4 and 9, supporting the interpretation of sensitivity to these features.
+**Background prompt**  
+*As always, we start with the background prompt.*  
 
-### Feature 4:
-- **Activation Characteristics**: This neuron is highly activated by structural patterns found in digits such as "7," "9," and "4."
-- **Pattern Details**: The neuron captures features resembling a vertical line intersecting with a horizontal line, akin to a "T" shape. This is typical for:
-  - The top stroke in digit "7" and "4."
-  - Curved shapes in parts of "9."
-- **Digit Activation**: Highest average activation for 7, 9, and 4 indicates a strong response to these geometric structures.
-- **Inactivation Patterns**: Lesser activation for more rounded shapes without vertical elements, such as "6" and "2."
+**Layer summaries**  
+*We then add the summaries of each of the layers to the prompt.*
 
-### Summary:
-The two active neurons in this layer contribute significantly to the network's ability to distinguish digits based on specific geometric features:
+You have summarized the functionality of each layer of the neural network.  
+Here they are:  
+Layer 0:  
+*Layer 0 summary*  
+Layer 1:  
+*Layer 1 summary*  
 
-- **Feature 2**: Primarily responds to combinations of vertical and curved lines, making it critical for recognizing "4" and "9".
-- **Feature 4**: Sensitive to intersecting vertical and horizontal lines, key for understanding the structure of "7," "4," and "9."
+**Final weight summaries**
+*At the end we include connections to the outputs.*  
 
-These neurons effectively capture essential structural features within the digits, aiding the model's decision-making process despite the relatively low accuracy and presence of dead neurons. Improving the network might involve refining these features or expanding capacity with additional functional neurons to enhance pattern recognition and prediction accuracy.
-The most important connections for the final layer are:
-For output 0:
-Activation 4, weight: -0.6960952877998352
-Activation 2, weight: 0.6317987442016602
-Activation 0, weight: -0.39977529644966125
-Activation 1, weight: -0.2734476923942566
-Activation 5, weight: 0.26809853315353394
-Activation 3, weight: -0.11677006632089615
-For output 1:
-Activation 2, weight: -1.276571273803711
-Activation 4, weight: 0.8016878962516785
-Activation 1, weight: -0.3857203423976898
-Activation 5, weight: 0.10839473456144333
-Activation 0, weight: -0.03390675038099289
-Activation 3, weight: -0.029084959998726845
-For output 2:
-Activation 1, weight: -0.3801165223121643
-Activation 3, weight: 0.3356472849845886
+The most important connections for the final layer are:  
+For output 0:  
+Activation 4, weight: -0.6960952877998352  
+Activation 2, weight: 0.6317987442016602  
+Activation 0, weight: -0.39977529644966125  
+Activation 1, weight: -0.2734476923942566  
+Activation 5, weight: 0.26809853315353394  
+Activation 3, weight: -0.11677006632089615  
+For output 1:  
+Activation 2, weight: -1.276571273803711  
+Activation 4, weight: 0.8016878962516785  
+Activation 1, weight: -0.3857203423976898  
+Activation 5, weight: 0.10839473456144333  
+Activation 0, weight: -0.03390675038099289  
+Activation 3, weight: -0.029084959998726845  
+For output 2:  
+Activation 1, weight: -0.3801165223121643  
+Activation 3, weight: 0.3356472849845886  
 Activation 2, weight: -0.20018230378627777
 Activation 5, weight: 0.1808502972126007
 Activation 0, weight: 0.05247001722455025
 Activation 4, weight: -0.050515320152044296
 For output 3:
-Activation 2, weight: -0.3321477174758911
-Activation 4, weight: 0.15998749434947968
-Activation 3, weight: -0.15889222919940948
-Activation 1, weight: -0.09629879146814346
-Activation 5, weight: -0.04845975339412689
-Activation 0, weight: -0.004011130891740322
-For output 4:
-Activation 5, weight: 0.3717959523200989
-Activation 2, weight: 0.3200576603412628
-Activation 0, weight: 0.3186931014060974
-Activation 3, weight: -0.18096020817756653
-Activation 1, weight: -0.06953267008066177
-Activation 4, weight: -0.051264334470033646
-For output 5:
-Activation 5, weight: -0.28521275520324707
-Activation 2, weight: 0.2241843044757843
-Activation 1, weight: 0.21876460313796997
-Activation 4, weight: -0.1870703399181366
-Activation 0, weight: -0.09470394998788834
-Activation 3, weight: 0.011719855479896069
-For output 6:
-Activation 4, weight: -1.0289939641952515
-Activation 2, weight: 0.49693796038627625
-Activation 3, weight: -0.391622930765152
-Activation 0, weight: -0.26009953022003174
-Activation 5, weight: -0.23939892649650574
-Activation 1, weight: 0.0625026598572731
-For output 7:
-Activation 4, weight: 0.5606090426445007
-Activation 5, weight: 0.3942387104034424
-Activation 0, weight: 0.38683217763900757
-Activation 2, weight: -0.2527841329574585
-Activation 1, weight: -0.21165251731872559
-Activation 3, weight: 0.004581360146403313
-For output 8:
-Activation 0, weight: -0.39096251130104065
-Activation 3, weight: -0.23295582830905914
-Activation 4, weight: 0.1954900175333023
-Activation 1, weight: 0.11198433488607407
-Activation 2, weight: -0.10375073552131653
-Activation 5, weight: -0.08126339316368103
-For output 9:
-Activation 5, weight: -0.34006771445274353
-Activation 1, weight: -0.30322593450546265
-Activation 4, weight: 0.2962113320827484
-Activation 0, weight: 0.13129296898841858
-Activation 3, weight: 0.04910212382674217
-Activation 2, weight: 0.0384465754032135
-Concisely and precisely summarize how the network as a whole works, including specific influences of previous layers on later ones. Make sure to specify how each possible final output is decided upon from the penultimate layer.
-Example for an XOR network with 1 layer of 4 neurons:
-Summary: Feature 1 and 2 activate when the first and second inputs are active respectively, while Feature 0 doesn't contribute and Feature 3 increases with the total number of 1s. The final output is formed by activating the output if either feature 1 or 2 is active, and suppressing it if feature 3 is active.
+...
+
+**Task Prompt**  
+*Of course, we finish off with a task prompt explaining with examples how to summarise the network.*  
+Concisely and precisely summarize how the network as a whole works, including specific influences of previous layers on later ones. Make sure to specify how each possible final output is decided upon from the penultimate layer.  
+Example for an XOR network with 1 layer of 4 neurons:  
+Summary: Feature 1 and 2 activate when the first and second inputs are active respectively, while Feature 0 doesn't contribute and Feature 3 increases with the total number of 1s. The final output is formed by activating the output if either feature 1 or 2 is active, and suppressing it if feature 3 is active.  
 
 ## Summary response
+*Example response from ChatGPT.*  
 ### Summary of Network Functionality:
 
 **Layer 0: Hidden Layer Analysis**
