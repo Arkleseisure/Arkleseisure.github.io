@@ -58,13 +58,17 @@ We see that Neurons 2 and 4 are essentially redundant: they each contribute to t
 ## Interpreting XOR Neural Networks  
 What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner. This is rather painful to do by hand, as I'm sure you know if you just carefully followed what I did (don't worry I really won't judge you if you just skipped to the end). It would be really nice if we could automate it. Thankfully I think my friend ChatGPT can help. If we can give him the right information and prompt him correctly, we'll see what he can do.
 
-First though if we want to 
+First though if we want this to be a fully scalable method, we need something which will work better than just a set of weights - much as these are technically enough to figure out what the network is doing, for anything more than the 4 neurons we just discussed it's just plain confusing. 
 
+For this we'll consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose of this is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. Although not that interesting in the context of the XOR problem, especially with only one layer, as we'll see with MNIST later, this makes it far easier to interpret image classifiers.
 
 ## The Prompt
-For the neural network we dissected aboue, the prompt we would give ChatGPT looks like this:
+If we now return to the neural network I analysed earlier, we're going to see how one might go about prompting chatgpt to come to the same conclusions.
 
-The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
+### Background prompt
+First, we need to ensure that ChatGPT knows what sort of network it's dealing with:  
+*The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.*  
+
 This is for layer {i}:  
  These are the weights for feature 1:  
  [-0.5673814415931702, 0.2843979299068451]  
@@ -140,7 +144,7 @@ Input: [1, 0], Output: 0.9999988079071045
 Input: [1, 1], Output: 3.725290298461914e-07  
  Finally summarise overall how the network works.  
 
-
+## ChatGPT response
  To interpret the functioning of this neural network, let's break down the roles of each feature in the hidden layer, their contributions, and how the final layer synthesizes these to produce the output.
 
 ### Feature Analysis
