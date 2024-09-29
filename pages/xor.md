@@ -71,7 +71,7 @@ If we now return to the neural network I analysed earlier, we're going to see ho
 *First, we need to ensure that ChatGPT knows what sort of network it's dealing with:*
 The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
 
-### Neuron wise prompt
+### Activation wise prompt
 When we analysed the xor network earlier, the easiest way to understand it was to look at it neuron by neuron. If we organise the information in a similar way, it will be easier for ChatGPT to interpret it in the same way. We go through the layers and list the neurons for each layer. Then for each neuron we include:  
 Weights  
 Bias  
