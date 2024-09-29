@@ -99,7 +99,7 @@ This is for layer 1:
 
 We ask chatgpt at the end to explain its interpretation so we can pick it apart. This prompt is then repeated with data for the rest of the neurons.  
 
-  ### Final layer prompt
+### Final layer prompt
 Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition tot the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.
   
  Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
