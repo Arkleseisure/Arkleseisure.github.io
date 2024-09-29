@@ -68,7 +68,7 @@ Another piece of information which is useful for understanding larger networks i
 If we now return to the neural network I analysed earlier, we're going to see how one might go about prompting chatgpt to come to the same conclusions.
 
 ### Background prompt
-*First, we need to ensure that ChatGPT knows what sort of network it's dealing with:*
+*First, we need to ensure that ChatGPT knows what sort of network it's dealing with.*  
 The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
 
 ### Activation wise prompt
