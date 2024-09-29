@@ -62,14 +62,24 @@ First though if we want this to be a fully scalable method, we need something wh
 
 For this we'll consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose of this is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. Although not that interesting in the context of the XOR problem, especially with only one layer, as we'll see with MNIST later, this makes it far easier to interpret image classifiers.
 
+Another piece of information which is useful for understanding larger networks is looking at the type of inputs that the neuron activates for. For XOR, this is as simple as just listing the 4 possible inputs and the activations of the neuron for each of them, but for larger networks we shall have to become more creative, as we'll see with MNIST.
+
 ## The Prompt
 If we now return to the neural network I analysed earlier, we're going to see how one might go about prompting chatgpt to come to the same conclusions.
 
 ### Background prompt
-First, we need to ensure that ChatGPT knows what sort of network it's dealing with:  
+First, we need to ensure that ChatGPT knows what sort of network it's dealing with:
 *The neural network is an mlp which has 1 hidden layers and width 4. It has final loss 6.646488914796578e-13 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.*  
 
-This is for layer {i}:  
+### Neuron wise prompt
+When we analysed the xor network earlier, the easiest way to understand it was to look at it neuron by neuron. If we organise the information in a similar way, it will be easier for ChatGPT to interpret it in the same way. We go through the layers and list the neurons for each layer. Then for each neuron we include:  
+Weights  
+Bias  
+Response to inputs  
+Maximising input  
+This looks something like the following:
+
+This is for layer 1:  
  These are the weights for feature 1:  
  [-0.5673814415931702, 0.2843979299068451]  
  This is the bias for feature 1:  
@@ -86,54 +96,12 @@ This is for layer {i}:
  This is an input designed to maximise the output of the feature:  
  Input: [-0.28368857502937317, 0.1421663910150528], Output activation of feature: 0.7687729001045227  
  Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
- These are the weights for feature 2:  
- [-0.8619637489318848, 0.8800289034843445]  
- This is the bias for feature 2:  
- -0.018065139651298523  
- This is the feature's response to some input data:  
- Input: [0, 0]  
- Feature response: 0.8517793416976929  
- Input: [0, 1]  
- Feature response: 0.8619637489318848  
- Input: [1, 0]  
- Feature response: 0.0  
- Input: [1, 1]  
- Feature response: 1.011381983757019  
- This is an input designed to maximise the output of the feature:  
- Input: [-0.4309721291065216, 0.43996816873550415], Output activation of feature: 0.7406018972396851 
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
- These are the weights for feature 3:  
- [0.7420472502708435, -0.9673476815223694]  
- This is the bias for feature 3:  
- 0.567607581615448  
- This is the feature's response to some input data:  
- Input: [0, 0]  
- Feature response: 0.0  
- Input: [0, 1]  
- Feature response: 0.0  
- Input: [1, 0]  
- Feature response: 1.3096548318862915  
- Input: [1, 1]  
- Feature response: 0.0  
- This is an input designed to maximise the output of the feature:  
- Input: [0.37098994851112366, -0.48372042179107666], Output activation of feature: 1.3108254671096802  
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
- These are the weights for feature 4:  
- [-1.0113822221755981, 1.0113821029663086]   
- This is the bias for feature 4:  
- -7.126364920395645e-08  
- This is the feature's response to some input data:  
- Input: [0, 0]   
- Feature response: 0.2843979299068451  
- Input: [0, 1]  
- Feature response: 1.4901161193847656e-08  
- Input: [1, 0]  
- Feature response: 0.3423071503639221  
- Input: [1, 1]  
- Feature response: 0.0  
- This is an input designed to maximise the output of the feature:  
- Input: [-0.5056922435760498, 0.5056483745574951], Output activation of feature: 1.022851824760437  
- Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
+
+We ask chatgpt at the end to explain its interpretation so we can pick it apart. This prompt is then repeated with data for the rest of the neurons.  
+
+  ### Final layer prompt
+Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition tot the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.
+  
  Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
  Final layer weights: [[-0.6669246554374695, 0.7351352572441101, 0.8376786112785339, 1.019875168800354]]  
  Final layer biases: [-0.09707102924585342]  
