@@ -211,12 +211,12 @@ Activation 3, weight: -0.029084959998726845
 For output 2:  
 Activation 1, weight: -0.3801165223121643  
 Activation 3, weight: 0.3356472849845886  
-Activation 2, weight: -0.20018230378627777
-Activation 5, weight: 0.1808502972126007
-Activation 0, weight: 0.05247001722455025
-Activation 4, weight: -0.050515320152044296
-For output 3:
-...
+Activation 2, weight: -0.20018230378627777  
+Activation 5, weight: 0.1808502972126007  
+Activation 0, weight: 0.05247001722455025  
+Activation 4, weight: -0.050515320152044296  
+For output 3:  
+...  
 
 **Task Prompt**  
 *Of course, we finish off with a task prompt explaining with examples how to summarise the network.*  
