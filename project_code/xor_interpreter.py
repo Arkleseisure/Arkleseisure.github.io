@@ -14,7 +14,7 @@ batch_size = 1        # Number of samples per batch
 learning_rate = 0.001 # Learning rate for the optimizer
 epochs = 2000         # Number of training epochs
 width = 4             # Width of the neural network (number of neurons per layer)
-depth = 2             # Depth of the neural network (number of hidden layers)
+depth = 1             # Depth of the neural network (number of hidden layers)
 
 # Define a custom dataset for the XOR problem
 class XORDataset(Dataset):
@@ -86,27 +86,31 @@ def train_model():
             print(f'Total time: {time.time() - start_time}')
             print(f'Current time: {time.ctime(time.time())}')
 
+    for name, param in model.named_parameters():
+        print(name)
+        print(param)
+
     return model, train_loss  # Return the trained model
 
 
 # Gets the inputs which activate the various features of the model
-def get_trigger_inputs_outputs(model):
+def get_max_activations(model):
     # List to store inputs that maximize each feature's activation
-    trigger_inputs = []
+    max_inputs = []
     for i in range(depth):
-        trigger_inputs.append([])
+        max_inputs.append([])
         for j in range(width):
             # Find an input that maximizes the activation of the jth feature of the ith layer
-            trigger_inputs[i].append(find_trigger_input(i, j, model))
+            max_inputs[i].append(find_trigger_input(i, j, model))
 
-    trigger_outputs = [[model(torch.tensor(trigger_inputs[i][j], dtype=torch.float32).to(device))[1][i][j] for j in range(width)] for i in range(depth)]
+    max_outputs = [[model(torch.tensor(max_inputs[i][j], dtype=torch.float32).to(device))[1][i][j] for j in range(width)] for i in range(depth)]
     for i in range(depth):
         print('Layer:', i + 1)
         for j in range(width):
             print('Feature', j + 1)
-            print('Trigger input:', trigger_inputs[i][j].tolist())
-            print('Value with trigger input:', trigger_outputs[i][j].item())
-    return trigger_inputs, trigger_outputs
+            print('Activation maximising input:', max_inputs[i][j].tolist())
+            print('Value with activation maximising input:', max_outputs[i][j].item())
+    return max_inputs, max_outputs
     
 
 def get_feature_responses(model):
@@ -137,11 +141,11 @@ def get_model_params(model):
         
     return params
 
-def build_content_prompt(trigger_inputs, trigger_outputs, data, outputs, feature_responses, params, train_loss):
+def build_content_prompt(max_inputs, max_outputs, data, outputs, feature_responses, params, train_loss):
     # Build a content prompt for ChatGPT to interpret the model's features
-    content_prompt = f'The neural network is an mlp which has {depth} hidden layers and width {width}. It has final loss {train_loss} (loss function {type(criterion)}) and relu activations.\n'
+    content_prompt = f'The neural network is an mlp which has {depth} hidden layer{"" if depth == 1 else "s"} and width {width}. It has final loss {train_loss} (loss function {type(criterion)}) and relu activations.\n'
     for i in range(depth):
-        content_prompt += 'This is for layer {i}:\n'
+        content_prompt += f'This is for layer {i + 1}:\n'
         for j in range(width):
             content_prompt += f' These are the weights for feature {j + 1}: \n'
             content_prompt += f' {params[2 * i][j].tolist()}\n'   # Weights of the first layer
@@ -149,9 +153,9 @@ def build_content_prompt(trigger_inputs, trigger_outputs, data, outputs, feature
             content_prompt += f' {params[2 * i + 1][j].tolist()}\n'   # Biases of the first layer
             content_prompt += f" This is the feature's response to some input data:\n"
             for k in range(len(data)):
-                content_prompt += f' Input: {data[k]} \n Feature response: {feature_responses[j][i][k]}\n'
+                content_prompt += f' Input: {data[k]} \n Feature response: {feature_responses[k][i][j]}\n'
             content_prompt += f' This is an input designed to maximise the output of the feature:\n'
-            content_prompt += f' Input: {trigger_inputs[i][j].tolist()}, Output activation of feature: {trigger_outputs[i][j].item()}\n'
+            content_prompt += f' Input: {max_inputs[i][j].tolist()}, Output activation of feature: {max_outputs[i][j].item()}\n'
             content_prompt += f' Please give an interpretation of what you think this feature means, and use reasoning based on the data given.\n'
     content_prompt += f' Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:\n'
     content_prompt += f' Final layer weights: {params[-2].tolist()}\n'  # Weights of the final layer
@@ -164,8 +168,8 @@ def build_content_prompt(trigger_inputs, trigger_outputs, data, outputs, feature
     return content_prompt
 
 def evaluate_network(model, train_loss):
-    # Gets the inputs which trigger features in the network, and the values they output when triggered
-    trigger_inputs, trigger_outputs = get_trigger_inputs_outputs(model)
+    # Gets the inputs which maximise the activations of features in the network, and the values of these activations
+    max_inputs, max_outputs = get_max_activations(model)
 
     # Gets the feature responses to the data points
     data, outputs, feature_responses = get_feature_responses(model)
@@ -174,7 +178,7 @@ def evaluate_network(model, train_loss):
     params = get_model_params(model)
 
     # Builds a prompt to get chatgpt to interpret the functioning of the network
-    content_prompt = build_content_prompt(trigger_inputs, trigger_outputs, data, outputs, feature_responses, params, train_loss)
+    content_prompt = build_content_prompt(max_inputs, max_outputs, data, outputs, feature_responses, params, train_loss)
     
     # Print the content prompt for debugging purposes
     print('\n\n\n\n\n' + content_prompt)
