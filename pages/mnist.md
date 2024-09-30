@@ -190,7 +190,7 @@ Layer 0:
 Layer 1:  
 *Layer 1 summary*  
 
-**Final weight summaries**
+**Final weight summaries**  
 *At the end we include connections to the outputs.*  
 
 The most important connections for the final layer are:  
@@ -226,9 +226,9 @@ Summary: Feature 1 and 2 activate when the first and second inputs are active re
 
 ## Summary response
 *Example response from ChatGPT.*  
-### Summary of Network Functionality:
+### Summary of Network Functionality:  
 
-**Layer 0: Hidden Layer Analysis**
+**Layer 0: Hidden Layer Analysis**  
 The hidden layer with 6 neurons uses Rectified Linear Unit (ReLU) activations to identify and capture specific geometric features from the MNIST digit dataset.
 
 - **Feature 2**: This neuron strongly activates for configurations resembling the vertical and curved lines, notably seen in digits "4" and "9." Its activation influences decisions primarily regarding these digits.
