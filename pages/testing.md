@@ -63,3 +63,14 @@ Final incorrect interpretability score: 0.068 +- 0.032
 Final interpretability score: 0.104 +- 0.026  
 
 This shows us that the interpretability score is therefore not necessarily a reflection of the quantity of information in the summaries, and more work needs to be done on correctly prompting ChatGPT to get the most out of its testing predictions. Equally it shows us that there is a lot more work to be done before we can confidently say that ChatGPT can interpret the MNIST dataset. I believe that work on making its summaries more precise, as well as future increases in capabilities will likely improve this fact.
+
+It also seems that this is not much improved by inreasing the size of the network, as these are the results for a 1 hidden layer neural network with 12 neurons:  
+Fraction correct when network correct: 0.95 +- 0.022  
+Fraction incorrect when network correct: 0.05 +- 0.022  
+Fraction correct about network when network incorrect: 0.06 +- 0.024  
+Fraction correct about image when network incorrect: 0.83 +- 0.038  
+Fraction incorrect about both network and image: 0.11 +- 0.031  
+
+Final correct interpretability score: 0.706 +- 0.005  
+Final incorrect interpretability score: 0.047 +- 0.024  
+Final interpretability score: 0.376 +- 0.012  
