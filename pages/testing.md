@@ -44,3 +44,10 @@ It then uses the following to get the best results:
             'half of the images you are asked about, the network prediction will be incorrect.\n'
 
 The response is then retrieved and a second prompt is used to get the actual answer in numerical form:
+*Here is a text giving an answer to the question 'What will this MNIST neural network predict for this image?'*  
+*[The response from ChatGPT]*  
+*What is the answer given? Please respond with a single digit only.*  
+
+## Testing results
+Here are the results evaluated on a single model with 6 neurons in the hidden layer:
+
