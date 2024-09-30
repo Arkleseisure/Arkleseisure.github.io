@@ -37,15 +37,15 @@ An example I trained earlier has the following parameters:
 
  **Biases**:  
  ***Hidden Layer***:  
- [ 0.7759,  0.1917,  0.7758, -0.1807] 
+ [ 0.7759,  0.1917,  0.7758, -0.1807]  
  ***Output***:  
 [0.0029]   
 
  Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):  
- Neuron 1 (Weights [-0.7834, -0.7794], Bias 0.7759):  Activates for input [0, 0]
+ Neuron 1 (Weights [-0.7834, -0.7794], Bias 0.7759):  Activates for input [0, 0]  
  Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates when the second input is 1, but not when both are.  
  Neuron 3 (Weights [ 0.4980, -1.2739], Bias 0.7758):  Activates slightly when both are 0, more when first input is 1, but not when the second input is also 1.  
- Neuron 4 (Weights [ 0.1256, -0.4764], Bias -0.1807): Dead neuron.
+ Neuron 4 (Weights [ 0.1256, -0.4764], Bias -0.1807): Dead neuron.  
 
  Now the output is constructed from these as follows (Weights [-1.0414,  1.0336,  0.7825,  0.3891], Bias 0.0029):  
  Neuron 1 suppresses the output of (0, 0)  
