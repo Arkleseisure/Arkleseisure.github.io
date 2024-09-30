@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page.description | default: site.description }}">
+
+    <!-- Polyfill and MathJax -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- MathJax Configuration -->
+    <script type="text/javascript">
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+
     <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <style>
@@ -47,13 +63,20 @@
     </nav>
 </header>
 
-<main>
+<main id="content">
     {{ content }}
 </main>
 
 <footer>
     <p>&copy; 2024 {{ site.author.name }}. All rights reserved.</p>
 </footer>
+
+<!-- Ensure MathJax Processes the Content After Page Load -->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        MathJax.typesetPromise();
+    });
+</script>
 
 </body>
 </html>
