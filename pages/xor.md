@@ -25,10 +25,10 @@ To start, we look at a simple xor neural network: 1 hidden layer of 4 neurons, w
 An example I trained earlier has the following parameters:  
 **Weights**:  
 ***1st layer***:  
-[[-0.7834, -0.7794],
-[-0.9649,  0.7730],
-[ 0.4980, -1.2739],
-[ 0.1256, -0.4764]]  
+[[-0.7834, -0.7794],  
+[-0.9649,  0.7730],  
+[ 0.4980, -1.2739],  
+[ 0.1256, -0.4764]]   
  ***2nd layer***:  
 [[-1.0414,  1.0336,  0.7825,  0.3891]]  
 
