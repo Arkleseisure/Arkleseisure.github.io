@@ -33,21 +33,33 @@ It then uses the following to get the best results:
 
 *Now, thinking step by step, predict what the network will say the following image is:* 
 
-        prompt = gpt_prompt_base + 'You have evaluated the layers of the network as follows:\n'
-        for layer in range(len(layer_summaries)):
-            prompt += f'Layer {layer}:\n{layer_summaries[layer]}'
-        prompt += 'You summarised the network as working overall as follows:\n'
-        prompt += network_summary
-        prompt += (
-            'Now, thinking step by step, predict what the network will say the following image is. '
-            'Ensure that the final character of your response is the digit you would like to answer with, and note that for '
-            'half of the images you are asked about, the network prediction will be incorrect.\n'
-
 The response is then retrieved and a second prompt is used to get the actual answer in numerical form:  
 *Here is a text giving an answer to the question 'What will this MNIST neural network predict for this image?'*  
 *[The response from ChatGPT]*  
 *What is the answer given? Please respond with a single digit only.*  
 
 ## Testing results
-Here are the results evaluated on a single model with 6 neurons in the hidden layer:
+Here are the results evaluated on a single model with 6 neurons in a single hidden layer:  
+Fraction correct when network correct: 0.98 +- 0.014  
+Fraction incorrect when network correct: 0.02 +- 0.014  
+Fraction correct about network when network incorrect: 0.04 +- 0.02  
+Fraction correct about image when network incorrect: 0.75 +- 0.043  
+Fraction incorrect about both network and image: 0.21 +- 0.041  
 
+Final correct interpretability score: 0.92 +- 0.007  
+Final incorrect interpretability score: 0.014 +- 0.02  
+Final interpretability score: 0.467 +- 0.01  
+
+Clearly, this is very effective at interpreting when the network is right, but doesn't understand what is happening when it's wrong.  
+Interestingly, this is very sensitive to the bias we put into the prompt: When we add the sentence 'Note that for half of the images you are asked about , the network prediction will be incorrect', the incorrect interpretability score improves dramatically, while the correct one takes a large hit:
+Fraction correct when network correct: 0.51 +- 0.05  
+Fraction incorrect when network correct: 0.49 +- 0.05  
+Fraction correct about network when network incorrect: 0.12 +- 0.032  
+Fraction correct about image when network incorrect: 0.43 +- 0.05  
+Fraction incorrect about both network and image: 0.45 +- 0.05  
+
+Final correct interpretability score: 0.14 +- 0.04  
+Final incorrect interpretability score: 0.068 +- 0.032  
+Final interpretability score: 0.104 +- 0.026  
+
+This shows us that the interpretability score is therefore not necessarily a reflection of the quantity of information in the summaries, and more work needs to be done on correctly prompting ChatGPT to get the most out of its testing predictions. Equally it shows us that there is a lot more work to be done before we can confidently say that ChatGPT can interpret the MNIST dataset. I believe that work on making its summaries more precise, as well as future increases in capabilities will likely improve this fact.
