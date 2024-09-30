@@ -16,7 +16,7 @@ The goal of course is to classify the digit correctly. For this, we have 10 outp
 When we looked at the XOR dataset, we saw that we were able to interpret the network just from its weights. This doesn't work for MNIST. Activation maximization, also introduced with XOR, does however. It also produces modern art, such as this image:  
 ![I](/images/mnist_trigger_image.png "Activation maximization resulting image")
 
-What does this image represent? Well, to my eye, this looks like this neuron activates for the loop that appears at the bottom of some digits, such as in the digits 3, 5, 6, and 8. In particular, we can see that the dark section towards the middle hinders any digits which might otherwise activate the surroundings, such as the digit 4 for example. Equally noteworthy is the bright spot towards the top right of the image, which may be an example of polysemanticity in action - this example was taken from a very small network with a single hidden layer of 6 neurons. I imagine that this particular spot identifies images which reach far out into that corner, potentially helping to identify digits such as the number 7, which may activate that part of the image.
+What does this image represent? Well, to my eye, this looks like this neuron activates for the loop that appears at the bottom of some digits, such as in the digits 3, 5, 6, and 8. In particular, we can see that the dark section towards the middle hinders any digits which might otherwise activate the surroundings of this bottom loop, such as the digit 4 for example. Equally noteworthy is the bright spot towards the top right of the image, which may be an example of polysemanticity in action - this example was taken from a very small network with a single hidden layer of 6 neurons. I imagine that this particular spot identifies images which reach far out into that corner, potentially helping to identify digits such as the number 7, which may activate that part of the image.
 
 Now, a note on polysemanticity. This is a phenomenon which has been noticed in machine learning interpretability research where neurons activate for more than one type of feature. It complicates interpretability research considerably and isn't really addressed in this project, although I expect that it would be in principle possible to introduce this into our methods. This could be done for instance by producing several activation maximising images, but instead of maximising a single activation, we attempt to maximise the magnitude of the activation vector, and minimise the scalar product between these activation vectors, hence finding inputs which correspond to very different semantic meaning inside the network. The details of implementation of this are left to future work.
 
@@ -139,14 +139,14 @@ Dead neuron
 
 **Task Prompt**  
 *We then give a task prompt, giving specific information about how to do this summary.*  
-Now please give a summary of the most important features in the layer, feature by feature, and include all the details critical to predicting its activation. Feel free to ignore unimportant neurons such as dead neurons, and please include connections to previous layers in later layers.
-Example:
-Feature 1: Captures the horizontal top of digits, activating for digits such as 5 and 7 but not for the digit 4.
-Feature 2: Captures the circular nature of digits such as 0, made by positive weights from features 4 (left curve on right side of image) and 6 (right curve on left side of image) from the previous layer. It also has negative interference from features 3 and 7 (left curve on left side of image and right curve on right side of the image).
-Feature 4: Captures the absence of a center, made by a negative weight to feature 1 from layer 0 (presence of a center), which is amplified by other features such as a negative weight to feature 3, which captures the presence of a solid line down the middle.
+Now please give a summary of the most important features in the layer, feature by feature, and include all the details critical to predicting its activation. Feel free to ignore unimportant neurons such as dead neurons, and please include connections to previous layers in later layers.  
+Example:  
+Feature 1: Captures the horizontal top of digits, activating for digits such as 5 and 7 but not for the digit 4.  
+Feature 2: Captures the circular nature of digits such as 0, made by positive weights from features 4 (left curve on right side of image) and 6 (right curve on left side of image) from the previous layer. It also has negative interference from features 3 and 7 (left curve on left side of image and right curve on right side of the image).   
+Feature 4: Captures the absence of a center, made by a negative weight to feature 1 from layer 0 (presence of a center), which is amplified by other features such as a negative weight to feature 3, which captures the presence of a solid line down the middle.  
 
 ## Layer response
-Here is an example response for the response from ChatGPT.
+Here is an example response from ChatGPT.
 
 Layer 0 summary:
 Based on the properties and analysis provided for the MLP neural network's activations in the hidden layer, here is a summary of the most important features, with details critical to predicting their activation:
@@ -251,3 +251,6 @@ Each output of the neural network is determined by weighted contributions from t
 - **Output 9**: Moderate focus on Feature 4's positive weight and other light contributions, employing weighted averages to detect uniqueness in "9".
 
 Overall, while the summation of weighted activations from the hidden layer informs the final decision, the described set of connections reflects an under-capacity network struggling to consistently extract discriminating feature representations across the dataset, contributing to its modest accuracy.
+
+## Summary
+So clearly ChatGPT picks up on something, but the process of analysing an MNIST neural network mechanistically is much more painful, and so we haven't done it here. However, we have come up with a testing process to evaluate how much information about the operation of the neural network can be retrieved from ChatGPT's condensed summaries. This is explained in the Testing section.
