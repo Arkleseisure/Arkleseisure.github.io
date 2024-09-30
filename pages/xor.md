@@ -20,10 +20,7 @@ Naturally this is no longer the case, and the point of this project is to interp
 Once we understand how to do that, we'll move onto understanding how to get this working on the famous MNIST dataset.  
 
 ## An XOR Neural Network  
-To start, we look at a simple xor neural network: 1 hidden layer of 4 neurons, with a ReLU activation function.  
-This is sufficient to solve the xor problem (there's 1 hidden layer rather than 1 set of weights linking input and output, which is what Minsky and Papert looked at).  
-This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the second input to the hidden layer and 4 linking the hidden layer to the output).   
-It also has 5 biases (4 for the hidden layer and 1 for the output).  
+To start, we look at a simple xor neural network: 1 hidden layer of 4 neurons, with a ReLU activation function. This is sufficient to solve the xor problem (there's 1 hidden layer rather than 1 set of weights linking input and output, which is what Minsky and Papert looked at). This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the second input to the hidden layer and 4 linking the hidden layer to the output). It also has 5 biases (4 for the hidden layer and 1 for the output).  
 
 An example I trained earlier has the following parameters:  
 **Weights**:  
