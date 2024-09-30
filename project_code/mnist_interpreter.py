@@ -20,7 +20,7 @@ activation = 'relu'
 
 # Set the parameters
 epoch_nbr = 5
-width = 6
+width = 12
 depth = 1 # number of hidden layers
 input_size = 28*28
 output_size = 10
@@ -225,7 +225,7 @@ def evaluate_feature(model, depth_index, width_index, activation_stats, previous
         previous_weights (torch.nn.parameter.Parameter, optional): Weights of the previous layer.
 
     Returns:
-        tuple: A message containing the GPT interpretation and the trigger input tensor.
+        tuple: A message containing the GPT interpretation and the activation maximising input tensor.
     """
     stats = activation_stats[depth_index][width_index]
     dead_neuron = True
@@ -266,8 +266,8 @@ def evaluate_feature(model, depth_index, width_index, activation_stats, previous
         content_prompt += 'Connect this interpretation to the connections informed by the previous layer.\n'
 
     # Generate an input that maximizes the neuron's activation
-    trigger_input = find_trigger_input(depth_index, width_index, model)
-    image_file = get_image_file(trigger_input.cpu().detach())
+    activation_maximising_input = find_trigger_input(depth_index, width_index, model)
+    image_file = get_image_file(activation_maximising_input.cpu().detach())
 
     # Get the GPT response
     message_complete = False
@@ -279,7 +279,7 @@ def evaluate_feature(model, depth_index, width_index, activation_stats, previous
             print('JSON decode error, trying again')
 
     print(f'Layer {depth_index} neuron {width_index} done')
-    return message, trigger_input
+    return message, activation_maximising_input
 
 # Function to summarize the interpretations of all neurons in a layer
 def summarise_layer(messages, layer_nbr):
@@ -311,6 +311,7 @@ def summarise_layer(messages, layer_nbr):
         'Feature 4: Captures the absence of a center, made by a negative weight to feature 1 from layer 0 (presence of a center), which is amplified by other features such as a negative weight to feature 3, which captures the presence of a solid line down the middle.\n'
     )
     message = get_chatgpt_response(content_prompt)
+    
     print(f'Layer {layer_nbr} summary:')
     print(message)
     return message
@@ -349,7 +350,7 @@ def summarise_network(layer_summaries, final_layer):
         "Summary: Feature 1 and 2 activate when the first and second inputs are active respectively, while Feature 0 doesn't contribute and Feature 3 increases with the total number of 1s. "
         "The final output is formed by activating the output if either feature 1 or 2 is active, and suppressing it if feature 3 is active."
     )
-
+    
     summary = get_chatgpt_response(content_prompt)
     print(summary)
     return summary
@@ -513,9 +514,7 @@ def test_interpretation(network_summary, layer_summaries, model):
         prompt += 'You summarised the network as working overall as follows:\n'
         prompt += network_summary
         prompt += (
-            'Now, thinking step by step, predict what the network will say the following image is. '
-            'Ensure that the final character of your response is the digit you would like to answer with, and note that for '
-            'half of the images you are asked about, the network prediction will be incorrect.\n'
+            'Now, thinking step by step, predict what the network will say the following image is:\n'
         )
         # Get GPT's response using the prompt and the image
         response = get_chatgpt_response(prompt, get_image_file(image))
@@ -532,6 +531,7 @@ def test_interpretation(network_summary, layer_summaries, model):
             print('Error: GPT did not respond with a valid integer.')
             print('Response:', digit)
             return -1
+
 
     # Generate test datasets
     correct_dataset, incorrect_dataset, incorrect_answers = make_test_set(model)
@@ -572,7 +572,7 @@ def test_interpretation(network_summary, layer_summaries, model):
         # Progress logging
         if len(incorrect_dataset[0]) < 10 or (image_index + 1) % (len(incorrect_dataset[0]) // 10) == 0:
             print(f'Predictions for image {image_index + 1} of incorrect dataset done.')
-
+    
     tot_correct_images = len(correct_dataset[0])
     tot_incorrect_images = len(incorrect_dataset[0])
     
@@ -630,8 +630,8 @@ def test_interpretation(network_summary, layer_summaries, model):
     
     # Interpretability scores
     print(f'\nFinal correct interpretability score: {round(correct_interp_score, 3)} +- {round(correct_interp_err, 3)}')
-    print(f'\nFinal correct interpretability score: {round(incorrect_interp_score, 3)} +- {round(incorrect_interp_err, 3)}')
-    
+    print(f'Final incorrect interpretability score: {round(incorrect_interp_score, 3)} +- {round(incorrect_interp_err, 3)}')
+    print(f'Final interpretability score: {round((correct_interp_score + incorrect_interp_score)/2, 3)} +- {round(np.sqrt(correct_interp_err**2 + incorrect_interp_err**2)/2, 3)}')
 
 def get_activations(model, train_loader):
     """
@@ -747,12 +747,14 @@ def main():
     for i in range(depth):
         for j in range(width):
             # Evaluate the feature (neuron) and get interpretation
-            message, trigger_input = evaluate_feature(
+            message, activation_maximising_input = evaluate_feature(
                 model, i, j, activation_stats, layer_summaries[-1], params[i - 1] if i > 0 else None
             )
             messages[i][j] = message
+            
         # Summarize the layer based on neuron messages
         layer_summaries.append(summarise_layer(messages[i], i))
+        print(layer_summaries[-1])
 
     # Summarize the entire network
     summary = summarise_network(layer_summaries[1:], params[-1])
