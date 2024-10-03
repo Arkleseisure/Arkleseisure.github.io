@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: Home - Sean Herrington BlueDot project
 ---
 
 This is a project for the BlueDot Alignment course attempting to automate interpretability by fully explaining neural networks using ChatGPT.
