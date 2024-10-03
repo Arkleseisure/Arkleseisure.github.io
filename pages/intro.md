@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: Introduction - Sean Herrington BlueDot project
 ---
 
 # Introduction
