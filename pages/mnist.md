@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: MNIST - Sean Herrington BlueDot project
 ---
 
 # MNIST Neural Networks  
