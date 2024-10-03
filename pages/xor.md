@@ -1,6 +1,6 @@
 ---
 layout: default
-title: XOR
+title: XOR - Sean Herrington BlueDot project
 ---
 
 # XOR Neural Networks  
