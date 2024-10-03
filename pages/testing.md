@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: Testing - Sean Herrington BlueDot project
 ---
 
 # Testing
