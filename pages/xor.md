@@ -14,13 +14,13 @@ The XOR (exclusive or) problem is defined as follows:
 1 xor 0 = 1  
 1 xor 1 = 0  
 
-Although it seems obvious in today's neural network based society that they can solve this problem, in 1969 Minsky and Papert proved that a single layered neural network could not solve it. This was taken by the community as a reflection of neural networks as a whole and so the first "ai winter" ensued. 
+Although it seems obvious in today's neural network based society that one should be able to model this function with a neural network, in 1969 Minsky and Papert proved that this could not be done with a single layered neural network. This was taken by the community as a reflection of neural networks as a whole and so the first "ai winter" ensued. 
 
-Naturally this is no longer the case, and the point of this project is to interpret the full functionality of these xor networks end-to-end.  
-Once we understand how to do that, we'll move onto understanding how to get this working on the famous MNIST dataset.  
+We now know that with more than one layer the function is easily modelled, and the point of this project is to interpret the full functionality of these xor networks end-to-end.  
+Once we understand how to do that, we'll move onto understanding how to interpret the famous MNIST dataset.  
 
 ## An XOR Neural Network  
-To start, we look at a simple xor neural network: 1 hidden layer of 4 neurons, with a ReLU activation function. This is sufficient to solve the xor problem (there's 1 hidden layer rather than 1 set of weights linking input and output, which is what Minsky and Papert looked at). This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the second input to the hidden layer and 4 linking the hidden layer to the output). It also has 5 biases (4 for the hidden layer and 1 for the output).  
+To start, we look at a simple xor neural network: 1 hidden layer of 4 neurons, with a ReLU activation function. This is sufficient to solve the xor problem (there's 1 hidden layer rather than 1 set of weights linking input and output, which is what Minsky and Papert looked at). This network has 12 weights (4 linking the 1st input to the hidden layer, 4 linking the 2nd input to the hidden layer and 4 linking the hidden layer to the output). It also has 5 biases (4 for the hidden layer and 1 for the output).  
 
 An example I trained earlier has the following parameters:  
 **Weights**:  
@@ -40,8 +40,8 @@ An example I trained earlier has the following parameters:
 
  Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):  
  Neuron 1 (Weights [-0.7834, -0.7794], Bias 0.7759):  Activates for input [0, 0]  
- Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates when the second input is 1, but not when both are.  
- Neuron 3 (Weights [ 0.4980, -1.2739], Bias 0.7758):  Activates slightly when both are 0, more when first input is 1, but not when the second input is also 1.  
+ Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates for input [0, 1] and slightly for [0, 0] 
+ Neuron 3 (Weights [ 0.4980, -1.2739], Bias 0.7758):  Activates for [0, 0], more for [1, 0], but not for the other inputs.  
  Neuron 4 (Weights [ 0.1256, -0.4764], Bias -0.1807): Dead neuron.  
 
  Now the output is constructed from these as follows (Weights [-1.0414,  1.0336,  0.7825,  0.3891], Bias 0.0029):  
@@ -50,22 +50,26 @@ An example I trained earlier has the following parameters:
  Neuron 3 contributes for the input (1, 0) and (0, 0)  
  Neuron 4 doesn't contribute 
 
-We see that Neurons 1 and 3 are essentially redundant: Neuron 1 is there to account for the fact that Neuron 3 imperfectly represents the (1, 0) activation. Otherwise, 
+We see that Neurons 1 and 3 are essentially redundant: Neuron 1 is there to account for the fact that Neuron 3 imperfectly represents the (1, 0) activation.
 
 ## Interpreting XOR Neural Networks  
 What we've just done is what I mean when I say "Fully interpreting" neural networks. We understand every single aspect of how it works in an intuitive manner. This is rather painful to do by hand, as I'm sure you know if you just carefully followed what I did (don't worry I really won't judge you if you just skipped to the end). It would be really nice if we could automate it. Thankfully I think my friend ChatGPT can help. If we can give him the right information and prompt him correctly, we'll see what he can do.
 
-First though if we want this to be a fully scalable method, we need something which will work better than just a set of weights - much as these are technically enough to figure out what the network is doing, for anything more than the 4 neurons we just discussed it's just plain confusing. 
+First though if we want this to be a fully scalable method, we need an input which will work better than just a set of weights - although these are technically enough to figure out what the network is doing, for anything significantly more than the 4 neurons we just discussed it's highly unintuitive and unlikely to produce good results. 
 
-For this we'll consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose of this is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. The regularisation used here is the L2 norm, and is needed to ensure that the input values don't go crazy. Although not that interesting in the context of the XOR problem, especially with only one layer, we'll see with MNIST later that activation maximisation makes it far easier to interpret image classifiers.
+We therefore consider the concept of activation maximization. This is the process where an input is optimised to maximise the output of one specific neuron in the network. The purpose is to understand what inputs trigger this neuron and by extension what the activation responds to. In code, this is surprisingly simple to do: you set the input image to noise, tell the optimiser that this image contains the parameters it needs to optimse, and set $loss = -activation + regularisation$. The regularisation used here is the L2 norm, and is needed to ensure that the input values don't go crazy. Although not that interesting in the context of the XOR problem, especially with just a single hidden layer, we'll see with MNIST later that activation maximisation makes it far easier to interpret image classifiers.
 
-Another piece of information which is useful for understanding larger networks is looking at the type of inputs that the neuron activates for. For XOR, this is as simple as just listing the 4 possible inputs and the activations of the neuron for each of them, but for larger networks we shall have to become more creative, as we'll see with MNIST.
+Another piece of information useful for understanding larger networks is looking at the type of inputs that the neuron activates for. For XOR, this is as simple as just listing the 4 possible inputs and the activations of the neuron for each of them, but for larger networks we shall have to become more creative, as we'll see with MNIST.
 
 ## The Prompt
 If we now return to the neural network I analysed earlier, we're going to see how one might go about prompting chatgpt to come to the same conclusions.
 
+### System prompt
+First, we need to explain what we want ChatGPT to do.  
+*You are a helpful assistant attempting to interpret the functioning of a neural network which may or may not be capable.*
+
 ### Background prompt
-*First, we need to ensure that ChatGPT knows what sort of network it's dealing with.*  
+*Second, we need to ensure that ChatGPT knows what sort of network it's dealing with.*  
 The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
 
 ### Activation wise prompt
