@@ -104,9 +104,9 @@ This looks something like the following:
 We ask chatgpt at the end to explain its interpretation so we can pick it apart. 
 
 ### Final layer prompt
-*Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition tot the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.*
+Understanding how the intermediate neurons work isn't sufficient to understand how they're combined into making the final output, so for this we need a final addition to the prompt. First we include the weights and biases as before, so that it can understand how the previous layer connects to the output. Then, we add the outputs for each input of the xor function so that it can evaluate where the network works and where it doesn't.
  
-Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
+*Once you have found the values of these features, use the following data to summarise how you think the rest of the network works:  
  Final layer weights: [[-1.0413832664489746, 1.0335971117019653, 0.7824711203575134, 0.38914060592651367]]  
  Final layer biases: [0.002885989611968398]  
  Outputs:  
@@ -114,7 +114,7 @@ Input: [0, 0], Output: -3.355019725859165e-05
 Input: [0, 1], Output: 0.9999251365661621  
 Input: [1, 0], Output: 0.9995940923690796  
 Input: [1, 1], Output: 0.002885989611968398  
- Finally summarise overall how the network works.  
+ Finally summarise overall how the network works.*  
 
  We include the summary prompt in the hope that if ChatGPT is good enough at evaluating the network, we'll just be able to read the summary at the end and understand how the network works.
 
