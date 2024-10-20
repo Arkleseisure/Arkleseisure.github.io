@@ -69,8 +69,8 @@ First, we need to explain what we want ChatGPT to do.
 *You are a helpful assistant attempting to interpret the functioning of a neural network which may or may not be capable.*
 
 ### Background prompt
-*Second, we need to ensure that ChatGPT knows what sort of network it's dealing with.*  
-The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.  
+Second, we need to ensure that ChatGPT knows what sort of network it's dealing with.  
+*The neural network is an mlp which has 1 hidden layer and width 4. It has final loss 2.1766519042124705e-06 (loss function <class 'torch.nn.modules.loss.MSELoss'>) and relu activations.*  
 
 ### Activation wise prompt
 When we analysed the xor network earlier, the easiest way to understand it was to look at it neuron by neuron. If we organise the information in a similar way, it will be easier for ChatGPT to interpret it in the same way. We go through the layers and list the neurons for each layer. Then for each neuron we include:  
@@ -81,7 +81,7 @@ Maximising input
 
 This looks something like the following:
 
-This is for layer 1:  
+*This is for layer 1:  
  These are the weights for feature 1:  
  [-0.7834176421165466, -0.7794498801231384]  
  This is the bias for feature 1:  
@@ -99,7 +99,7 @@ This is for layer 1:
  Input: [-0.3917100131511688, -0.38972726464271545], Output activation of feature: 1.386563777923584  
  Please give an interpretation of what you think this feature means, and use reasoning based on the data given.  
  These are the weights for feature 2:  
- ...  
+ ...*  
 
 We ask chatgpt at the end to explain its interpretation so we can pick it apart. 
 
