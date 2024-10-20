@@ -40,7 +40,7 @@ An example I trained earlier has the following parameters:
 
  Now let's dissect how this network works (remember we're using ReLU activations, so negative results are set to 0):  
  Neuron 1 (Weights [-0.7834, -0.7794], Bias 0.7759):  Activates for input [0, 0]  
- Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates for input [0, 1] and slightly for [0, 0] 
+ Neuron 2 (Weights [-0.9649,  0.7730], Bias 0.1917):  Activates for input [0, 1] and slightly for [0, 0]  
  Neuron 3 (Weights [ 0.4980, -1.2739], Bias 0.7758):  Activates for [0, 0], more for [1, 0], but not for the other inputs.  
  Neuron 4 (Weights [ 0.1256, -0.4764], Bias -0.1807): Dead neuron.  
 
