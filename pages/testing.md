@@ -5,10 +5,10 @@ title: Testing - Sean Herrington BlueDot project
 
 # Testing
 ## How to test interpretability
-If you've followed my writing as intended so far, you will have seen how we were able to prompt GPT4o to interpret the meaning of neurons for neural networks solving both XOR and MNIST datasets. We now need to test how well these interpretations work. Here, we take that to mean "If you are given an input, do you understand the working of the network well enough to predict what its output will be?". For the XOR dataset, this is not really possible, since there are only 4 possible inputs and the answers to these are already known. For MNIST however, we can fairly simply test it. As the API has no recollection of past conversations, it can be given the summary of the neural network (we also include the layer summaries), and an image, and it can then be asked what the network would predict for that image.
+If you've followed the project so far, you will have seen how we were able to prompt GPT4o to interpret the meaning of neurons for neural networks solving both XOR and MNIST datasets. We now need to test the accuracy of these interpretations. Here, we take this to mean "If you are given an input, do you understand the working of the network well enough to predict what its output will be?". For the XOR dataset, there are only 4 possible inputs and the answers to these are usually specified in some way during the evaluation of the network. For MNIST however, we can fairly simply test it. As the API has no recollection of past conversations, it can be given the summary of the neural network (we also include the layer summaries), and an image, and it can then be asked what the network would predict for that image.
 
 ## Countering bias
-The issue with a naive implementation of this strategy, such as randomly taking a set of images and comparing answers, is that the network will mostly be right, and so ChatGPT can get a high score just by guessing the correct answer each time. For this reason, we test it on a dataset purpose made after network training with 50% correct predictions and 50% incorrect predictions. Statistics are then recorded for each dataset, resulting in 5 fractions:  
+The issue with a naive implementation of this strategy, such as randomly taking a set of images and comparing answers, is that the network will mostly be right, and so ChatGPT can get a high score just by guessing the correct answer each time, without any knowledge of the network's function. For this reason, we test it on a dataset purpose made after network training with 50% correct predictions and 50% incorrect predictions. Statistics are then recorded for each dataset, resulting in 5 fractions:  
 **Correct dataset:**  
 Correct fraction (C)   
 Incorrect fraction (I)  
@@ -21,9 +21,9 @@ We next calculate 2 interpretability scores.
 The first is the correct score: $\frac{C - L}{1 - L}$  
 The second is the incorrect score: $\frac{N - \frac{F}{8}}{1-\frac{F}{8}}$  
 
-The correct score evaluates how much more the correct label is predicted when the network prediction is correct, and the incorrect score evaluates how much more the incorrect label that the network predicted is predicted than any other random incorrect label.
+The correct score evaluates the increase in correct label prediction when the network prediction is correct, and the incorrect score evaluates the correct prediction of the incorrect label output by the network, contrasted with other incorrect labels.
 
-For each of these scores, a score of 1 corresponds to always predicting the correct label, while a score of 0 corresponds to no mechanistic understanding of the network.
+For each of these scores, a score of 1 corresponds to always predicting the label output by the network, while a score of 0 corresponds to no mechanistic understanding of the network.
 
 ## Prompting for testing
 Test prompting takes place in 2 stages. The first is getting the network to make a prediction. The second is getting this into a format which we can easily process.  
@@ -33,7 +33,7 @@ It then uses the following to get the best results:
 
 *Now, thinking step by step, predict what the network will say the following image is:* 
 
-The response is then retrieved and a second prompt is used to get the actual answer in numerical form:  
+The response is then retrieved and a second prompt is used to get the answer in numerical form:  
 *Here is a text giving an answer to the question 'What will this MNIST neural network predict for this image?'*  
 *[The response from ChatGPT]*  
 *What is the answer given? Please respond with a single digit only.*  
@@ -51,7 +51,7 @@ Final incorrect interpretability score: 0.014 +- 0.02
 Final interpretability score: 0.467 +- 0.01  
 
 Clearly, this is very effective at interpreting when the network is right, but doesn't understand what is happening when it's wrong.  
-Interestingly, this is very sensitive to the bias we put into the prompt: When we add the sentence 'Note that for half of the images you are asked about , the network prediction will be incorrect', the incorrect interpretability score improves dramatically, while the correct one takes a large hit:
+Interestingly, this is very sensitive to the bias we put into the prompt: When we add the sentence 'Note that for half of the images you are asked about, the network prediction will be incorrect', the incorrect interpretability score improves dramatically, while the correct score takes a large hit:
 Fraction correct when network correct: 0.51 +- 0.05  
 Fraction incorrect when network correct: 0.49 +- 0.05  
 Fraction correct about network when network incorrect: 0.12 +- 0.032  
@@ -64,7 +64,7 @@ Final interpretability score: 0.104 +- 0.026
 
 This shows us that the interpretability score is therefore not necessarily a reflection of the quantity of information in the summaries, and more work needs to be done on correctly prompting ChatGPT to get the most out of its testing predictions. Equally it shows us that there is a lot more work to be done before we can confidently say that ChatGPT can interpret the MNIST dataset. I believe that work on making its summaries more precise, as well as future increases in capabilities will likely improve this fact.
 
-It also seems that this is not much improved by inreasing the size of the network, as these are the results for a 1 hidden layer neural network with 12 neurons:  
+It also seems that this is not much improved by inreasing the size of the network, as these are the results for a 1 hidden layer neural network with 12 neurons (without the biasing prompt stating that half of the images are incorrectly labelled):  
 Fraction correct when network correct: 0.95 +- 0.022  
 Fraction incorrect when network correct: 0.05 +- 0.022  
 Fraction correct about network when network incorrect: 0.06 +- 0.024  
