@@ -1,4 +1,4 @@
-NOTE: THIS WEBSITE IS STILL A WORK IN PROGRESS. NAVIGATE IT AT YOUR OWN RISK.
+NOTE: THIS WEBSITE IS STILL A WORK IN PROGRESS. NAVIGATE IT AT YOUR OWN RISK (not that I expect it to be particularly dangerous, but yk).
 
 This is a project for the BlueDot Alignment course attempting to automate interpretability by fully explaining neural networks using ChatGPT.
 This is attempted on 2 problems: the XOR problem and the MNIST dataset.
