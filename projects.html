@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Safety research projects and experiments.">
+  
+  <title>Projects — Life, The Universe & That Safety Thing</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="home-link">Home</a>
+        
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="safety.html" class="dropdown-link">Articles</a>
+              <a href="projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <header class="page-header safety">
+    <div class="container">
+      <span class="section-label safety">AI Safety</span>
+      <h1>Projects</h1>
+      <p class="lead">
+        Hands-on research and experiments in AI safety — from interpretability 
+        to alignment techniques.
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="section">
+    <div class="container">
+
+      <!-- Projects Grid -->
+      <div class="projects-grid">
+        
+        <!-- BlueDot Interpretability Project -->
+        <a href="https://github.com/Arkleseisure/Arkleseisure.github.io" target="_blank" rel="noopener" class="project-card">
+          <div class="project-card-body">
+            <h3>Automating Interpretability with ChatGPT</h3>
+            <p>
+              A project for the BlueDot Alignment course exploring whether LLMs can 
+              automatically explain neural network behavior. Tested on the XOR problem 
+              and MNIST dataset.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Interpretability</span>
+              <span class="tag">Python</span>
+              <span class="tag">GPT-4</span>
+              <span class="tag">BlueDot</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Placeholder for future projects -->
+        <div class="project-card" style="opacity: 0.5; pointer-events: none;">
+          <div class="project-card-body">
+            <h3>More Coming Soon</h3>
+            <p>
+              Future projects will appear here as they're completed. 
+              Stay tuned for more AI safety research and experiments.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
