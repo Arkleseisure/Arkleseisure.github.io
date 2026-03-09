@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive assumption tree viewer for AI risk arguments. Explore how different worldviews assign probabilities to AI doom scenarios.">
+
+  <title>Doom Assumptions — Life, The Universe & That Safety Thing</title>
+
+  <!-- Fonts (same as main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Main site styles + local overrides -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="tree.css">
+</head>
+<body>
+  <!-- Header (matches main site) -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="home-link">Home</a>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../safety.html" class="dropdown-link">Articles</a>
+              <a href="../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <header class="page-header safety">
+    <div class="container">
+      <span class="section-label safety">AISC Project</span>
+      <h1>Doom Assumptions</h1>
+      <p class="lead">
+        An interactive map of AI risk arguments. Different worldviews,
+        one shared structure. Adjust the assumptions and see how the probabilities change.
+      </p>
+    </div>
+  </header>
+
+  <!-- Controls Bar -->
+  <section class="tree-controls">
+    <div class="container">
+      <div class="controls-inner">
+        <div class="control-group">
+          <label class="control-label" for="tree-select">Tree</label>
+          <select id="tree-select" class="control-select"></select>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="worldview-select">Worldview</label>
+          <select id="worldview-select" class="control-select"></select>
+        </div>
+        <div id="variables-container" class="variables-container"></div>
+        <button id="reset-btn" class="btn btn-secondary btn-sm">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="section tree-section">
+    <!-- Tree graph area — full width, horizontally scrollable -->
+    <div class="tg-scroll" id="tg-scroll">
+      <div class="tg-tree" id="tree-graph">
+        <svg class="tg-svg" id="tree-svg"></svg>
+        <div id="tree-root"></div>
+      </div>
+    </div>
+
+    <!-- Info Panel (appears below tree when a node is selected) -->
+    <div class="container">
+      <aside class="info-panel" id="info-panel">
+        <div class="info-panel-empty">
+          <p>Click a node to see its details.</p>
+        </div>
+        <div class="info-panel-content" style="display: none;">
+          <h3 id="info-title"></h3>
+          <span class="info-type" id="info-type"></span>
+          <p id="info-description"></p>
+          <div class="info-probability">
+            <span class="info-prob-label">Probability</span>
+            <span class="info-prob-value" id="info-probability"></span>
+          </div>
+          <div id="info-complement" class="info-complement" style="display: none;">
+            <span class="info-complement-label">Complement of:</span>
+            <span id="info-complement-target"></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="tree.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
