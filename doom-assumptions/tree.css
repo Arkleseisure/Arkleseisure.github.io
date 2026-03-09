@@ -150,6 +150,11 @@
   display: none;
 }
 
+.tg-children.dimmed {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 /* ---------- Node Card ---------- */
 .tg-card {
   width: 190px;
@@ -172,6 +177,15 @@
 .tg-card.selected {
   border-color: var(--accent-safety);
   box-shadow: 0 0 16px rgba(245, 158, 11, 0.15);
+}
+
+.tg-card.pinned {
+  border-color: var(--accent-universe);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+}
+
+.tg-card.pinned.selected {
+  border-color: var(--accent-safety);
 }
 
 /* Card header row: type + probability + collapse toggle */
@@ -282,6 +296,34 @@
 .tg-slider-wrap.complement {
   opacity: 0.4;
   pointer-events: none;
+}
+
+.tg-slider-wrap.unpinned {
+  opacity: 0.35;
+}
+
+.tg-slider-wrap.unpinned:hover {
+  opacity: 0.7;
+}
+
+.tg-unpin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-universe);
+  color: var(--bg-primary);
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+  line-height: 1;
+}
+
+.tg-unpin:hover {
+  background: var(--text-primary);
 }
 
 .tg-slider {

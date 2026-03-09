@@ -6,10 +6,11 @@
   // --- State ---
   let currentTreeIndex = 0;
   let currentWorldview = null;
-  let probabilities = {};
+  let probabilities = {};      // node id -> probability (leaves + pinned nodes)
+  let pinnedNodes = {};         // node id -> true if user has pinned this node's probability
   let selectedNodeId = null;
   let collapsedNodes = {};
-  let variableValues = {}; // variable key -> current value string
+  let variableValues = {};
 
   // --- DOM refs ---
   const treeSelect = document.getElementById("tree-select");
@@ -30,8 +31,8 @@
   function findNode(node, id) {
     if (node.id === id) return node;
     if (node.children) {
-      for (const child of node.children) {
-        const found = findNode(child, id);
+      for (var i = 0; i < node.children.length; i++) {
+        var found = findNode(node.children[i], id);
         if (found) return found;
       }
     }
@@ -43,17 +44,36 @@
     if (node.type === "leaf") {
       leaves.push(node);
     } else if (node.children) {
-      for (const child of node.children) {
-        getLeaves(child, leaves);
+      for (var i = 0; i < node.children.length; i++) {
+        getLeaves(node.children[i], leaves);
       }
     }
     return leaves;
   }
 
+  // Find all complement pairs: returns array of {source, complement}
+  function getComplementPairs(node, pairs) {
+    pairs = pairs || [];
+    if (node.complement_of) {
+      pairs.push({ sourceId: node.complement_of, complementId: node.id });
+    }
+    if (node.children) {
+      for (var i = 0; i < node.children.length; i++) {
+        getComplementPairs(node.children[i], pairs);
+      }
+    }
+    return pairs;
+  }
+
   function computeProb(node) {
+    // If this node is pinned by the user, return the pinned value
+    if (pinnedNodes[node.id] && probabilities[node.id] != null) {
+      return probabilities[node.id];
+    }
+
     if (node.type === "leaf") {
       if (node.complement_of) {
-        const src = findNode(getTree().tree, node.complement_of);
+        var src = findNode(getTree().tree, node.complement_of);
         return 1 - computeProb(src);
       }
       return probabilities[node.id] != null ? probabilities[node.id] : 0.5;
@@ -61,13 +81,13 @@
     if (!node.children || node.children.length === 0) return 0;
 
     if (node.type === "and") {
-      let p = 1;
-      for (const child of node.children) p *= computeProb(child);
+      var p = 1;
+      for (var i = 0; i < node.children.length; i++) p *= computeProb(node.children[i]);
       return p;
     }
     if (node.type === "or") {
-      let p = 0;
-      for (const child of node.children) p += computeProb(child);
+      var p = 0;
+      for (var i = 0; i < node.children.length; i++) p += computeProb(node.children[i]);
       return Math.min(p, 1);
     }
     return 0;
@@ -88,23 +108,27 @@
 
   // --- Variable substitution ---
 
-  // Replace variable keys in text with their current values.
-  // Matches whole-word occurrences of each variable key.
-  function subVars(text) {
+  function subVars(text, capitalize) {
     if (!text) return text;
     var tree = getTree();
     if (!tree.variables) return text;
     var result = text;
     Object.keys(tree.variables).forEach(function (key) {
       var val = variableValues[key] || tree.variables[key].default || key;
-      // Replace the variable key as a whole word (e.g. "D" but not "DAI")
-      var regex = new RegExp("\\b" + key + "\\b", "g");
+      var regex = new RegExp("\\b" + escapeRegex(key) + "\\b", "g");
       result = result.replace(regex, val);
     });
+    // Capitalise first letter (#2 fix)
+    if (result.length > 0) {
+      result = result.charAt(0).toUpperCase() + result.slice(1);
+    }
     return result;
   }
 
-  // Initialise variable values from tree defaults
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
   function initVariables() {
     variableValues = {};
     var tree = getTree();
@@ -114,7 +138,7 @@
     });
   }
 
-  // Build variable editor UI
+  // Build variable editor UI — show label, not raw key (#7)
   function renderVariables() {
     variablesContainer.innerHTML = "";
     var tree = getTree();
@@ -156,7 +180,7 @@
   function populateTreeSelect() {
     treeSelect.innerHTML = "";
     TREES.forEach(function (tree, i) {
-      const opt = document.createElement("option");
+      var opt = document.createElement("option");
       opt.value = i;
       opt.textContent = tree.title;
       treeSelect.appendChild(opt);
@@ -164,30 +188,32 @@
   }
 
   function populateWorldviewSelect() {
-    const tree = getTree();
+    var tree = getTree();
     worldviewSelect.innerHTML = "";
     Object.keys(tree.worldviews).forEach(function (key) {
-      const opt = document.createElement("option");
+      var opt = document.createElement("option");
       opt.value = key;
       opt.textContent = tree.worldviews[key].name;
       worldviewSelect.appendChild(opt);
     });
-    const custom = document.createElement("option");
+    var custom = document.createElement("option");
     custom.value = "custom";
     custom.textContent = "Custom";
     worldviewSelect.appendChild(custom);
   }
 
   function applyWorldview(key) {
-    const tree = getTree();
+    var tree = getTree();
     if (key === "custom") {
       currentWorldview = null;
       return;
     }
-    const wv = tree.worldviews[key];
+    var wv = tree.worldviews[key];
     if (!wv) return;
     currentWorldview = key;
-    const leaves = getLeaves(tree.tree);
+    // Clear pins when switching worldview
+    pinnedNodes = {};
+    var leaves = getLeaves(tree.tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of && wv.probabilities[leaf.id] != null) {
         probabilities[leaf.id] = wv.probabilities[leaf.id];
@@ -211,6 +237,7 @@
   function buildNodeEl(node) {
     var hasChildren = node.children && node.children.length > 0;
     var isCollapsed = !!collapsedNodes[node.id];
+    var isPinned = !!pinnedNodes[node.id];
     var prob = computeProb(node);
 
     // Wrapper
@@ -222,6 +249,7 @@
     var card = document.createElement("div");
     card.className = "tg-card";
     if (node.id === selectedNodeId) card.classList.add("selected");
+    if (isPinned) card.classList.add("pinned");
 
     // Card header: type + prob + collapse toggle
     var header = document.createElement("div");
@@ -249,7 +277,7 @@
 
     card.appendChild(header);
 
-    // Name (short display label)
+    // Name (short display label, with variable substitution + capitalisation)
     var label = document.createElement("span");
     label.className = "tg-label";
     label.textContent = subVars(node.name || node.label || node.id);
@@ -272,11 +300,16 @@
 
     wrapper.appendChild(card);
 
-    // Slider for leaf nodes
-    if (node.type === "leaf") {
+    // Slider — available on ALL nodes (#1), not just leaves
+    var showSlider = (node.type === "leaf") || hasChildren;
+    var isComplement = !!node.complement_of;
+
+    if (showSlider) {
       var sliderWrap = document.createElement("div");
       sliderWrap.className = "tg-slider-wrap";
-      if (node.complement_of) sliderWrap.classList.add("complement");
+      if (isComplement) sliderWrap.classList.add("complement");
+      // Dim slider on branch nodes when not pinned (children are driving the value)
+      if (hasChildren && !isPinned) sliderWrap.classList.add("unpinned");
 
       var slider = document.createElement("input");
       slider.type = "range";
@@ -285,10 +318,20 @@
       slider.max = "100";
       slider.step = "1";
       slider.value = Math.round(prob * 100);
-      slider.disabled = !!node.complement_of;
+      slider.disabled = isComplement;
 
       slider.addEventListener("input", function () {
-        probabilities[node.id] = parseInt(slider.value) / 100;
+        var newVal = parseInt(slider.value) / 100;
+        probabilities[node.id] = newVal;
+
+        if (hasChildren) {
+          // Pin this branch node — override computed value
+          pinnedNodes[node.id] = true;
+          // Update card to show pinned state
+          card.classList.add("pinned");
+          sliderWrap.classList.remove("unpinned");
+        }
+
         currentWorldview = null;
         worldviewSelect.value = "custom";
         updateAllProbabilities();
@@ -298,6 +341,22 @@
       var sliderVal = document.createElement("span");
       sliderVal.className = "tg-slider-val";
       sliderVal.textContent = formatProb(prob);
+
+      // Unpin button for branch nodes
+      if (hasChildren && isPinned) {
+        var unpinBtn = document.createElement("span");
+        unpinBtn.className = "tg-unpin";
+        unpinBtn.textContent = "\u00d7";
+        unpinBtn.title = "Unpin — use children's values";
+        unpinBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          delete pinnedNodes[node.id];
+          delete probabilities[node.id];
+          renderTree();
+          updateInfoPanel();
+        });
+        sliderWrap.appendChild(unpinBtn);
+      }
 
       sliderWrap.appendChild(slider);
       sliderWrap.appendChild(sliderVal);
@@ -309,6 +368,8 @@
       var childrenEl = document.createElement("div");
       childrenEl.className = "tg-children";
       if (isCollapsed) childrenEl.classList.add("collapsed");
+      // Dim children when parent is pinned
+      if (isPinned) childrenEl.classList.add("dimmed");
 
       node.children.forEach(function (child) {
         childrenEl.appendChild(buildNodeEl(child));
@@ -327,10 +388,20 @@
     renderTree();
   }
 
-  // --- SVG Connectors ---
+  // --- SVG Connectors (#5 fix: use offset-based positioning) ---
+
+  function getOffsetPos(el, ancestor) {
+    var x = 0, y = 0;
+    var current = el;
+    while (current && current !== ancestor) {
+      x += current.offsetLeft;
+      y += current.offsetTop;
+      current = current.offsetParent;
+    }
+    return { x: x, y: y };
+  }
 
   function drawConnectors() {
-    var graphRect = treeGraph.getBoundingClientRect();
     var w = treeGraph.scrollWidth;
     var h = treeGraph.scrollHeight;
 
@@ -338,30 +409,30 @@
     treeSvg.setAttribute("height", h);
     treeSvg.innerHTML = "";
 
-    drawNodeConnectors(getTree().tree, graphRect);
+    drawNodeConnectors(getTree().tree);
+    drawComplementLinks();
   }
 
-  function drawNodeConnectors(node, graphRect) {
+  function drawNodeConnectors(node) {
     if (!node.children || node.children.length === 0) return;
     if (collapsedNodes[node.id]) return;
 
     var parentCard = treeRoot.querySelector('[data-id="' + node.id + '"] > .tg-card');
     if (!parentCard) return;
 
-    var parentRect = parentCard.getBoundingClientRect();
-    var px = parentRect.left + parentRect.width / 2 - graphRect.left;
-    var py = parentRect.bottom - graphRect.top;
+    var parentPos = getOffsetPos(parentCard, treeGraph);
+    var px = parentPos.x + parentCard.offsetWidth / 2;
+    var py = parentPos.y + parentCard.offsetHeight;
 
     for (var i = 0; i < node.children.length; i++) {
       var child = node.children[i];
       var childCard = treeRoot.querySelector('[data-id="' + child.id + '"] > .tg-card');
       if (!childCard) continue;
 
-      var childRect = childCard.getBoundingClientRect();
-      var cx = childRect.left + childRect.width / 2 - graphRect.left;
-      var cy = childRect.top - graphRect.top;
+      var childPos = getOffsetPos(childCard, treeGraph);
+      var cx = childPos.x + childCard.offsetWidth / 2;
+      var cy = childPos.y;
 
-      // Account for slider space on leaf nodes
       var midY = py + (cy - py) * 0.4;
 
       var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -376,9 +447,57 @@
       path.setAttribute("fill", "none");
       treeSvg.appendChild(path);
 
-      // Recurse into children
-      drawNodeConnectors(child, graphRect);
+      drawNodeConnectors(child);
     }
+  }
+
+  // --- Complement visual links (#4) ---
+
+  function drawComplementLinks() {
+    var pairs = getComplementPairs(getTree().tree);
+
+    pairs.forEach(function (pair) {
+      var sourceCard = treeRoot.querySelector('[data-id="' + pair.sourceId + '"] > .tg-card');
+      var compCard = treeRoot.querySelector('[data-id="' + pair.complementId + '"] > .tg-card');
+      if (!sourceCard || !compCard) return;
+
+      var sPos = getOffsetPos(sourceCard, treeGraph);
+      var cPos = getOffsetPos(compCard, treeGraph);
+
+      var sx = sPos.x + sourceCard.offsetWidth / 2;
+      var sy = sPos.y + sourceCard.offsetHeight / 2;
+      var cx = cPos.x + compCard.offsetWidth / 2;
+      var cy = cPos.y + compCard.offsetHeight / 2;
+
+      // Draw a dashed curved line between complement pairs
+      var midX = (sx + cx) / 2;
+      var bulge = Math.min(40, Math.abs(cy - sy) * 0.3);
+
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d",
+        "M" + sx + "," + sy +
+        " Q" + midX + "," + (Math.max(sy, cy) + bulge) +
+        " " + cx + "," + cy
+      );
+      path.setAttribute("stroke", "rgba(168,85,247,0.3)");
+      path.setAttribute("stroke-width", "1.5");
+      path.setAttribute("stroke-dasharray", "6,4");
+      path.setAttribute("fill", "none");
+      treeSvg.appendChild(path);
+
+      // Label at midpoint
+      var labelX = midX;
+      var labelY = Math.max(sy, cy) + bulge * 0.6;
+      var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", labelX);
+      text.setAttribute("y", labelY + 14);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("fill", "rgba(168,85,247,0.5)");
+      text.setAttribute("font-size", "10");
+      text.setAttribute("font-family", "var(--font-mono)");
+      text.textContent = "1 \u2212 P";
+      treeSvg.appendChild(text);
+    });
   }
 
   // --- Update probabilities in-place ---
@@ -393,26 +512,22 @@
     var wrapper = treeRoot.querySelector('[data-id="' + node.id + '"]');
     if (!wrapper) return;
 
-    // Update card probability text
     var probEl = wrapper.querySelector(":scope > .tg-card .tg-prob");
     if (probEl) probEl.textContent = formatProb(prob);
 
-    // Update bar
     var barFill = wrapper.querySelector(":scope > .tg-card .tg-bar-fill");
     if (barFill) {
       barFill.style.width = (prob * 100) + "%";
       barFill.style.backgroundColor = probColor(prob);
     }
 
-    // Update slider + value for leaves
-    if (node.type === "leaf") {
-      var sliderWrap = wrapper.querySelector(":scope > .tg-slider-wrap");
-      if (sliderWrap) {
-        var slider = sliderWrap.querySelector(".tg-slider");
-        var sliderVal = sliderWrap.querySelector(".tg-slider-val");
-        if (slider) slider.value = Math.round(prob * 100);
-        if (sliderVal) sliderVal.textContent = formatProb(prob);
-      }
+    // Update slider + value
+    var sliderWrap = wrapper.querySelector(":scope > .tg-slider-wrap");
+    if (sliderWrap) {
+      var slider = sliderWrap.querySelector(".tg-slider");
+      var sliderVal = sliderWrap.querySelector(".tg-slider-val");
+      if (slider) slider.value = Math.round(prob * 100);
+      if (sliderVal) sliderVal.textContent = formatProb(prob);
     }
 
     if (node.children) {
@@ -427,7 +542,6 @@
   function selectNode(node) {
     selectedNodeId = node.id;
 
-    // Update selection styling
     document.querySelectorAll(".tg-card.selected").forEach(function (el) {
       el.classList.remove("selected");
     });
@@ -450,7 +564,9 @@
     document.getElementById("info-title").textContent = subVars(node.name || node.label || node.id);
 
     var typeEl = document.getElementById("info-type");
-    typeEl.textContent = node.type === "and" ? "AND node" : node.type === "or" ? "OR node" : "Leaf assumption";
+    var typeText = node.type === "and" ? "AND node" : node.type === "or" ? "OR node" : "Leaf assumption";
+    if (pinnedNodes[node.id]) typeText += " (pinned)";
+    typeEl.textContent = typeText;
     typeEl.className = "info-type " + node.type;
 
     document.getElementById("info-description").textContent = subVars(node.description) || "No description available.";
@@ -470,6 +586,7 @@
 
   function initProbabilities() {
     probabilities = {};
+    pinnedNodes = {};
     var leaves = getLeaves(getTree().tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of) {
@@ -535,10 +652,25 @@
     updateInfoPanel();
   });
 
-  // Redraw connectors on resize
+  // Redraw connectors on resize (debounced)
+  var resizeTimer;
   window.addEventListener("resize", function () {
-    requestAnimationFrame(drawConnectors);
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(drawConnectors);
+      });
+    }, 100);
   });
+
+  // Also observe tree container size changes
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(drawConnectors);
+      });
+    }).observe(treeGraph);
+  }
 
   // --- Go ---
   init();
