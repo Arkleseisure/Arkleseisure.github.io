@@ -156,6 +156,14 @@
 }
 
 /* ---------- Node Card ---------- */
+.tg-tree.formal .tg-card {
+  width: 210px;
+}
+
+.tg-tree.formal .tg-slider-wrap {
+  width: 210px;
+}
+
 .tg-card {
   width: 190px;
   background: var(--bg-card);

@@ -86,6 +86,8 @@
       return p;
     }
     if (node.type === "or") {
+      // Sum for mutually exclusive branches (law of total probability).
+      // If non-exclusive OR nodes are added, this should use 1-(1-a)(1-b) instead.
       var p = 0;
       for (var i = 0; i < node.children.length; i++) p += computeProb(node.children[i]);
       return Math.min(p, 1);
@@ -225,6 +227,13 @@
 
   function renderTree() {
     treeRoot.innerHTML = "";
+
+    // Apply tree-level CSS class (e.g. "formal" for wider cards)
+    treeGraph.className = "tg-tree";
+    if (getTree().cssClass) {
+      treeGraph.classList.add(getTree().cssClass);
+    }
+
     var el = buildNodeEl(getTree().tree);
     treeRoot.appendChild(el);
 
@@ -277,10 +286,12 @@
 
     card.appendChild(header);
 
-    // Name (short display label, with variable substitution + capitalisation)
+    // Name (short display label)
+    // Formal trees keep symbolic names on cards; casual trees substitute variables
+    var rawName = node.name || node.label || node.id;
     var label = document.createElement("span");
     label.className = "tg-label";
-    label.textContent = subVars(node.name || node.label || node.id);
+    label.textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
     card.appendChild(label);
 
     // Probability bar
@@ -561,7 +572,8 @@
     infoPanel.querySelector(".info-panel-empty").style.display = "none";
     infoPanel.querySelector(".info-panel-content").style.display = "block";
 
-    document.getElementById("info-title").textContent = subVars(node.name || node.label || node.id);
+    var rawName = node.name || node.label || node.id;
+    document.getElementById("info-title").textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
 
     var typeEl = document.getElementById("info-type");
     var typeText = node.type === "and" ? "AND node" : node.type === "or" ? "OR node" : "Leaf assumption";
@@ -569,14 +581,16 @@
     typeEl.textContent = typeText;
     typeEl.className = "info-type " + node.type;
 
-    document.getElementById("info-description").textContent = subVars(node.description) || "No description available.";
+    var desc = node.description || "No description available.";
+    document.getElementById("info-description").textContent = getTree().substituteNames === false ? desc : subVars(desc);
     document.getElementById("info-probability").textContent = formatProb(computeProb(node));
 
     var complementEl = document.getElementById("info-complement");
     if (node.complement_of) {
       complementEl.style.display = "block";
       var src = findNode(getTree().tree, node.complement_of);
-      document.getElementById("info-complement-target").textContent = src ? subVars(src.name || src.label) : node.complement_of;
+      var srcName = src ? (src.name || src.label) : node.complement_of;
+      document.getElementById("info-complement-target").textContent = getTree().substituteNames === false ? srcName : subVars(srcName);
     } else {
       complementEl.style.display = "none";
     }
