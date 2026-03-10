@@ -323,17 +323,17 @@
       slider.addEventListener("input", function () {
         var newVal = parseInt(slider.value) / 100;
         probabilities[node.id] = newVal;
-
-        if (hasChildren) {
-          // Pin this branch node — override computed value
-          pinnedNodes[node.id] = true;
-          // Update card to show pinned state
-          card.classList.add("pinned");
-          sliderWrap.classList.remove("unpinned");
-        }
-
         currentWorldview = null;
         worldviewSelect.value = "custom";
+
+        if (hasChildren && !pinnedNodes[node.id]) {
+          // First move on a branch node — pin it and re-render to show unpin button
+          pinnedNodes[node.id] = true;
+          renderTree();
+          updateInfoPanel();
+          return;
+        }
+
         updateAllProbabilities();
         updateInfoPanel();
       });
@@ -639,7 +639,9 @@
     updateInfoPanel();
   });
 
-  resetBtn.addEventListener("click", function () {
+  resetBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     var firstKey = Object.keys(getTree().worldviews)[0];
     if (firstKey) {
       worldviewSelect.value = firstKey;

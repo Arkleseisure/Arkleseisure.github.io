@@ -28,6 +28,12 @@ const TREES = [
           type: "and",
           children: [
             {
+              id: "d-given-dai",
+              name: "Danger | DAI created",
+              description: "The conditional probability that the Danger actually occurs, given that a dangerous AI system has been created. This captures the idea that even if a dangerous AI exists, it may not lead to the Danger (e.g. due to containment, luck, or the AI not pursuing harmful goals).",
+              type: "leaf"
+            },
+            {
               id: "dai-created",
               name: "DAI is created",
               description: "A dangerous AI system — one with the capability and disposition to cause the specified Danger — is built within the Timeframe. This decomposes into whether a sufficiently capable AI exists, whether the Danger can manifest in time, and whether it actually does.",
@@ -41,8 +47,8 @@ const TREES = [
                 },
                 {
                   id: "d-within-time",
-                  name: "Danger possible within Timeframe of AI creation",
-                  description: "Given such a capable AI exists, the Danger could unfold within the remaining Timeframe after the AI's creation. This captures whether the causal chain from AI capability to actual harm can play out fast enough.",
+                  name: "Danger possible before Timeframe ends",
+                  description: "Given such a capable AI exists, the Danger could unfold in the remaining time between the AI's creation and the end of the Timeframe. This captures whether the causal chain from AI capability to actual harm can play out before the time horizon is reached.",
                   type: "leaf"
                 },
                 {
@@ -52,12 +58,6 @@ const TREES = [
                   type: "leaf"
                 }
               ]
-            },
-            {
-              id: "d-given-dai",
-              name: "Danger | DAI created",
-              description: "The conditional probability that the Danger actually occurs, given that a dangerous AI system has been created. This captures the idea that even if a dangerous AI exists, it may not lead to the Danger (e.g. due to containment, luck, or the AI not pursuing harmful goals).",
-              type: "leaf"
             }
           ]
         },
