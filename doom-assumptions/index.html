@@ -74,6 +74,12 @@
         <div class="control-group">
           <label class="control-label" for="worldview-select">Worldview</label>
           <select id="worldview-select" class="control-select"></select>
+          <button type="button" id="save-worldview-btn" class="btn btn-secondary btn-sm" title="Save current probabilities">Save</button>
+          <button type="button" id="share-btn" class="btn btn-secondary btn-sm" title="Copy shareable link">Share</button>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="range-toggle">Ranges</label>
+          <button type="button" id="range-toggle" class="btn btn-secondary btn-sm btn-toggle">Off</button>
         </div>
         <div id="variables-container" class="variables-container"></div>
         <button type="button" id="reset-btn" class="btn btn-secondary btn-sm">Reset</button>
@@ -110,6 +116,30 @@
             <span id="info-complement-target"></span>
           </div>
         </div>
+      </aside>
+
+      <aside class="analysis-panel" id="analysis-panel">
+        <h3 class="analysis-title">Sensitivity Analysis</h3>
+        <p class="analysis-subtitle">Change in final probability if each assumption increases by 10 percentage points</p>
+        <div id="sensitivity-chart" class="sensitivity-chart"></div>
+      </aside>
+
+      <aside class="analysis-panel" id="crux-panel">
+        <h3 class="analysis-title">Crux Analysis</h3>
+        <p class="analysis-subtitle">Pick two worldviews. The top row is the single assumption that, if agreed upon, would close the most disagreement on the final probability.</p>
+        <div class="crux-selectors">
+          <div class="control-group">
+            <label class="control-label" for="crux-a">Worldview A</label>
+            <select id="crux-a" class="control-select"></select>
+          </div>
+          <span class="crux-vs">vs</span>
+          <div class="control-group">
+            <label class="control-label" for="crux-b">Worldview B</label>
+            <select id="crux-b" class="control-select"></select>
+          </div>
+        </div>
+        <div class="crux-summary" id="crux-summary"></div>
+        <div id="crux-chart" class="sensitivity-chart"></div>
       </aside>
     </div>
   </main>

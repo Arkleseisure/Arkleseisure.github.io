@@ -11,6 +11,8 @@
   let selectedNodeId = null;
   let collapsedNodes = {};
   let variableValues = {};
+  let rangeMode = false;
+  let probRanges = {};          // node id -> {lo, hi} for leaves in range mode
 
   // --- DOM refs ---
   const treeSelect = document.getElementById("tree-select");
@@ -21,6 +23,9 @@
   const treeGraph = document.getElementById("tree-graph");
   const infoPanel = document.getElementById("info-panel");
   const variablesContainer = document.getElementById("variables-container");
+  const rangeToggle = document.getElementById("range-toggle");
+  const saveWorldviewBtn = document.getElementById("save-worldview-btn");
+  const shareBtn = document.getElementById("share-btn");
 
   // --- Helpers ---
 
@@ -93,6 +98,51 @@
       return Math.min(p, 1);
     }
     return 0;
+  }
+
+  function computeProbRange(node) {
+    if (pinnedNodes[node.id] && probabilities[node.id] != null) {
+      var p = probabilities[node.id];
+      return { lo: p, hi: p };
+    }
+
+    if (node.type === "leaf") {
+      if (node.complement_of) {
+        var src = findNode(getTree().tree, node.complement_of);
+        var srcR = computeProbRange(src);
+        return { lo: 1 - srcR.hi, hi: 1 - srcR.lo };
+      }
+      if (rangeMode && probRanges[node.id]) {
+        return probRanges[node.id];
+      }
+      var p = probabilities[node.id] != null ? probabilities[node.id] : 0.5;
+      return { lo: p, hi: p };
+    }
+    if (!node.children || node.children.length === 0) return { lo: 0, hi: 0 };
+
+    if (node.type === "and") {
+      var lo = 1, hi = 1;
+      for (var i = 0; i < node.children.length; i++) {
+        var r = computeProbRange(node.children[i]);
+        lo *= r.lo;
+        hi *= r.hi;
+      }
+      return { lo: lo, hi: hi };
+    }
+    if (node.type === "or") {
+      var lo = 0, hi = 0;
+      for (var i = 0; i < node.children.length; i++) {
+        var r = computeProbRange(node.children[i]);
+        lo += r.lo;
+        hi += r.hi;
+      }
+      return { lo: Math.min(lo, 1), hi: Math.min(hi, 1) };
+    }
+    return { lo: 0, hi: 0 };
+  }
+
+  function formatRange(range) {
+    return formatProb(range.lo) + " – " + formatProb(range.hi);
   }
 
   function formatProb(p) {
@@ -177,6 +227,123 @@
     });
   }
 
+  // --- Save / Load / Share ---
+
+  var STORAGE_KEY = "doom-assumptions-worldviews";
+
+  function getSavedWorldviews() {
+    try {
+      var data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveWorldview(name) {
+    var treeId = getTree().id;
+    var all = getSavedWorldviews();
+    if (!all[treeId]) all[treeId] = {};
+    var entry = { probabilities: {} };
+    var leaves = getLeaves(getTree().tree);
+    leaves.forEach(function (leaf) {
+      if (!leaf.complement_of && probabilities[leaf.id] != null) {
+        entry.probabilities[leaf.id] = probabilities[leaf.id];
+      }
+    });
+    if (rangeMode) {
+      entry.ranges = {};
+      leaves.forEach(function (leaf) {
+        if (!leaf.complement_of && probRanges[leaf.id]) {
+          entry.ranges[leaf.id] = probRanges[leaf.id];
+        }
+      });
+    }
+    all[treeId][name] = entry;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  }
+
+  function deleteSavedWorldview(name) {
+    var treeId = getTree().id;
+    var all = getSavedWorldviews();
+    if (all[treeId]) {
+      delete all[treeId][name];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    }
+  }
+
+  function applySavedWorldview(name) {
+    var treeId = getTree().id;
+    var all = getSavedWorldviews();
+    var entry = all[treeId] && all[treeId][name];
+    if (!entry) return;
+    pinnedNodes = {};
+    Object.keys(entry.probabilities).forEach(function (id) {
+      probabilities[id] = entry.probabilities[id];
+    });
+    if (entry.ranges) {
+      probRanges = {};
+      Object.keys(entry.ranges).forEach(function (id) {
+        probRanges[id] = entry.ranges[id];
+      });
+    }
+  }
+
+  function encodeStateToHash() {
+    var state = {
+      t: currentTreeIndex,
+      p: {}
+    };
+    var leaves = getLeaves(getTree().tree);
+    leaves.forEach(function (leaf) {
+      if (!leaf.complement_of && probabilities[leaf.id] != null) {
+        state.p[leaf.id] = Math.round(probabilities[leaf.id] * 1000) / 1000;
+      }
+    });
+    if (rangeMode) {
+      state.r = {};
+      leaves.forEach(function (leaf) {
+        if (!leaf.complement_of && probRanges[leaf.id]) {
+          state.r[leaf.id] = [
+            Math.round(probRanges[leaf.id].lo * 1000) / 1000,
+            Math.round(probRanges[leaf.id].hi * 1000) / 1000
+          ];
+        }
+      });
+    }
+    return btoa(JSON.stringify(state));
+  }
+
+  function loadStateFromHash() {
+    var hash = window.location.hash.slice(1);
+    if (!hash) return false;
+    try {
+      var state = JSON.parse(atob(hash));
+      if (state.t != null && TREES[state.t]) {
+        currentTreeIndex = state.t;
+        treeSelect.value = state.t;
+      }
+      initProbabilities();
+      initVariables();
+      populateWorldviewSelect();
+      renderVariables();
+      if (state.p) {
+        Object.keys(state.p).forEach(function (id) {
+          probabilities[id] = state.p[id];
+        });
+      }
+      if (state.r) {
+        rangeMode = true;
+        rangeToggle.textContent = "On";
+        rangeToggle.classList.add("active");
+        Object.keys(state.r).forEach(function (id) {
+          probRanges[id] = { lo: state.r[id][0], hi: state.r[id][1] };
+        });
+      }
+      worldviewSelect.value = "custom";
+      currentWorldview = null;
+      return true;
+    } catch (e) { return false; }
+  }
+
   // --- Populate selectors ---
 
   function populateTreeSelect() {
@@ -198,6 +365,24 @@
       opt.textContent = tree.worldviews[key].name;
       worldviewSelect.appendChild(opt);
     });
+    // Saved worldviews from localStorage
+    var saved = getSavedWorldviews();
+    var treeId = tree.id;
+    if (saved[treeId]) {
+      var names = Object.keys(saved[treeId]);
+      if (names.length > 0) {
+        var sep = document.createElement("option");
+        sep.disabled = true;
+        sep.textContent = "── Saved ──";
+        worldviewSelect.appendChild(sep);
+        names.forEach(function (name) {
+          var opt = document.createElement("option");
+          opt.value = "saved:" + name;
+          opt.textContent = name;
+          worldviewSelect.appendChild(opt);
+        });
+      }
+    }
     var custom = document.createElement("option");
     custom.value = "custom";
     custom.textContent = "Custom";
@@ -208,6 +393,13 @@
     var tree = getTree();
     if (key === "custom") {
       currentWorldview = null;
+      return;
+    }
+    // Handle saved worldviews
+    if (key.indexOf("saved:") === 0) {
+      var name = key.slice(6);
+      currentWorldview = key;
+      applySavedWorldview(name);
       return;
     }
     var wv = tree.worldviews[key];
@@ -241,6 +433,8 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(drawConnectors);
     });
+
+    renderSensitivity();
   }
 
   function buildNodeEl(node) {
@@ -271,7 +465,12 @@
 
     var probEl = document.createElement("span");
     probEl.className = "tg-prob";
-    probEl.textContent = formatProb(prob);
+    if (rangeMode) {
+      var range = computeProbRange(node);
+      probEl.textContent = (range.lo === range.hi) ? formatProb(prob) : formatRange(range);
+    } else {
+      probEl.textContent = formatProb(prob);
+    }
     header.appendChild(probEl);
 
     var collapseBtn = document.createElement("span");
@@ -297,11 +496,22 @@
     // Probability bar
     var bar = document.createElement("div");
     bar.className = "tg-bar";
+    bar.style.position = "relative";
     var barFill = document.createElement("div");
     barFill.className = "tg-bar-fill";
     barFill.style.width = (prob * 100) + "%";
     barFill.style.backgroundColor = probColor(prob);
     bar.appendChild(barFill);
+    if (rangeMode) {
+      var rng = computeProbRange(node);
+      if (rng.lo !== rng.hi) {
+        var barRange = document.createElement("div");
+        barRange.className = "tg-bar-range";
+        barRange.style.left = (rng.lo * 100) + "%";
+        barRange.style.width = ((rng.hi - rng.lo) * 100) + "%";
+        bar.appendChild(barRange);
+      }
+    }
     card.appendChild(bar);
 
     // Click to select
@@ -315,7 +525,67 @@
     var showSlider = (node.type === "leaf") || hasChildren;
     var isComplement = !!node.complement_of;
 
-    if (showSlider) {
+    if (showSlider && rangeMode && node.type === "leaf" && !isComplement) {
+      // Dual range slider for leaves in range mode
+      var rng = probRanges[node.id] || { lo: prob, hi: prob };
+      var rangeWrap = document.createElement("div");
+      rangeWrap.className = "tg-range-wrap";
+
+      var track = document.createElement("div");
+      track.className = "tg-range-track";
+      var fill = document.createElement("div");
+      fill.className = "tg-range-fill";
+      fill.style.left = (rng.lo * 100) + "%";
+      fill.style.width = ((rng.hi - rng.lo) * 100) + "%";
+      track.appendChild(fill);
+      rangeWrap.appendChild(track);
+
+      var loInput = document.createElement("input");
+      loInput.type = "range";
+      loInput.className = "tg-range-lo";
+      loInput.min = "0";
+      loInput.max = "100";
+      loInput.step = "1";
+      loInput.value = Math.round(rng.lo * 100);
+
+      var hiInput = document.createElement("input");
+      hiInput.type = "range";
+      hiInput.className = "tg-range-hi";
+      hiInput.min = "0";
+      hiInput.max = "100";
+      hiInput.step = "1";
+      hiInput.value = Math.round(rng.hi * 100);
+
+      function onRangeInput() {
+        var lo = parseInt(loInput.value) / 100;
+        var hi = parseInt(hiInput.value) / 100;
+        if (lo > hi) { var tmp = lo; lo = hi; hi = tmp; }
+        probRanges[node.id] = { lo: lo, hi: hi };
+        probabilities[node.id] = (lo + hi) / 2;
+        currentWorldview = null;
+        worldviewSelect.value = "custom";
+        fill.style.left = (lo * 100) + "%";
+        fill.style.width = ((hi - lo) * 100) + "%";
+        rangeVal.textContent = formatProb(lo) + " – " + formatProb(hi);
+        updateAllProbabilities();
+        updateInfoPanel();
+        renderSensitivity();
+      }
+
+      loInput.addEventListener("input", onRangeInput);
+      hiInput.addEventListener("input", onRangeInput);
+
+      rangeWrap.appendChild(loInput);
+      rangeWrap.appendChild(hiInput);
+
+      var rangeVal = document.createElement("span");
+      rangeVal.className = "tg-range-val";
+      rangeVal.textContent = formatProb(rng.lo) + " – " + formatProb(rng.hi);
+      rangeWrap.appendChild(rangeVal);
+
+      wrapper.appendChild(rangeWrap);
+    } else if (showSlider) {
+      // Single slider (point estimate mode, or branch/complement nodes)
       var sliderWrap = document.createElement("div");
       sliderWrap.className = "tg-slider-wrap";
       if (isComplement) sliderWrap.classList.add("complement");
@@ -347,6 +617,7 @@
 
         updateAllProbabilities();
         updateInfoPanel();
+        renderSensitivity();
       });
 
       var sliderVal = document.createElement("span");
@@ -524,12 +795,29 @@
     if (!wrapper) return;
 
     var probEl = wrapper.querySelector(":scope > .tg-card .tg-prob");
-    if (probEl) probEl.textContent = formatProb(prob);
+    if (probEl) {
+      if (rangeMode) {
+        var rng = computeProbRange(node);
+        probEl.textContent = (rng.lo === rng.hi) ? formatProb(prob) : formatRange(rng);
+      } else {
+        probEl.textContent = formatProb(prob);
+      }
+    }
 
     var barFill = wrapper.querySelector(":scope > .tg-card .tg-bar-fill");
     if (barFill) {
       barFill.style.width = (prob * 100) + "%";
       barFill.style.backgroundColor = probColor(prob);
+    }
+
+    // Update range bar if present
+    if (rangeMode) {
+      var barRange = wrapper.querySelector(":scope > .tg-card .tg-bar-range");
+      if (barRange) {
+        var rng = computeProbRange(node);
+        barRange.style.left = (rng.lo * 100) + "%";
+        barRange.style.width = ((rng.hi - rng.lo) * 100) + "%";
+      }
     }
 
     // Update slider + value
@@ -548,6 +836,338 @@
     }
   }
 
+  // --- Sensitivity Analysis ---
+
+  function computeSensitivity() {
+    var tree = getTree();
+    var root = tree.tree;
+    var leaves = getLeaves(root).filter(function (l) { return !l.complement_of; });
+    var bump = 0.10; // 10 percentage points
+    var results = [];
+
+    var baseProb = computeProb(root);
+
+    leaves.forEach(function (leaf) {
+      var original = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
+
+      // Bump up by 10pp (or down if at ceiling)
+      var bumped = original + bump;
+      var direction = "+";
+      if (bumped > 1) {
+        bumped = original - bump;
+        direction = "\u2212";
+      }
+      bumped = Math.max(0, Math.min(1, bumped));
+
+      probabilities[leaf.id] = bumped;
+      var newRoot = computeProb(root);
+      probabilities[leaf.id] = original;
+
+      var deltaPP = (newRoot - baseProb) * 100;
+      results.push({ id: leaf.id, name: leaf.name, deltaPP: deltaPP, absDelta: Math.abs(deltaPP), direction: direction });
+    });
+
+    results.sort(function (a, b) { return b.absDelta - a.absDelta; });
+    return results;
+  }
+
+  function renderSensitivity() {
+    var chart = document.getElementById("sensitivity-chart");
+    if (!chart) return;
+    chart.innerHTML = "";
+
+    var results = computeSensitivity();
+    if (results.length === 0) return;
+
+    var maxDelta = results[0].absDelta || 1;
+
+    results.forEach(function (item) {
+      var row = document.createElement("div");
+      row.className = "sensitivity-row";
+      row.dataset.nodeId = item.id;
+      if (item.id === selectedNodeId) row.classList.add("active");
+
+      var name = document.createElement("span");
+      name.className = "sensitivity-name";
+      var rawName = item.name || item.id;
+      name.textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
+      name.title = name.textContent;
+      row.appendChild(name);
+
+      var track = document.createElement("div");
+      track.className = "sensitivity-bar-track";
+      var fill = document.createElement("div");
+      fill.className = "sensitivity-bar-fill";
+      var pct = maxDelta > 0 ? (item.absDelta / maxDelta) * 100 : 0;
+      fill.style.width = pct + "%";
+      fill.style.backgroundColor = sensitivityColor(item.absDelta, maxDelta);
+      track.appendChild(fill);
+      row.appendChild(track);
+
+      var val = document.createElement("span");
+      val.className = "sensitivity-value";
+      var sign = item.deltaPP >= 0 ? "+" : "\u2212";
+      val.textContent = sign + item.absDelta.toFixed(1) + "pp";
+      row.appendChild(val);
+
+      row.addEventListener("click", function () {
+        var node = findNode(getTree().tree, item.id);
+        if (node) {
+          selectNode(node);
+          var card = treeRoot.querySelector('[data-id="' + item.id + '"] > .tg-card');
+          if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
+      });
+
+      chart.appendChild(row);
+    });
+  }
+
+  function sensitivityColor(sens, maxSens) {
+    var ratio = maxSens > 0 ? sens / maxSens : 0;
+    if (ratio > 0.66) return "var(--accent-safety)";
+    if (ratio > 0.33) return "var(--accent-universe)";
+    return "var(--accent-life)";
+  }
+
+  // --- Crux Analysis ---
+
+  var cruxA = document.getElementById("crux-a");
+  var cruxB = document.getElementById("crux-b");
+
+  function getWorldviewProbs(key) {
+    var tree = getTree();
+    var probs = {};
+    var leaves = getLeaves(tree.tree);
+
+    if (key === "custom") {
+      // Use current probabilities
+      leaves.forEach(function (leaf) {
+        if (!leaf.complement_of) {
+          probs[leaf.id] = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
+        }
+      });
+      return probs;
+    }
+
+    if (key.indexOf("saved:") === 0) {
+      var name = key.slice(6);
+      var all = getSavedWorldviews();
+      var entry = all[tree.id] && all[tree.id][name];
+      if (entry) return entry.probabilities;
+    }
+
+    var wv = tree.worldviews[key];
+    if (wv) return wv.probabilities;
+
+    return {};
+  }
+
+  function computeRootWithProbs(leafProbs) {
+    // Temporarily set probabilities, compute root, restore
+    var tree = getTree();
+    var backup = {};
+    var leaves = getLeaves(tree.tree);
+    leaves.forEach(function (leaf) {
+      if (!leaf.complement_of) {
+        backup[leaf.id] = probabilities[leaf.id];
+        if (leafProbs[leaf.id] != null) {
+          probabilities[leaf.id] = leafProbs[leaf.id];
+        }
+      }
+    });
+    var savedPins = pinnedNodes;
+    pinnedNodes = {};
+    var result = computeProb(tree.tree);
+    pinnedNodes = savedPins;
+    leaves.forEach(function (leaf) {
+      if (!leaf.complement_of) {
+        probabilities[leaf.id] = backup[leaf.id];
+      }
+    });
+    return result;
+  }
+
+  function computeCrux() {
+    var keyA = cruxA.value;
+    var keyB = cruxB.value;
+    if (!keyA || !keyB || keyA === keyB) return [];
+
+    var probsA = getWorldviewProbs(keyA);
+    var probsB = getWorldviewProbs(keyB);
+    var rootA = computeRootWithProbs(probsA);
+    var rootB = computeRootWithProbs(probsB);
+
+    var leaves = getLeaves(getTree().tree).filter(function (l) { return !l.complement_of; });
+    var results = [];
+
+    leaves.forEach(function (leaf) {
+      var id = leaf.id;
+      var valA = probsA[id] != null ? probsA[id] : 0.5;
+      var valB = probsB[id] != null ? probsB[id] : 0.5;
+
+      // Swap: give A this leaf from B, see how A's root changes
+      var swapped = {};
+      Object.keys(probsA).forEach(function (k) { swapped[k] = probsA[k]; });
+      swapped[id] = valB;
+      var rootSwapped = computeRootWithProbs(swapped);
+      var impact = Math.abs(rootSwapped - rootA);
+
+      results.push({
+        id: id,
+        name: leaf.name,
+        valA: valA,
+        valB: valB,
+        impactPP: impact * 100
+      });
+    });
+
+    results.sort(function (a, b) { return b.impactPP - a.impactPP; });
+    return { results: results, rootA: rootA, rootB: rootB };
+  }
+
+  function populateCruxSelectors() {
+    [cruxA, cruxB].forEach(function (sel) {
+      sel.innerHTML = "";
+      var tree = getTree();
+      Object.keys(tree.worldviews).forEach(function (key) {
+        var opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = tree.worldviews[key].name;
+        sel.appendChild(opt);
+      });
+      var saved = getSavedWorldviews();
+      if (saved[tree.id]) {
+        var names = Object.keys(saved[tree.id]);
+        if (names.length > 0) {
+          var sep = document.createElement("option");
+          sep.disabled = true;
+          sep.textContent = "── Saved ──";
+          sel.appendChild(sep);
+          names.forEach(function (name) {
+            var opt = document.createElement("option");
+            opt.value = "saved:" + name;
+            opt.textContent = name;
+            sel.appendChild(opt);
+          });
+        }
+      }
+      var custom = document.createElement("option");
+      custom.value = "custom";
+      custom.textContent = "Custom (current)";
+      sel.appendChild(custom);
+    });
+
+    // Default: first and second preset
+    var keys = Object.keys(getTree().worldviews);
+    if (keys.length >= 2) {
+      cruxA.value = keys[0];
+      cruxB.value = keys[keys.length - 1];
+    }
+  }
+
+  function getWorldviewName(key) {
+    if (key === "custom") return "Current";
+    if (key.indexOf("saved:") === 0) return key.slice(6);
+    var wv = getTree().worldviews[key];
+    return wv ? wv.name : key;
+  }
+
+  function renderCrux() {
+    var chart = document.getElementById("crux-chart");
+    var summary = document.getElementById("crux-summary");
+    if (!chart || !summary) return;
+    chart.innerHTML = "";
+    summary.innerHTML = "";
+
+    var data = computeCrux();
+    if (!data || !data.results || data.results.length === 0) return;
+
+    var nameA = getWorldviewName(cruxA.value);
+    var nameB = getWorldviewName(cruxB.value);
+
+    // Summary: clear statement of disagreement
+    summary.innerHTML =
+      '<div class="crux-summary-item">' +
+        '<span class="crux-summary-label">' + nameA + '</span>' +
+        '<span class="crux-summary-value crux-val-a">' + formatProb(data.rootA) + '</span>' +
+      '</div>' +
+      '<div class="crux-summary-item">' +
+        '<span class="crux-summary-label">' + nameB + '</span>' +
+        '<span class="crux-summary-value crux-val-b">' + formatProb(data.rootB) + '</span>' +
+      '</div>' +
+      '<div class="crux-summary-item">' +
+        '<span class="crux-summary-label">Gap</span>' +
+        '<span class="crux-summary-value">' + (Math.abs(data.rootA - data.rootB) * 100).toFixed(1) + 'pp</span>' +
+      '</div>';
+
+    // Column header row
+    var headerRow = document.createElement("div");
+    headerRow.className = "sensitivity-row crux-header";
+    headerRow.innerHTML =
+      '<span class="sensitivity-name crux-col-label">Assumption</span>' +
+      '<span class="sensitivity-bar-track crux-col-label" style="background:transparent">Impact on disagreement</span>' +
+      '<span class="crux-row-values crux-col-label">' +
+        '<span class="crux-val-a">A</span>' +
+        '<span class="crux-arrow">&nbsp;</span>' +
+        '<span class="crux-val-b">B</span>' +
+      '</span>' +
+      '<span class="sensitivity-value crux-col-label">Closes</span>';
+    chart.appendChild(headerRow);
+
+    var maxImpact = data.results[0].impactPP || 1;
+
+    data.results.forEach(function (item) {
+      var row = document.createElement("div");
+      row.className = "sensitivity-row";
+      row.dataset.nodeId = item.id;
+
+      var name = document.createElement("span");
+      name.className = "sensitivity-name";
+      var rawName = item.name || item.id;
+      name.textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
+      name.title = name.textContent;
+      row.appendChild(name);
+
+      var track = document.createElement("div");
+      track.className = "sensitivity-bar-track";
+      var fill = document.createElement("div");
+      fill.className = "sensitivity-bar-fill";
+      var pct = maxImpact > 0 ? (item.impactPP / maxImpact) * 100 : 0;
+      fill.style.width = pct + "%";
+      fill.style.backgroundColor = sensitivityColor(item.impactPP, maxImpact);
+      track.appendChild(fill);
+      row.appendChild(track);
+
+      var vals = document.createElement("span");
+      vals.className = "crux-row-values";
+      vals.innerHTML =
+        '<span class="crux-val-a">' + formatProb(item.valA) + '</span>' +
+        '<span class="crux-arrow">\u2192</span>' +
+        '<span class="crux-val-b">' + formatProb(item.valB) + '</span>';
+      row.appendChild(vals);
+
+      var impact = document.createElement("span");
+      impact.className = "sensitivity-value";
+      impact.textContent = item.impactPP.toFixed(1) + "pp";
+      row.appendChild(impact);
+
+      row.addEventListener("click", function () {
+        var node = findNode(getTree().tree, item.id);
+        if (node) {
+          selectNode(node);
+          var card = treeRoot.querySelector('[data-id="' + item.id + '"] > .tg-card');
+          if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
+      });
+
+      chart.appendChild(row);
+    });
+  }
+
+  cruxA.addEventListener("change", renderCrux);
+  cruxB.addEventListener("change", renderCrux);
+
   // --- Info panel ---
 
   function selectNode(node) {
@@ -562,6 +1182,13 @@
     }
 
     updateInfoPanel();
+    updateSensitivityHighlight();
+  }
+
+  function updateSensitivityHighlight() {
+    document.querySelectorAll(".sensitivity-row").forEach(function (row) {
+      row.classList.toggle("active", row.dataset.nodeId === selectedNodeId);
+    });
   }
 
   function updateInfoPanel() {
@@ -583,7 +1210,13 @@
 
     var desc = node.description || "No description available.";
     document.getElementById("info-description").textContent = getTree().substituteNames === false ? desc : subVars(desc);
-    document.getElementById("info-probability").textContent = formatProb(computeProb(node));
+    if (rangeMode) {
+      var rng = computeProbRange(node);
+      document.getElementById("info-probability").textContent =
+        (rng.lo === rng.hi) ? formatProb(computeProb(node)) : formatRange(rng);
+    } else {
+      document.getElementById("info-probability").textContent = formatProb(computeProb(node));
+    }
 
     var complementEl = document.getElementById("info-complement");
     if (node.complement_of) {
@@ -601,6 +1234,7 @@
   function initProbabilities() {
     probabilities = {};
     pinnedNodes = {};
+    probRanges = {};
     var leaves = getLeaves(getTree().tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of) {
@@ -611,18 +1245,24 @@
 
   function init() {
     populateTreeSelect();
-    initProbabilities();
-    initVariables();
-    populateWorldviewSelect();
-    renderVariables();
 
-    var firstKey = Object.keys(getTree().worldviews)[0];
-    if (firstKey) {
-      worldviewSelect.value = firstKey;
-      applyWorldview(firstKey);
+    // Try loading state from URL hash first
+    if (!loadStateFromHash()) {
+      initProbabilities();
+      initVariables();
+      populateWorldviewSelect();
+      renderVariables();
+
+      var firstKey = Object.keys(getTree().worldviews)[0];
+      if (firstKey) {
+        worldviewSelect.value = firstKey;
+        applyWorldview(firstKey);
+      }
     }
 
+    populateCruxSelectors();
     renderTree();
+    renderCrux();
   }
 
   // --- Events ---
@@ -642,13 +1282,37 @@
       applyWorldview(firstKey);
     }
 
+    populateCruxSelectors();
     renderTree();
+    renderCrux();
     infoPanel.querySelector(".info-panel-empty").style.display = "block";
     infoPanel.querySelector(".info-panel-content").style.display = "none";
   });
 
   worldviewSelect.addEventListener("change", function () {
     applyWorldview(worldviewSelect.value);
+    renderTree();
+    updateInfoPanel();
+  });
+
+  rangeToggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    rangeMode = !rangeMode;
+    rangeToggle.textContent = rangeMode ? "On" : "Off";
+    rangeToggle.classList.toggle("active", rangeMode);
+    if (rangeMode) {
+      // Initialize ranges from current point estimates with ±10pp spread
+      var leaves = getLeaves(getTree().tree);
+      leaves.forEach(function (leaf) {
+        if (!leaf.complement_of && !probRanges[leaf.id]) {
+          var p = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
+          probRanges[leaf.id] = {
+            lo: Math.max(0, p - 0.1),
+            hi: Math.min(1, p + 0.1)
+          };
+        }
+      });
+    }
     renderTree();
     updateInfoPanel();
   });
@@ -666,6 +1330,31 @@
     collapsedNodes = {};
     renderTree();
     updateInfoPanel();
+  });
+
+  saveWorldviewBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    var name = prompt("Name for this worldview:");
+    if (!name || !name.trim()) return;
+    name = name.trim();
+    saveWorldview(name);
+    populateWorldviewSelect();
+    populateCruxSelectors();
+    worldviewSelect.value = "saved:" + name;
+    currentWorldview = "saved:" + name;
+  });
+
+  shareBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    var hash = encodeStateToHash();
+    var url = window.location.origin + window.location.pathname + "#" + hash;
+    navigator.clipboard.writeText(url).then(function () {
+      var orig = shareBtn.textContent;
+      shareBtn.textContent = "Copied!";
+      setTimeout(function () { shareBtn.textContent = orig; }, 1500);
+    }, function () {
+      prompt("Copy this link:", url);
+    });
   });
 
   // Redraw connectors on resize (debounced)
