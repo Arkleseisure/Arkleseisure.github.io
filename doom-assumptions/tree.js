@@ -173,41 +173,273 @@
     return { lo: 0, hi: 0 };
   }
 
-  function computeProbRangeIndependent(node) {
-    // Treat ranges as uniform distributions, propagate mean ± std
-    // For each child, mean = (lo+hi)/2, variance = (hi-lo)²/12 (uniform)
-    if (node.type === "and") {
-      // Product of independent vars: mean = product of means
-      // Relative variance: sum of relative variances
-      var mu = 1;
-      var relVarSum = 0;
-      for (var i = 0; i < node.children.length; i++) {
-        var r = computeProbRange(node.children[i]);
-        var childMu = (r.lo + r.hi) / 2;
-        var childVar = (r.hi - r.lo) * (r.hi - r.lo) / 12;
-        mu *= childMu;
-        if (childMu > 0) {
-          relVarSum += childVar / (childMu * childMu);
+  // --- Beta distribution utilities for Monte Carlo ---
+  // Attempt to fit alpha, beta such that quantile(0.1) ≈ lo, quantile(0.9) ≈ hi
+  // Uses a simple search; caches results for performance
+
+  // Sample from Beta(a, b) using Jöhnk's algorithm for small a,b
+  // and the gamma method for larger values
+  function sampleBeta(a, b) {
+    var ga = sampleGamma(a);
+    var gb = sampleGamma(b);
+    if (ga + gb === 0) return 0.5;
+    return ga / (ga + gb);
+  }
+
+  // Sample from Gamma(shape) using Marsaglia & Tsang's method
+  function sampleGamma(shape) {
+    if (shape < 1) {
+      return sampleGamma(shape + 1) * Math.pow(Math.random(), 1 / shape);
+    }
+    var d = shape - 1/3;
+    var c = 1 / Math.sqrt(9 * d);
+    while (true) {
+      var x, v;
+      do {
+        x = sampleNormal();
+        v = 1 + c * x;
+      } while (v <= 0);
+      v = v * v * v;
+      var u = Math.random();
+      if (u < 1 - 0.0331 * (x * x) * (x * x)) return d * v;
+      if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v;
+    }
+  }
+
+  // Standard normal via Box-Muller
+  var _normalSpare = null;
+  function sampleNormal() {
+    if (_normalSpare !== null) {
+      var s = _normalSpare;
+      _normalSpare = null;
+      return s;
+    }
+    var u, v, s;
+    do {
+      u = Math.random() * 2 - 1;
+      v = Math.random() * 2 - 1;
+      s = u * u + v * v;
+    } while (s >= 1 || s === 0);
+    s = Math.sqrt(-2 * Math.log(s) / s);
+    _normalSpare = v * s;
+    return u * s;
+  }
+
+  // Regularized incomplete beta function I_x(a, b) via continued fraction (Lentz)
+  function betaCDF(x, a, b) {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    // Use symmetry relation for better convergence
+    if (x > (a + 1) / (a + b + 2)) {
+      return 1 - betaCDF(1 - x, b, a);
+    }
+    var logBeta = lgamma(a) + lgamma(b) - lgamma(a + b);
+    var front = Math.exp(a * Math.log(x) + b * Math.log(1 - x) - logBeta) / a;
+    // Continued fraction (Lentz's method)
+    var f = 1, c = 1, d = 1 - (a + b) * x / (a + 1);
+    if (Math.abs(d) < 1e-30) d = 1e-30;
+    d = 1 / d;
+    f = d;
+    for (var m = 1; m <= 200; m++) {
+      // Even step
+      var num = m * (b - m) * x / ((a + 2 * m - 1) * (a + 2 * m));
+      d = 1 + num * d;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + num / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      f *= c * d;
+      // Odd step
+      num = -(a + m) * (a + b + m) * x / ((a + 2 * m) * (a + 2 * m + 1));
+      d = 1 + num * d;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = 1 + num / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      var delta = c * d;
+      f *= delta;
+      if (Math.abs(delta - 1) < 1e-10) break;
+    }
+    return Math.min(1, Math.max(0, front * f));
+  }
+
+  // Log-gamma via Stirling approximation (Lanczos)
+  function lgamma(z) {
+    var g = 7;
+    var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+      771.32342877765313, -176.61502916214059, 12.507343278686905,
+      -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+    if (z < 0.5) {
+      return Math.log(Math.PI / Math.sin(Math.PI * z)) - lgamma(1 - z);
+    }
+    z -= 1;
+    var x = c[0];
+    for (var i = 1; i < g + 2; i++) x += c[i] / (z + i);
+    var t = z + g + 0.5;
+    return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+  }
+
+  // Fit Beta(a, b) so that 10th percentile ≈ lo, 90th percentile ≈ hi
+  // Uses binary search on concentration parameter nu = a + b, with mean pinned
+  var _betaFitCache = {};
+  function fitBeta(lo, hi) {
+    var key = lo.toFixed(4) + "," + hi.toFixed(4);
+    if (_betaFitCache[key]) return _betaFitCache[key];
+
+    if (lo >= hi) {
+      var result = { a: 100, b: 100 * (1 - lo) / Math.max(lo, 0.001) };
+      _betaFitCache[key] = result;
+      return result;
+    }
+
+    // 2D binary search: outer on mu (mean), inner on nu (concentration)
+    var muLo = Math.max(0.01, lo), muHi = Math.min(0.99, hi);
+    var bestA = 2, bestB = 2;
+
+    for (var muIter = 0; muIter < 30; muIter++) {
+      var mu = (muLo + muHi) / 2;
+
+      // Inner: binary search on nu so CDF(hi) - CDF(lo) ≈ 0.8
+      var nuLo = 2, nuHi = 10000;
+      for (var nuIter = 0; nuIter < 30; nuIter++) {
+        var nuMid = (nuLo + nuHi) / 2;
+        var a = mu * nuMid;
+        var b = (1 - mu) * nuMid;
+        var spread = betaCDF(hi, a, b) - betaCDF(lo, a, b);
+        if (spread < 0.8) {
+          nuLo = nuMid;
+        } else {
+          nuHi = nuMid;
         }
       }
-      var sigma = mu * Math.sqrt(relVarSum);
-      return { lo: Math.max(0, mu - sigma), hi: Math.min(1, mu + sigma) };
-    }
-    if (node.type === "or") {
-      // Sum of independent vars: mean = sum of means, variance = sum of variances
-      var mu = 0;
-      var varSum = 0;
-      for (var i = 0; i < node.children.length; i++) {
-        var r = computeProbRange(node.children[i]);
-        var childMu = (r.lo + r.hi) / 2;
-        var childVar = (r.hi - r.lo) * (r.hi - r.lo) / 12;
-        mu += childMu;
-        varSum += childVar;
+      var nu = (nuLo + nuHi) / 2;
+      bestA = mu * nu;
+      bestB = (1 - mu) * nu;
+
+      var cdfLo = betaCDF(lo, bestA, bestB);
+      if (Math.abs(cdfLo - 0.1) < 0.001) break;
+      if (cdfLo > 0.1) {
+        muLo = mu; // mean too low, shift right
+      } else {
+        muHi = mu; // mean too high, shift left
       }
-      var sigma = Math.sqrt(varSum);
-      return { lo: Math.max(0, mu - sigma), hi: Math.min(1, mu + sigma) };
     }
-    return { lo: 0, hi: 0 };
+
+    var result = { a: bestA, b: bestB };
+    _betaFitCache[key] = result;
+    return result;
+  }
+
+  // --- Monte Carlo range propagation ---
+  var MC_SAMPLES = 20000;
+  var _mcCache = null; // { nodeId -> { lo, hi } }
+
+  function invalidateMCCache() {
+    _mcCache = null;
+  }
+
+  function ensureMCCache() {
+    if (_mcCache) return;
+    _mcCache = {};
+
+    var tree = getTree();
+    var root = tree.tree;
+
+    // Collect all leaf/pinned params to sample
+    var leafParams = [];
+    collectLeafParams(root, leafParams);
+
+    if (leafParams.length === 0) return;
+
+    // Collect all node IDs to track
+    var allNodes = [];
+    collectAllNodes(root, allNodes);
+
+    // Initialize sample arrays
+    var nodeSamples = {};
+    allNodes.forEach(function (n) { nodeSamples[n.id] = []; });
+
+    // Run Monte Carlo once for entire tree
+    for (var s = 0; s < MC_SAMPLES; s++) {
+      // Sample each leaf from its beta distribution
+      for (var i = 0; i < leafParams.length; i++) {
+        var lp = leafParams[i];
+        probabilities[lp.id] = sampleBeta(lp.a, lp.b);
+      }
+      // Compute all node values for this sample
+      collectNodeValues(root, nodeSamples);
+    }
+
+    // Restore original probabilities
+    for (var i = 0; i < leafParams.length; i++) {
+      probabilities[leafParams[i].id] = leafParams[i].original;
+    }
+
+    // Compute 10th/90th percentile for each node
+    allNodes.forEach(function (n) {
+      var arr = nodeSamples[n.id];
+      if (arr.length === 0) return;
+      arr.sort(function (a, b) { return a - b; });
+      var idx10 = Math.floor(arr.length * 0.1);
+      var idx90 = Math.floor(arr.length * 0.9);
+      _mcCache[n.id] = { lo: arr[idx10], hi: arr[idx90] };
+    });
+  }
+
+  function collectAllNodes(node, list) {
+    list.push(node);
+    if (pinnedNodes[node.id]) return; // Don't recurse into pinned children
+    if (node.children) {
+      for (var i = 0; i < node.children.length; i++) {
+        collectAllNodes(node.children[i], list);
+      }
+    }
+  }
+
+  function collectNodeValues(node, nodeSamples) {
+    var val = computeProb(node);
+    if (nodeSamples[node.id]) nodeSamples[node.id].push(val);
+    if (pinnedNodes[node.id]) return;
+    if (node.children) {
+      for (var i = 0; i < node.children.length; i++) {
+        collectNodeValues(node.children[i], nodeSamples);
+      }
+    }
+  }
+
+  function computeProbRangeIndependent(node) {
+    ensureMCCache();
+    if (_mcCache && _mcCache[node.id]) {
+      return _mcCache[node.id];
+    }
+    var p = computeProb(node);
+    return { lo: p, hi: p };
+  }
+
+  function collectLeafParams(node, params) {
+    if (pinnedNodes[node.id] && probabilities[node.id] != null) {
+      // Pinned node with a range — treat as a leaf for MC
+      if (probRanges[node.id]) {
+        var r = probRanges[node.id];
+        var fit = fitBeta(r.lo, r.hi);
+        params.push({ id: node.id, a: fit.a, b: fit.b, original: probabilities[node.id] });
+      }
+      return; // Don't recurse into pinned node's children
+    }
+    if (node.type === "leaf") {
+      if (node.complement_of) return; // Handled via source
+      var r = (rangeMode && probRanges[node.id]) ? probRanges[node.id] : null;
+      if (r && r.lo !== r.hi) {
+        var fit = fitBeta(r.lo, r.hi);
+        params.push({ id: node.id, a: fit.a, b: fit.b, original: probabilities[node.id] });
+      }
+      return;
+    }
+    if (node.children) {
+      for (var i = 0; i < node.children.length; i++) {
+        collectLeafParams(node.children[i], params);
+      }
+    }
   }
 
   function formatRange(range) {
@@ -487,6 +719,7 @@
   // --- Render tree as visual graph ---
 
   function renderTree() {
+    invalidateMCCache();
     treeRoot.innerHTML = "";
 
     // Apply tree-level CSS class (e.g. "formal" for wider cards)
@@ -749,10 +982,7 @@
           // First move on a branch node — pin it and re-render to show unpin button/dual slider
           pinnedNodes[node.id] = true;
           if (rangeMode) {
-            probRanges[node.id] = {
-              lo: Math.max(0, newVal - 0.1),
-              hi: Math.min(1, newVal + 0.1)
-            };
+            probRanges[node.id] = { lo: newVal, hi: newVal };
           }
           renderTree();
           updateInfoPanel();
@@ -933,6 +1163,7 @@
   // --- Update probabilities in-place ---
 
   function updateAllProbabilities() {
+    invalidateMCCache();
     updateNodeProbs(getTree().tree);
     requestAnimationFrame(drawConnectors);
   }
@@ -975,6 +1206,23 @@
       var sliderVal = sliderWrap.querySelector(".tg-slider-val");
       if (slider) slider.value = Math.round(prob * 100);
       if (sliderVal) sliderVal.textContent = formatProb(prob);
+    }
+
+    // Update range sliders (for complement nodes whose source changed)
+    var rangeWrap = wrapper.querySelector(":scope > .tg-range-wrap");
+    if (rangeWrap && rangeMode) {
+      var rng = computeProbRange(node);
+      var loSlider = rangeWrap.querySelector(".tg-range-lo");
+      var hiSlider = rangeWrap.querySelector(".tg-range-hi");
+      var rangeFill = rangeWrap.querySelector(".tg-range-fill");
+      var rangeVal = rangeWrap.querySelector(".tg-range-val");
+      if (loSlider) loSlider.value = Math.round(rng.lo * 100);
+      if (hiSlider) hiSlider.value = Math.round(rng.hi * 100);
+      if (rangeFill) {
+        rangeFill.style.left = (rng.lo * 100) + "%";
+        rangeFill.style.width = ((rng.hi - rng.lo) * 100) + "%";
+      }
+      if (rangeVal) rangeVal.textContent = formatProb(rng.lo) + " – " + formatProb(rng.hi);
     }
 
     if (node.children) {
@@ -1513,6 +1761,7 @@
     probabilities = {};
     pinnedNodes = {};
     probRanges = {};
+    _betaFitCache = {};
     var leaves = getLeaves(getTree().tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of) {
@@ -1600,6 +1849,9 @@
     e.preventDefault();
     rangeIndependent = !rangeIndependent;
     rangeModeToggle.textContent = rangeIndependent ? "Independent" : "Worst case";
+    rangeModeToggle.title = rangeIndependent
+      ? "Monte Carlo with beta distributions. Ranges are 10th–90th percentiles."
+      : "Worst-case bounds: all lows together, all highs together.";
     rangeModeToggle.classList.toggle("active", rangeIndependent);
     renderTree();
     updateInfoPanel();
