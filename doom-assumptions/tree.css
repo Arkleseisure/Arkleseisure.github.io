@@ -2,6 +2,16 @@
    Doom Assumptions - Visual Tree Styles
    ============================================ */
 
+/* Fix: site header has transparent gradient that intercepts clicks */
+.site-header {
+  pointer-events: none;
+}
+
+.site-header .header-inner,
+.site-header .container {
+  pointer-events: auto;
+}
+
 /* ---------- Controls Bar ---------- */
 .tree-controls {
   background: var(--bg-secondary);
