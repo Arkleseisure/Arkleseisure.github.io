@@ -62,6 +62,24 @@
     return leaves;
   }
 
+  // Get all free parameters: non-complement leaves + pinned branch nodes
+  function getFreeParams(node, params) {
+    params = params || [];
+    if (pinnedNodes[node.id] && node.children && node.children.length > 0) {
+      // Pinned branch node is a free parameter; don't recurse into children
+      params.push(node);
+      return params;
+    }
+    if (node.type === "leaf" && !node.complement_of) {
+      params.push(node);
+    } else if (node.children) {
+      for (var i = 0; i < node.children.length; i++) {
+        getFreeParams(node.children[i], params);
+      }
+    }
+    return params;
+  }
+
   // Find all complement pairs: returns array of {source, complement}
   function getComplementPairs(node, pairs) {
     pairs = pairs || [];
@@ -624,8 +642,18 @@
         if (isComplement) {
           // Update source node's range (flipped)
           var sourceId = node.complement_of;
+          var sourceNode = findNode(getTree().tree, sourceId);
           probRanges[sourceId] = { lo: 1 - hi, hi: 1 - lo };
           probabilities[sourceId] = 1 - (lo + hi) / 2;
+          // Pin the source if it's a branch node
+          if (sourceNode && sourceNode.children && sourceNode.children.length > 0 && !pinnedNodes[sourceId]) {
+            pinnedNodes[sourceId] = true;
+            currentWorldview = null;
+            worldviewSelect.value = "custom";
+            renderTree();
+            updateInfoPanel();
+            return;
+          }
         } else {
           probRanges[node.id] = { lo: lo, hi: hi };
           probabilities[node.id] = (lo + hi) / 2;
@@ -691,7 +719,20 @@
         if (isComplement) {
           // Update the source node with 1 - value
           var sourceId = node.complement_of;
+          var sourceNode = findNode(getTree().tree, sourceId);
           probabilities[sourceId] = 1 - newVal;
+          // Pin the source if it's a branch node (otherwise computeProb ignores stored value)
+          if (sourceNode && sourceNode.children && sourceNode.children.length > 0) {
+            if (!pinnedNodes[sourceId]) {
+              pinnedNodes[sourceId] = true;
+              // Need full re-render to show pin state on source
+              currentWorldview = null;
+              worldviewSelect.value = "custom";
+              renderTree();
+              updateInfoPanel();
+              return;
+            }
+          }
           currentWorldview = null;
           worldviewSelect.value = "custom";
           updateAllProbabilities();
@@ -847,6 +888,8 @@
       var sourceCard = treeRoot.querySelector('[data-id="' + pair.sourceId + '"] > .tg-card');
       var compCard = treeRoot.querySelector('[data-id="' + pair.complementId + '"] > .tg-card');
       if (!sourceCard || !compCard) return;
+      // Skip if either node is inside a collapsed parent
+      if (sourceCard.closest(".tg-children.collapsed") || compCard.closest(".tg-children.collapsed")) return;
 
       var sPos = getOffsetPos(sourceCard, treeGraph);
       var cPos = getOffsetPos(compCard, treeGraph);
@@ -946,7 +989,7 @@
   function computeSensitivity() {
     var tree = getTree();
     var root = tree.tree;
-    var leaves = getLeaves(root).filter(function (l) { return !l.complement_of; });
+    var leaves = getFreeParams(root);
     var epsilon = 0.005; // small epsilon for numerical derivative
     var results = [];
 
@@ -1034,7 +1077,7 @@
     if (!rangeMode) return [];
     var tree = getTree();
     var root = tree.tree;
-    var leaves = getLeaves(root).filter(function (l) { return !l.complement_of; });
+    var leaves = getFreeParams(root);
 
     var baseRange = computeProbRange(root);
     var baseWidth = baseRange.hi - baseRange.lo;
@@ -1201,7 +1244,7 @@
     var rootA = computeRootWithProbs(probsA);
     var rootB = computeRootWithProbs(probsB);
 
-    var leaves = getLeaves(getTree().tree).filter(function (l) { return !l.complement_of; });
+    var leaves = getFreeParams(getTree().tree);
     var results = [];
 
     leaves.forEach(function (leaf) {
@@ -1709,6 +1752,7 @@
   });
 
   // Also observe tree container size changes
+
   if (typeof ResizeObserver !== "undefined") {
     new ResizeObserver(function () {
       requestAnimationFrame(function () {
