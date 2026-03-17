@@ -132,55 +132,76 @@ const TREES = [
     title: "Monopolar catastrophic harm (formal)",
     substituteNames: false,
     cssClass: "formal",
-    description: "Formal decomposition using the DAI(p, t, D, E) framework. A DAI is defined as: an AI system such that, when created in environment E, danger D occurs within time t with probability at least p. This avoids causation questions by framing everything as conditional probability.",
+    description: "Formal decomposition using the DAI(D, E, T) framework. A DAI is defined as: an AI system created within the next T years such that D can co-occur in environment E within T years. This avoids causation questions — it is about conditional co-occurrence, not whether the AI caused D.",
     variables: {
       D: { label: "Danger event", default: "existential catastrophe" },
       T: { label: "Time horizon from now", default: "30 years" },
-      t: { label: "Time window after AI creation", default: "10 years" },
-      E: { label: "Environment / conditions", default: "current geopolitical conditions" },
-      p: { label: "Probability threshold for DAI classification", default: "0.5" }
+      E: { label: "Environment / conditions", default: "current geopolitical conditions" }
     },
     tree: {
       id: "f-root",
       name: "P(D in T)",
-      description: "The probability that danger D occurs within timeframe T from now. Decomposed via the law of total probability by conditioning on whether a DAI(p, t, D, E) is created within T.\n\nP(D in T) = P(D in T | DAI created) \u00d7 P(DAI created) + P(D in T | \u00acDAI) \u00d7 P(\u00acDAI)",
+      description: "The probability that danger D occurs within timeframe T from now. Decomposed via the law of total probability by conditioning on whether a DAI(D, E, T) is created.\n\nP(D in T) = P(D in T | DAI created) \u00d7 P(DAI created) + P(D in T | \u00acDAI) \u00d7 P(\u00acDAI)",
       type: "or",
       children: [
         {
           id: "f-dai-path",
           name: "D via DAI pathway",
-          description: "The joint probability that danger D occurs within T AND a DAI(p, t, D, E) is created within T. Equals P(D in T | DAI created) \u00d7 P(DAI created in T).\n\nThis branch captures the AI-mediated pathway to D. Note: we use conditional co-occurrence, not causation — the DAI definition only requires that D occurs given the AI's presence, not that the AI caused D.",
+          description: "The joint probability that danger D occurs within T AND a DAI(D, E, T) is created. Equals P(D in T | DAI created) \u00d7 P(DAI created).\n\nThis branch captures the AI-mediated pathway to D. A DAI(D, E, T) is an AI created within the next T years such that D can co-occur in environment E within T years. The definition is about co-occurrence, not causation.",
           type: "and",
           children: [
             {
               id: "f-d-given-dai",
               name: "P(D | DAI exists)",
-              description: "The conditional probability that D occurs within T, given that a DAI(p, t, D, E) has been created.\n\nBy the definition of DAI, we know that in environment E, D occurs within time t with probability \u2265 p. However, this conditional probability may differ from p because:\n\u2022 The actual environment at deployment may differ from E\n\u2022 T is measured from now, not from AI creation — the AI may be created late in the timeframe\n\u2022 Interventions after creation (shutdown, containment) could prevent D\n\u2022 The probability p is a lower bound, not an exact value\n\nThis leaf captures these residual uncertainties.",
+              description: "The conditional probability that D actually occurs within T, given that a DAI(D, E, T) has been created.\n\nA DAI is defined as an AI where D CAN co-occur in E within T — but that doesn't guarantee D DOES occur. This conditional captures the gap between possibility and actuality:\n\u2022 The actual environment may differ from the assumed E\n\u2022 Interventions after creation (shutdown, containment) could prevent D\n\u2022 D co-occurring with the AI in E is possible but not certain\n\u2022 Multiple things may need to go wrong simultaneously",
               type: "leaf"
             },
             {
               id: "f-dai-created",
-              name: "P(DAI(p,t,D,E) in T)",
-              description: "The probability that a DAI(p, t, D, E) — an AI such that D occurs within t with probability \u2265 p when created in environment E — is created within timeframe T.\n\nDecomposed into three factors:\n1. Does an AI get created that co-occurs with D in E?\n2. Can D happen within time t of that AI's creation?\n3. Is the conditional probability \u2265 p?",
-              type: "and",
+              name: "P(DAI(D,E,T) created)",
+              description: "The probability that a DAI(D, E, T) is created — an AI system built within the next T years such that D can co-occur in environment E within T years.\n\nDecomposed into two mutually exclusive pathways based on whether the AI is causally responsible for D:\n1. Non-causal DAI: D would happen anyway, and an AI co-occurs with it\n2. Causal DAI: D would not happen without AI, but an AI is created that makes it happen",
+              type: "or",
               children: [
                 {
-                  id: "f-ai-cooccur",
-                  name: "P(AI cooccurs with D in E)",
-                  description: "The probability that an AI system is created within T such that it co-occurs with danger D in environment E.\n\nThis asks: is there an AI system AND an environment E in which D can happen while this AI exists? This is deliberately NOT asking whether the AI causes D — only whether D and the AI can coexist in environment E.\n\nThis captures:\n\u2022 Whether sufficiently advanced AI is built within T\n\u2022 Whether the deployment environment matches conditions E\n\u2022 Whether D is physically possible in the presence of this AI",
-                  type: "leaf"
+                  id: "f-noncausal-dai",
+                  name: "Non-causal DAI",
+                  description: "A DAI exists, but the AI is not causally responsible for D. D would have occurred in E within T regardless of the AI's existence, and an AI system gets created which does not change this.\n\nThis pathway captures scenarios where:\n\u2022 D is already likely (e.g. nuclear war, pandemic) independent of AI\n\u2022 An AI system happens to exist during the same period\n\u2022 The AI's presence does not materially affect whether D occurs\n\nThe DAI definition counts these because it is based on co-occurrence, not causation.",
+                  type: "and",
+                  children: [
+                    {
+                      id: "f-d-without-ai",
+                      name: "P(D in E, T | no AI)",
+                      description: "The probability that D can occur in environment E within T years even without any AI system being involved.\n\nThis captures the base rate of D from non-AI causes in environment E. If D is an existential catastrophe, this includes risks from:\n\u2022 Nuclear war\n\u2022 Engineered pandemics\n\u2022 Natural catastrophes\n\u2022 Other non-AI existential risks\n\nA high value means D is likely regardless of AI; a low value means D is primarily an AI-related risk.",
+                      type: "leaf"
+                    },
+                    {
+                      id: "f-ai-no-change",
+                      name: "P(AI created, D unchanged)",
+                      description: "Given that D can already occur in E within T without AI: the probability that an AI system gets created which does not change this fact.\n\nThis asks: does an AI get built that doesn't prevent or accelerate D? This could be high if:\n\u2022 AI systems are focused on other domains and don't affect D\n\u2022 AI safety measures don't specifically address D\n\u2022 The AI is not powerful enough to prevent or cause D\n\nNote: this is specifically about AI systems that don't change D's probability, not about whether any AI exists.",
+                      type: "leaf"
+                    }
+                  ]
                 },
                 {
-                  id: "f-d-in-t",
-                  name: "P(D within t | AI, E)",
-                  description: "Given that an AI system exists that co-occurs with D in environment E: the probability that D can occur within time t after the AI's creation.\n\nThis captures the temporal constraint. Even if an AI and D can coexist in E, the danger might take longer than t to materialise. For example:\n\u2022 If t = 10 years and the AI needs decades to accumulate enough influence for D to occur, this probability is low\n\u2022 If D could happen rapidly once the AI exists (e.g. a fast takeoff scenario), this probability is high\n\nNote: t is measured from AI creation, distinct from T which is measured from now.",
-                  type: "leaf"
-                },
-                {
-                  id: "f-prob-threshold",
-                  name: "P(prob \u2265 p)",
-                  description: "Given that an AI co-occurs with D in E and D can occur within time t: the probability that this actually constitutes a DAI — i.e., that the conditional probability of D occurring meets or exceeds the threshold p.\n\nThis is the definitional threshold. A low p (e.g. 0.1) means we count AI systems that only slightly elevate the risk of D. A high p (e.g. 0.9) means we only count AI systems that make D near-certain.\n\nThe choice of p reflects how strictly we define 'dangerous'. With p = 0.5, we count an AI as a DAI if D is more likely than not to occur within t when the AI is created in E.",
-                  type: "leaf"
+                  id: "f-causal-dai",
+                  name: "Causal DAI",
+                  description: "A DAI exists because the AI is causally responsible for D. D would NOT have occurred in E within T without AI, but an AI system is created that changes this — making D possible.\n\nThis pathway captures the core AI risk scenario:\n\u2022 D is not likely on its own within the timeframe\n\u2022 An AI system is built that creates new pathways to D\n\u2022 The AI's capabilities, goals, or effects enable D to occur\n\nThis is the pathway most AI safety work focuses on preventing.",
+                  type: "and",
+                  children: [
+                    {
+                      id: "f-d-not-without-ai",
+                      name: "P(\u00acD in E, T | no AI)",
+                      description: "The probability that D would NOT occur in E within T without AI. This is the complement of P(D in E, T | no AI).\n\nComputed as: 1 \u2212 P(D in E, T | no AI)\n\nA high value means D is primarily an AI-related risk — it wouldn't happen on its own. A low value means D is likely regardless, so the causal DAI pathway contributes less.",
+                      type: "leaf",
+                      complement_of: "f-d-without-ai"
+                    },
+                    {
+                      id: "f-ai-causes-d",
+                      name: "P(AI created, enables D)",
+                      description: "Given that D would not occur in E within T without AI: the probability that an AI system is created which changes this — making D possible.\n\nThis is the central question of AI risk: does an AI get built that enables a danger which wouldn't otherwise exist? This depends on:\n\u2022 Whether sufficiently capable AI is built within T\n\u2022 Whether that AI has properties (goals, capabilities, deployment context) that create pathways to D\n\u2022 Whether safety measures, alignment, or regulation fail to prevent this\n\nThis leaf is where most disagreement between AI risk worldviews concentrates.",
+                      type: "leaf"
+                    }
+                  ]
                 }
               ]
             }
@@ -189,20 +210,20 @@ const TREES = [
         {
           id: "f-no-dai-path",
           name: "D without DAI pathway",
-          description: "The joint probability that D occurs within T AND no DAI(p, t, D, E) is created within T. This is the non-AI pathway.\n\nEquals P(D in T | \u00acDAI created) \u00d7 P(\u00acDAI created in T).\n\nThis branch accounts for the base rate of D from non-AI sources: bioweapons, nuclear war, pandemics, natural catastrophes, or other existential risks. It ensures the model doesn't attribute all risk to AI.",
+          description: "The joint probability that D occurs within T AND no DAI(D, E, T) is created. This is the non-AI pathway.\n\nEquals P(D in T | \u00acDAI created) \u00d7 P(\u00acDAI created).\n\nThis branch accounts for the base rate of D from non-AI sources: bioweapons, nuclear war, pandemics, natural catastrophes, or other risks.",
           type: "and",
           children: [
             {
               id: "f-no-dai",
               name: "P(\u00acDAI in T)",
-              description: "The probability that no DAI(p, t, D, E) is created within T. This is the complement of P(DAI created in T).\n\nComputed as: 1 \u2212 P(DAI(p,t,D,E) created in T)",
+              description: "The probability that no DAI(D, E, T) is created within T. This is the complement of P(DAI created).\n\nComputed as: 1 \u2212 P(DAI(D,E,T) created)",
               type: "leaf",
               complement_of: "f-dai-created"
             },
             {
               id: "f-d-given-no-dai",
               name: "P(D | \u00acDAI)",
-              description: "The conditional probability that D occurs within T through non-AI pathways, given that no DAI(p, t, D, E) is created.\n\nThis is the 'base rate' of danger D from other sources. Note that this is conditional on no DAI existing — in worlds where advanced AI is not built (or is built safely), what is the probability of D from other causes?\n\nFor D = existential catastrophe, this covers risks like:\n\u2022 Engineered pandemics / bioweapons\n\u2022 Nuclear war\n\u2022 Supervolcanic eruption or asteroid impact\n\u2022 Other unforeseen existential risks",
+              description: "The conditional probability that D occurs within T through non-AI pathways, given that no DAI(D, E, T) is created.\n\nThis is the base rate of danger D from other sources. In worlds where no AI system meeting the DAI definition is built, what is the probability of D from other causes?\n\nFor D = existential catastrophe, this covers:\n\u2022 Engineered pandemics / bioweapons\n\u2022 Nuclear war\n\u2022 Supervolcanic eruption or asteroid impact\n\u2022 Other unforeseen existential risks",
               type: "leaf"
             }
           ]
@@ -212,33 +233,33 @@ const TREES = [
     worldviews: {
       pessimistic: {
         name: "High Concern",
-        description: "Assigns high probability to AI-driven existential risk. Believes advanced AI is likely, DAI threshold is easily met, and non-AI risks are non-trivial.",
+        description: "Assigns high probability to AI-driven existential risk. Believes D is somewhat likely even without AI, and AI significantly increases the risk.",
         probabilities: {
-          "f-ai-cooccur": 0.85,
-          "f-d-in-t": 0.7,
-          "f-prob-threshold": 0.6,
+          "f-d-without-ai": 0.1,
+          "f-ai-no-change": 0.8,
+          "f-ai-causes-d": 0.5,
           "f-d-given-dai": 0.75,
           "f-d-given-no-dai": 0.05
         }
       },
       moderate: {
         name: "Moderate",
-        description: "Balanced assessment. Advanced AI is plausible within the timeframe, but significant uncertainty about whether it constitutes a DAI and whether D follows.",
+        description: "Balanced assessment. Non-AI risk of D is low, moderate chance that AI creates new pathways to D.",
         probabilities: {
-          "f-ai-cooccur": 0.55,
-          "f-d-in-t": 0.5,
-          "f-prob-threshold": 0.45,
+          "f-d-without-ai": 0.05,
+          "f-ai-no-change": 0.7,
+          "f-ai-causes-d": 0.25,
           "f-d-given-dai": 0.5,
           "f-d-given-no-dai": 0.03
         }
       },
       optimistic: {
         name: "Low Concern",
-        description: "Believes alignment is tractable, the DAI threshold is hard to meet, and even if a DAI exists the probability of D is low due to safeguards.",
+        description: "Believes D is very unlikely without AI, and AI is unlikely to create new pathways to D. Even if a DAI exists, D probably won't actually occur.",
         probabilities: {
-          "f-ai-cooccur": 0.35,
-          "f-d-in-t": 0.25,
-          "f-prob-threshold": 0.2,
+          "f-d-without-ai": 0.02,
+          "f-ai-no-change": 0.6,
+          "f-ai-causes-d": 0.1,
           "f-d-given-dai": 0.15,
           "f-d-given-no-dai": 0.02
         }

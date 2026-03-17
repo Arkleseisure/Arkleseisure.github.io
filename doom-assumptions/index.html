@@ -74,27 +74,40 @@
         <div class="control-group">
           <label class="control-label" for="worldview-select">Worldview</label>
           <select id="worldview-select" class="control-select"></select>
-          <button type="button" id="save-worldview-btn" class="btn btn-secondary btn-sm" title="Save current probabilities">Save</button>
-          <button type="button" id="share-btn" class="btn btn-secondary btn-sm" title="Copy shareable link">Share</button>
         </div>
         <div class="control-group">
           <label class="control-label" for="range-toggle">Ranges</label>
           <button type="button" id="range-toggle" class="btn btn-secondary btn-sm btn-toggle">Off</button>
         </div>
-        <div id="variables-container" class="variables-container"></div>
-        <button type="button" id="reset-btn" class="btn btn-secondary btn-sm">Reset</button>
+        <div class="control-group" id="range-mode-group" style="display:none">
+          <label class="control-label" for="range-mode-toggle">Propagation</label>
+          <button type="button" id="range-mode-toggle" class="btn btn-secondary btn-sm btn-toggle">Worst case</button>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Main Content -->
   <main class="section tree-section">
-    <!-- Tree graph area — full width, horizontally scrollable -->
-    <div class="tg-scroll" id="tg-scroll">
-      <div class="tg-tree" id="tree-graph">
-        <svg class="tg-svg" id="tree-svg"></svg>
-        <div id="tree-root"></div>
+    <div class="tree-with-labels">
+      <!-- Labels sidebar -->
+      <aside class="labels-sidebar" id="variables-container"></aside>
+      <!-- Tree graph area — full width, horizontally scrollable -->
+      <div class="tg-scroll" id="tg-scroll">
+        <div class="tg-tree" id="tree-graph">
+          <svg class="tg-svg" id="tree-svg"></svg>
+          <div id="tree-root"></div>
+        </div>
       </div>
+      <!-- Action buttons sidebar -->
+      <aside class="actions-sidebar">
+        <button type="button" id="reset-btn" class="action-btn" title="Reset to default worldview">Reset</button>
+        <button type="button" id="save-worldview-btn" class="action-btn" title="Save current probabilities">Save</button>
+        <button type="button" id="export-btn" class="action-btn" title="Export worldview to file">Export</button>
+        <button type="button" id="import-btn" class="action-btn" title="Import worldview from file">Import</button>
+        <input type="file" id="import-file" accept=".json" style="display:none">
+        <button type="button" id="share-btn" class="action-btn" title="Copy shareable link">Share</button>
+      </aside>
     </div>
 
     <!-- Info Panel (appears below tree when a node is selected) -->
@@ -120,8 +133,14 @@
 
       <aside class="analysis-panel" id="analysis-panel">
         <h3 class="analysis-title">Sensitivity Analysis</h3>
-        <p class="analysis-subtitle">Change in final probability if each assumption increases by 10 percentage points</p>
+        <p class="analysis-subtitle">How much the final probability changes per 1pp change in each assumption (derivative)</p>
         <div id="sensitivity-chart" class="sensitivity-chart"></div>
+      </aside>
+
+      <aside class="analysis-panel" id="uncertainty-panel" style="display:none">
+        <h3 class="analysis-title">Uncertainty Reduction</h3>
+        <p class="analysis-subtitle">If you could resolve your uncertainty about one assumption, which would narrow your final range the most?</p>
+        <div id="uncertainty-chart" class="sensitivity-chart"></div>
       </aside>
 
       <aside class="analysis-panel" id="crux-panel">

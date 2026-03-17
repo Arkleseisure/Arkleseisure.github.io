@@ -12,6 +12,7 @@
   let collapsedNodes = {};
   let variableValues = {};
   let rangeMode = false;
+  let rangeIndependent = false;  // false = worst-case bounds, true = independent error propagation
   let probRanges = {};          // node id -> {lo, hi} for leaves in range mode
 
   // --- DOM refs ---
@@ -24,7 +25,12 @@
   const infoPanel = document.getElementById("info-panel");
   const variablesContainer = document.getElementById("variables-container");
   const rangeToggle = document.getElementById("range-toggle");
+  const rangeModeGroup = document.getElementById("range-mode-group");
+  const rangeModeToggle = document.getElementById("range-mode-toggle");
   const saveWorldviewBtn = document.getElementById("save-worldview-btn");
+  const exportBtn = document.getElementById("export-btn");
+  const importBtn = document.getElementById("import-btn");
+  const importFile = document.getElementById("import-file");
   const shareBtn = document.getElementById("share-btn");
 
   // --- Helpers ---
@@ -102,6 +108,9 @@
 
   function computeProbRange(node) {
     if (pinnedNodes[node.id] && probabilities[node.id] != null) {
+      if (rangeMode && probRanges[node.id]) {
+        return probRanges[node.id];
+      }
       var p = probabilities[node.id];
       return { lo: p, hi: p };
     }
@@ -120,6 +129,11 @@
     }
     if (!node.children || node.children.length === 0) return { lo: 0, hi: 0 };
 
+    if (rangeIndependent) {
+      return computeProbRangeIndependent(node);
+    }
+
+    // Worst-case bounds: all lows together, all highs together
     if (node.type === "and") {
       var lo = 1, hi = 1;
       for (var i = 0; i < node.children.length; i++) {
@@ -137,6 +151,43 @@
         hi += r.hi;
       }
       return { lo: Math.min(lo, 1), hi: Math.min(hi, 1) };
+    }
+    return { lo: 0, hi: 0 };
+  }
+
+  function computeProbRangeIndependent(node) {
+    // Treat ranges as uniform distributions, propagate mean ± std
+    // For each child, mean = (lo+hi)/2, variance = (hi-lo)²/12 (uniform)
+    if (node.type === "and") {
+      // Product of independent vars: mean = product of means
+      // Relative variance: sum of relative variances
+      var mu = 1;
+      var relVarSum = 0;
+      for (var i = 0; i < node.children.length; i++) {
+        var r = computeProbRange(node.children[i]);
+        var childMu = (r.lo + r.hi) / 2;
+        var childVar = (r.hi - r.lo) * (r.hi - r.lo) / 12;
+        mu *= childMu;
+        if (childMu > 0) {
+          relVarSum += childVar / (childMu * childMu);
+        }
+      }
+      var sigma = mu * Math.sqrt(relVarSum);
+      return { lo: Math.max(0, mu - sigma), hi: Math.min(1, mu + sigma) };
+    }
+    if (node.type === "or") {
+      // Sum of independent vars: mean = sum of means, variance = sum of variances
+      var mu = 0;
+      var varSum = 0;
+      for (var i = 0; i < node.children.length; i++) {
+        var r = computeProbRange(node.children[i]);
+        var childMu = (r.lo + r.hi) / 2;
+        var childVar = (r.hi - r.lo) * (r.hi - r.lo) / 12;
+        mu += childMu;
+        varSum += childVar;
+      }
+      var sigma = Math.sqrt(varSum);
+      return { lo: Math.max(0, mu - sigma), hi: Math.min(1, mu + sigma) };
     }
     return { lo: 0, hi: 0 };
   }
@@ -216,7 +267,7 @@
       input.value = variableValues[key] || varDef.default || "";
       input.placeholder = varDef.label || key;
 
-      input.addEventListener("change", function () {
+      input.addEventListener("input", function () {
         variableValues[key] = input.value;
         renderTree();
         updateInfoPanel();
@@ -435,6 +486,7 @@
     });
 
     renderSensitivity();
+    renderUncertaintyReduction();
   }
 
   function buildNodeEl(node) {
@@ -525,11 +577,20 @@
     var showSlider = (node.type === "leaf") || hasChildren;
     var isComplement = !!node.complement_of;
 
-    if (showSlider && rangeMode && node.type === "leaf" && !isComplement) {
-      // Dual range slider for leaves in range mode
-      var rng = probRanges[node.id] || { lo: prob, hi: prob };
+    var showDualRange = showSlider && rangeMode &&
+      (node.type === "leaf" || (hasChildren && isPinned));
+
+    if (showDualRange) {
+      // Dual range slider for leaves and pinned branch nodes in range mode
+      var rng;
+      if (isComplement) {
+        rng = computeProbRange(node);
+      } else {
+        rng = probRanges[node.id] || { lo: prob, hi: prob };
+      }
       var rangeWrap = document.createElement("div");
       rangeWrap.className = "tg-range-wrap";
+      if (isComplement) rangeWrap.classList.add("complement");
 
       var track = document.createElement("div");
       track.className = "tg-range-track";
@@ -560,8 +621,15 @@
         var lo = parseInt(loInput.value) / 100;
         var hi = parseInt(hiInput.value) / 100;
         if (lo > hi) { var tmp = lo; lo = hi; hi = tmp; }
-        probRanges[node.id] = { lo: lo, hi: hi };
-        probabilities[node.id] = (lo + hi) / 2;
+        if (isComplement) {
+          // Update source node's range (flipped)
+          var sourceId = node.complement_of;
+          probRanges[sourceId] = { lo: 1 - hi, hi: 1 - lo };
+          probabilities[sourceId] = 1 - (lo + hi) / 2;
+        } else {
+          probRanges[node.id] = { lo: lo, hi: hi };
+          probabilities[node.id] = (lo + hi) / 2;
+        }
         currentWorldview = null;
         worldviewSelect.value = "custom";
         fill.style.left = (lo * 100) + "%";
@@ -570,10 +638,28 @@
         updateAllProbabilities();
         updateInfoPanel();
         renderSensitivity();
+        renderUncertaintyReduction();
       }
 
       loInput.addEventListener("input", onRangeInput);
       hiInput.addEventListener("input", onRangeInput);
+
+      // Unpin button for pinned branch nodes
+      if (hasChildren && isPinned) {
+        var unpinBtn = document.createElement("span");
+        unpinBtn.className = "tg-unpin tg-range-unpin";
+        unpinBtn.textContent = "\u00d7";
+        unpinBtn.title = "Unpin — use children's values";
+        unpinBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          delete pinnedNodes[node.id];
+          delete probabilities[node.id];
+          delete probRanges[node.id];
+          renderTree();
+          updateInfoPanel();
+        });
+        rangeWrap.appendChild(unpinBtn);
+      }
 
       rangeWrap.appendChild(loInput);
       rangeWrap.appendChild(hiInput);
@@ -599,17 +685,34 @@
       slider.max = "100";
       slider.step = "1";
       slider.value = Math.round(prob * 100);
-      slider.disabled = isComplement;
 
       slider.addEventListener("input", function () {
         var newVal = parseInt(slider.value) / 100;
+        if (isComplement) {
+          // Update the source node with 1 - value
+          var sourceId = node.complement_of;
+          probabilities[sourceId] = 1 - newVal;
+          currentWorldview = null;
+          worldviewSelect.value = "custom";
+          updateAllProbabilities();
+          updateInfoPanel();
+          renderSensitivity();
+          renderUncertaintyReduction();
+          return;
+        }
         probabilities[node.id] = newVal;
         currentWorldview = null;
         worldviewSelect.value = "custom";
 
         if (hasChildren && !pinnedNodes[node.id]) {
-          // First move on a branch node — pin it and re-render to show unpin button
+          // First move on a branch node — pin it and re-render to show unpin button/dual slider
           pinnedNodes[node.id] = true;
+          if (rangeMode) {
+            probRanges[node.id] = {
+              lo: Math.max(0, newVal - 0.1),
+              hi: Math.min(1, newVal + 0.1)
+            };
+          }
           renderTree();
           updateInfoPanel();
           return;
@@ -618,6 +721,7 @@
         updateAllProbabilities();
         updateInfoPanel();
         renderSensitivity();
+    renderUncertaintyReduction();
       });
 
       var sliderVal = document.createElement("span");
@@ -634,6 +738,7 @@
           e.stopPropagation();
           delete pinnedNodes[node.id];
           delete probabilities[node.id];
+          delete probRanges[node.id];
           renderTree();
           updateInfoPanel();
         });
@@ -842,32 +947,32 @@
     var tree = getTree();
     var root = tree.tree;
     var leaves = getLeaves(root).filter(function (l) { return !l.complement_of; });
-    var bump = 0.10; // 10 percentage points
+    var epsilon = 0.005; // small epsilon for numerical derivative
     var results = [];
-
-    var baseProb = computeProb(root);
 
     leaves.forEach(function (leaf) {
       var original = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
 
-      // Bump up by 10pp (or down if at ceiling)
-      var bumped = original + bump;
-      var direction = "+";
-      if (bumped > 1) {
-        bumped = original - bump;
-        direction = "\u2212";
+      // Two-sided finite difference: dRoot/dLeaf
+      var lo = Math.max(0, original - epsilon);
+      var hi = Math.min(1, original + epsilon);
+      var delta = hi - lo;
+      if (delta === 0) {
+        results.push({ id: leaf.id, name: leaf.name, derivative: 0 });
+        return;
       }
-      bumped = Math.max(0, Math.min(1, bumped));
 
-      probabilities[leaf.id] = bumped;
-      var newRoot = computeProb(root);
+      probabilities[leaf.id] = hi;
+      var rootHi = computeProb(root);
+      probabilities[leaf.id] = lo;
+      var rootLo = computeProb(root);
       probabilities[leaf.id] = original;
 
-      var deltaPP = (newRoot - baseProb) * 100;
-      results.push({ id: leaf.id, name: leaf.name, deltaPP: deltaPP, absDelta: Math.abs(deltaPP), direction: direction });
+      var derivative = (rootHi - rootLo) / delta;
+      results.push({ id: leaf.id, name: leaf.name, derivative: derivative, absDerivative: Math.abs(derivative) });
     });
 
-    results.sort(function (a, b) { return b.absDelta - a.absDelta; });
+    results.sort(function (a, b) { return b.absDerivative - a.absDerivative; });
     return results;
   }
 
@@ -879,7 +984,7 @@
     var results = computeSensitivity();
     if (results.length === 0) return;
 
-    var maxDelta = results[0].absDelta || 1;
+    var maxDeriv = results[0].absDerivative || 1;
 
     results.forEach(function (item) {
       var row = document.createElement("div");
@@ -898,16 +1003,114 @@
       track.className = "sensitivity-bar-track";
       var fill = document.createElement("div");
       fill.className = "sensitivity-bar-fill";
-      var pct = maxDelta > 0 ? (item.absDelta / maxDelta) * 100 : 0;
+      var pct = maxDeriv > 0 ? (item.absDerivative / maxDeriv) * 100 : 0;
       fill.style.width = pct + "%";
-      fill.style.backgroundColor = sensitivityColor(item.absDelta, maxDelta);
+      fill.style.backgroundColor = sensitivityColor(item.absDerivative, maxDeriv);
       track.appendChild(fill);
       row.appendChild(track);
 
       var val = document.createElement("span");
       val.className = "sensitivity-value";
-      var sign = item.deltaPP >= 0 ? "+" : "\u2212";
-      val.textContent = sign + item.absDelta.toFixed(1) + "pp";
+      val.textContent = item.absDerivative.toFixed(2);
+      val.title = "dP(root)/dP(leaf): 1pp change in this leaf changes the root by " + (item.absDerivative * 1).toFixed(2) + "pp";
+      row.appendChild(val);
+
+      row.addEventListener("click", function () {
+        var node = findNode(getTree().tree, item.id);
+        if (node) {
+          selectNode(node);
+          var card = treeRoot.querySelector('[data-id="' + item.id + '"] > .tg-card');
+          if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
+      });
+
+      chart.appendChild(row);
+    });
+  }
+
+  // --- Uncertainty Reduction ---
+
+  function computeUncertaintyReduction() {
+    if (!rangeMode) return [];
+    var tree = getTree();
+    var root = tree.tree;
+    var leaves = getLeaves(root).filter(function (l) { return !l.complement_of; });
+
+    var baseRange = computeProbRange(root);
+    var baseWidth = baseRange.hi - baseRange.lo;
+    if (baseWidth === 0) return [];
+
+    var results = [];
+
+    leaves.forEach(function (leaf) {
+      var origRange = probRanges[leaf.id];
+      if (!origRange) return;
+
+      // Pin this leaf to its midpoint
+      var mid = (origRange.lo + origRange.hi) / 2;
+      probRanges[leaf.id] = { lo: mid, hi: mid };
+      var pinnedRange = computeProbRange(root);
+      probRanges[leaf.id] = origRange; // restore
+
+      var pinnedWidth = pinnedRange.hi - pinnedRange.lo;
+      var reduction = (baseWidth - pinnedWidth) * 100; // in pp
+
+      results.push({
+        id: leaf.id,
+        name: leaf.name,
+        reduction: reduction,
+        leafWidth: (origRange.hi - origRange.lo) * 100
+      });
+    });
+
+    results.sort(function (a, b) { return b.reduction - a.reduction; });
+    return results;
+  }
+
+  function renderUncertaintyReduction() {
+    var panel = document.getElementById("uncertainty-panel");
+    var chart = document.getElementById("uncertainty-chart");
+    if (!panel || !chart) return;
+
+    if (!rangeMode) {
+      panel.style.display = "none";
+      return;
+    }
+    panel.style.display = "";
+    chart.innerHTML = "";
+
+    var results = computeUncertaintyReduction();
+    if (results.length === 0) return;
+
+    var maxReduction = results[0].reduction || 1;
+
+    results.forEach(function (item) {
+      var row = document.createElement("div");
+      row.className = "sensitivity-row";
+      row.dataset.nodeId = item.id;
+      if (item.id === selectedNodeId) row.classList.add("active");
+
+      var name = document.createElement("span");
+      name.className = "sensitivity-name";
+      var rawName = item.name || item.id;
+      name.textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
+      name.title = name.textContent;
+      row.appendChild(name);
+
+      var track = document.createElement("div");
+      track.className = "sensitivity-bar-track";
+      var fill = document.createElement("div");
+      fill.className = "sensitivity-bar-fill";
+      var pct = maxReduction > 0 ? (item.reduction / maxReduction) * 100 : 0;
+      fill.style.width = pct + "%";
+      fill.style.backgroundColor = sensitivityColor(item.reduction, maxReduction);
+      track.appendChild(fill);
+      row.appendChild(track);
+
+      var val = document.createElement("span");
+      val.className = "sensitivity-value";
+      val.textContent = item.reduction.toFixed(1) + "pp";
+      val.title = "Resolving this narrows the final range by " + item.reduction.toFixed(1) + "pp (leaf range: " + item.leafWidth.toFixed(0) + "pp)";
       row.appendChild(val);
 
       row.addEventListener("click", function () {
@@ -1006,23 +1209,30 @@
       var valA = probsA[id] != null ? probsA[id] : 0.5;
       var valB = probsB[id] != null ? probsB[id] : 0.5;
 
-      // Swap: give A this leaf from B, see how A's root changes
-      var swapped = {};
-      Object.keys(probsA).forEach(function (k) { swapped[k] = probsA[k]; });
-      swapped[id] = valB;
-      var rootSwapped = computeRootWithProbs(swapped);
-      var impact = Math.abs(rootSwapped - rootA);
+      // Impact on A: if A adopts B's value for this leaf
+      var swappedA = {};
+      Object.keys(probsA).forEach(function (k) { swappedA[k] = probsA[k]; });
+      swappedA[id] = valB;
+      var impactA = Math.abs(computeRootWithProbs(swappedA) - rootA) * 100;
+
+      // Impact on B: if B adopts A's value for this leaf
+      var swappedB = {};
+      Object.keys(probsB).forEach(function (k) { swappedB[k] = probsB[k]; });
+      swappedB[id] = valA;
+      var impactB = Math.abs(computeRootWithProbs(swappedB) - rootB) * 100;
 
       results.push({
         id: id,
         name: leaf.name,
         valA: valA,
         valB: valB,
-        impactPP: impact * 100
+        impactA: impactA,
+        impactB: impactB,
+        maxImpact: Math.max(impactA, impactB)
       });
     });
 
-    results.sort(function (a, b) { return b.impactPP - a.impactPP; });
+    results.sort(function (a, b) { return b.maxImpact - a.maxImpact; });
     return { results: results, rootA: rootA, rootB: rootB };
   }
 
@@ -1106,16 +1316,17 @@
     headerRow.className = "sensitivity-row crux-header";
     headerRow.innerHTML =
       '<span class="sensitivity-name crux-col-label">Assumption</span>' +
-      '<span class="sensitivity-bar-track crux-col-label" style="background:transparent">Impact on disagreement</span>' +
+      '<span class="crux-bar-pair crux-col-label">' +
+        '<span class="crux-bar-label crux-val-a">Moves A</span>' +
+        '<span class="crux-bar-label crux-val-b">Moves B</span>' +
+      '</span>' +
       '<span class="crux-row-values crux-col-label">' +
         '<span class="crux-val-a">A</span>' +
-        '<span class="crux-arrow">&nbsp;</span>' +
         '<span class="crux-val-b">B</span>' +
-      '</span>' +
-      '<span class="sensitivity-value crux-col-label">Closes</span>';
+      '</span>';
     chart.appendChild(headerRow);
 
-    var maxImpact = data.results[0].impactPP || 1;
+    var maxImpact = data.results.length > 0 ? data.results[0].maxImpact || 1 : 1;
 
     data.results.forEach(function (item) {
       var row = document.createElement("div");
@@ -1129,28 +1340,52 @@
       name.title = name.textContent;
       row.appendChild(name);
 
-      var track = document.createElement("div");
-      track.className = "sensitivity-bar-track";
-      var fill = document.createElement("div");
-      fill.className = "sensitivity-bar-fill";
-      var pct = maxImpact > 0 ? (item.impactPP / maxImpact) * 100 : 0;
-      fill.style.width = pct + "%";
-      fill.style.backgroundColor = sensitivityColor(item.impactPP, maxImpact);
-      track.appendChild(fill);
-      row.appendChild(track);
+      // Two bars: impact on A and impact on B
+      var barPair = document.createElement("div");
+      barPair.className = "crux-bar-pair";
+
+      var rowA = document.createElement("div");
+      rowA.className = "crux-bar-row";
+      var trackA = document.createElement("div");
+      trackA.className = "sensitivity-bar-track";
+      var fillA = document.createElement("div");
+      fillA.className = "sensitivity-bar-fill";
+      var pctA = maxImpact > 0 ? (item.impactA / maxImpact) * 100 : 0;
+      fillA.style.width = pctA + "%";
+      fillA.style.backgroundColor = "var(--accent-life)";
+      trackA.appendChild(fillA);
+      rowA.appendChild(trackA);
+      var ppA = document.createElement("span");
+      ppA.className = "crux-bar-pp crux-val-a";
+      ppA.textContent = item.impactA.toFixed(1) + "pp";
+      rowA.appendChild(ppA);
+      barPair.appendChild(rowA);
+
+      var rowB = document.createElement("div");
+      rowB.className = "crux-bar-row";
+      var trackB = document.createElement("div");
+      trackB.className = "sensitivity-bar-track";
+      var fillB = document.createElement("div");
+      fillB.className = "sensitivity-bar-fill";
+      var pctB = maxImpact > 0 ? (item.impactB / maxImpact) * 100 : 0;
+      fillB.style.width = pctB + "%";
+      fillB.style.backgroundColor = "var(--accent-safety)";
+      trackB.appendChild(fillB);
+      rowB.appendChild(trackB);
+      var ppB = document.createElement("span");
+      ppB.className = "crux-bar-pp crux-val-b";
+      ppB.textContent = item.impactB.toFixed(1) + "pp";
+      rowB.appendChild(ppB);
+      barPair.appendChild(rowB);
+
+      row.appendChild(barPair);
 
       var vals = document.createElement("span");
       vals.className = "crux-row-values";
       vals.innerHTML =
         '<span class="crux-val-a">' + formatProb(item.valA) + '</span>' +
-        '<span class="crux-arrow">\u2192</span>' +
         '<span class="crux-val-b">' + formatProb(item.valB) + '</span>';
       row.appendChild(vals);
-
-      var impact = document.createElement("span");
-      impact.className = "sensitivity-value";
-      impact.textContent = item.impactPP.toFixed(1) + "pp";
-      row.appendChild(impact);
 
       row.addEventListener("click", function () {
         var node = findNode(getTree().tree, item.id);
@@ -1300,6 +1535,7 @@
     rangeMode = !rangeMode;
     rangeToggle.textContent = rangeMode ? "On" : "Off";
     rangeToggle.classList.toggle("active", rangeMode);
+    rangeModeGroup.style.display = rangeMode ? "" : "none";
     if (rangeMode) {
       // Initialize ranges from current point estimates with ±10pp spread
       var leaves = getLeaves(getTree().tree);
@@ -1313,6 +1549,15 @@
         }
       });
     }
+    renderTree();
+    updateInfoPanel();
+  });
+
+  rangeModeToggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    rangeIndependent = !rangeIndependent;
+    rangeModeToggle.textContent = rangeIndependent ? "Independent" : "Worst case";
+    rangeModeToggle.classList.toggle("active", rangeIndependent);
     renderTree();
     updateInfoPanel();
   });
@@ -1342,6 +1587,101 @@
     populateCruxSelectors();
     worldviewSelect.value = "saved:" + name;
     currentWorldview = "saved:" + name;
+  });
+
+  exportBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    var name = prompt("Name for this worldview file:", "My worldview");
+    if (!name || !name.trim()) return;
+    name = name.trim();
+    var tree = getTree();
+    var data = {
+      name: name,
+      treeId: tree.id,
+      treeTitle: tree.title,
+      probabilities: {},
+      ranges: null
+    };
+    var leaves = getLeaves(tree.tree);
+    leaves.forEach(function (leaf) {
+      if (!leaf.complement_of && probabilities[leaf.id] != null) {
+        data.probabilities[leaf.id] = probabilities[leaf.id];
+      }
+    });
+    if (rangeMode) {
+      data.ranges = {};
+      leaves.forEach(function (leaf) {
+        if (!leaf.complement_of && probRanges[leaf.id]) {
+          data.ranges[leaf.id] = probRanges[leaf.id];
+        }
+      });
+    }
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = name.replace(/[^a-zA-Z0-9_-]/g, "_") + ".json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  importBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    importFile.click();
+  });
+
+  importFile.addEventListener("change", function () {
+    var file = importFile.files[0];
+    if (!file) return;
+    var fileName = file.name.replace(/\.json$/i, "");
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        if (data.treeId && data.treeId !== getTree().id) {
+          // Switch to the right tree
+          for (var i = 0; i < TREES.length; i++) {
+            if (TREES[i].id === data.treeId) {
+              currentTreeIndex = i;
+              treeSelect.value = i;
+              initProbabilities();
+              initVariables();
+              populateWorldviewSelect();
+              renderVariables();
+              populateCruxSelectors();
+              break;
+            }
+          }
+        }
+        if (data.probabilities) {
+          Object.keys(data.probabilities).forEach(function (id) {
+            probabilities[id] = data.probabilities[id];
+          });
+        }
+        if (data.ranges) {
+          rangeMode = true;
+          rangeToggle.textContent = "On";
+          rangeToggle.classList.add("active");
+          Object.keys(data.ranges).forEach(function (id) {
+            probRanges[id] = data.ranges[id];
+          });
+        }
+        // Save as named worldview (use name from file, then filename as fallback)
+        var wvName = data.name || fileName;
+        saveWorldview(wvName);
+        populateWorldviewSelect();
+        populateCruxSelectors();
+        worldviewSelect.value = "saved:" + wvName;
+        currentWorldview = "saved:" + wvName;
+        renderTree();
+        renderCrux();
+        updateInfoPanel();
+      } catch (err) {
+        alert("Invalid worldview file.");
+      }
+    };
+    reader.readAsText(file);
+    importFile.value = "";
   });
 
   shareBtn.addEventListener("click", function (e) {
