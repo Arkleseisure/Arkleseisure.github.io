@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents, Simulators and Interpretability &mdash; Life, The Universe &amp; That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>Agents, Simulators and Interpretability</h1>
+        <p class="article-meta">
+          <time datetime="2025-06-07">June 7, 2025</time> &middot; 7 min read
+        </p>
+      </header>
+
+      <div class="article-content">
+        <p>We have already spoken about the differences between <a href="https://www.lesswrong.com/posts/ddK7CMEC3XzSmLS4G/agents-tools-and-simulators">tools, agents and simulators</a> and the <a href="https://www.lesswrong.com/posts/A6oGJFeZwHHWHwY3b/aligning-agents-tools-and-simulators">differences in their safety properties</a>. Given the practical difference between them, it would be nice to predict which properties an AI system has. One way to do this is to consider the process used to train the AI system.</p>
+        <h3>The Training process</h3>
+        <p>Predicting an AI’s properties based on its training process assumes that inner misalignment is negligible and that the model will develop properties compatible with the training goal given to it.</p>
+        <p>An example would be comparing a system such as AlphaZero, which was given no instructions in its training other than “win the game”, to an LLM with the task “predict the next token”. As AlphaZero is given a terminal goal which is some distance in time away, it seems likely that it will engage in agentic behaviour by:</p>
+        <ul>
+        <li>  Only caring about the end result</li>
+        <li>  Setting instrumental goals which will help it move towards a win (such as having the goal of taking pieces)</li>
+        </ul>
+        <p>An LLM is given next token prediction as its task, and is therefore more likely to:</p>
+        <ul>
+        <li>  Predict the next token with little consideration<sup><a href="#fn-6k7tll8yowg" id="fnref-6k7tll8yowg">[1]</a></sup> for what might come after.</li>
+        <li>  Allocate all resources to the current moment, as there are no instrumental steps to perform before predicting the next token.</li>
+        </ul>
+        <p>This change in behaviour depending on training objective should come as no surprise to anyone who has read <a href="https://www.lesswrong.com/s/N7nDePaNabJdnbXeE/p/vJFdjigzmcXMhNTsx">the original simulator post</a>.</p>
+        <p>The more interesting question is what happens once you add extra bells and whistles to this basic training process - what happens once the LLM has been fine-tuned, RLHFed and had some chain-of-thought added before it is trained on the results of the chain-of-thought, it's gone through a divorce, lost custody of its children, etc, etc. For this it might be useful to think a little more carefully about what happens within the network when it goes through multiple stages of training.</p>
+        <h3>Mechanistic understanding</h3>
+        <p>To preface: this is a speculative picture of what might be happening when neural networks are trained. The point here is to get an idea of what might occur, in such a fashion as to stimulate thought about how one might be capable of testing for such phenomena.</p>
+        <p>We shall start with a comparison of agents and simulators on an interpretability level (we shall, for now, ignore tools as <a href="https://www.lesswrong.com/posts/ddK7CMEC3XzSmLS4G/agents-tools-and-simulators">toolness is mostly a property of its user</a>). A first thought one might have is that agents are likely to have a representation of their end goal somewhere in their network. In idealised agents, all actions relate to a coherent terminal goal, and this might be represented directly.  Looking at our canonical agent AlphaZero, the probability of winning is actually explicitly predicted by the network.</p>
+        <p>But it’s not entirely clear how well this assumption holds in practice - notice that you do not need to think about making enough money to live happily forever after on a yacht with a fishing rod and a butler in order to go to work<sup><a href="#fn-ityqs9cv46p" id="fnref-ityqs9cv46p">[2]</a></sup>. In the same way, it is very possible that an AI could represent a variety of heuristics which together correlate <em>really</em> closely to a coherent end goal, without actually giving us the joy of finding that representation hidden somewhere in the weights.</p>
+        <p>One of the notable features distinguishing simulators from agents is their ability to simulate multiple different characters. Restricting ourselves to modern day LLMs, we notice that the information flowing through the network is held in high dimensional <a href="https://m.youtube.com/watch?v=wjZofJX0v4M&pp=ygUYM2JsdWUxYnJvd24gdHJhbnNmb3JtZXJz">“embedding” vectors holding the nuance of the context</a>.</p>
+        <p>It is possible that part of the information in these vectors is a space of “characters”, with potential directions within this space corresponding to concepts such as “friendly”, “Australian” or “quick to anger”.</p>
+        <p>The actual implementation of characters would therefore be compressed down to a set of characteristics in a vector space. These characteristics could then be acted upon by the circuits in the network, performing actions such as suppressing swear words for “friendly” characters and increasing them for “sailor” characters<sup><a href="#fn-i8gmcsnlqc" id="fnref-i8gmcsnlqc">[3]</a></sup>.</p>
+        <p>This is all well and good but in <a href="https://www.lesswrong.com/posts/ddK7CMEC3XzSmLS4G/agents-tools-and-simulators">Agents, Tools & Simulators</a> we discussed the possibility of entities having various mixes of agent and simulator behaviour. The information above may be helpful for distinguishing between pure simulators and pure agents (indeed we have kept this in the post to help people who might want to try), but it is unclear how it might help us when attempting to differentiate more subtle distinctions.</p>
+        <h3>Mech interp and the training process</h3>
+        <p>The kind of high-level properties we are looking for here will be extremely difficult to determine purely through mechanistic interpretability. Looking at the training process can give insight but hits a wall once we talk about multiple training processes. What happens if we combine both approaches?</p>
+        <p>First we need a basic picture of how a neural network develops over time. A nice example of this is given in <a href="https://ar5iv.labs.arxiv.org/html/1311.2901#:~:text=Feature%20Evolution%20during%20Training%3A%20Fig,models%20train%20until%20fully%20converged">Visualizing and Understanding Convolutional Networks</a>, where we see that a convolutional network first learns to differentiate simple features in early layers, followed by building these up into more complex combinations later in the network, working down the layers as training progresses.</p>
+        <p>Generalising this concept to other architectures, and assuming that the network is feed-forward, it is likely that<sup><a href="#fn-k7sduv0t66e" id="fnref-k7sduv0t66e">[4]</a></sup>:</p>
+        <ul>
+        <li> The circuits and concepts which eventually develop in the later layers of the network must depend on those developed in the earlier layers.</li>
+        <li> The concepts in the later layers must therefore develop fully later than those in the earlier layers.</li>
+        <li> Concepts in later layers depend on multiple concepts from earlier layers.</li>
+        <li> Concepts in early layers influence multiple concepts in later layers (not necessary from 3, but likely in a range of architectures).</li>
+        <li> Modifying a concept early in the network therefore changes the outcomes of multiple circuits later in the network.</li>
+        <li> In order to modify a concept early in the network, it must be beneficial on balance over multiple downstream uses.</li>
+        <li> Changes in late stages of training and during fine-tuning are therefore more likely to take place later in the network.</li>
+        <li> These changes are therefore likely to use pre-existing concepts learned from pre-training.</li>
+        </ul>
+        <p>If we take these statements and apply them to simulator theory for LLMs, we see that we expect something like RLHF will most likely take the output of the early circuits and tweak the later layers to produce output more likely to be approved by humans. This means that the entire context of the prompt, extracting nuances, figuring out the characters at play, what characteristics they have and so on, is kept essentially static, save possibly for some edits which are globally helpful to the model in the new context.</p>
+        <p>When comparing the agentic and simulator frames on this result, it seems that the model is for all intents and purposes a simulator for the majority of the network with the final few layers “using the output of the simulation”. <strong>Note: We are unsure that RLHF produces actions which value instrumental goals and leave the classification of RLHF trained networks up for discussion. </strong></p>
+        <p>As reinforcement learning on multi step problems has a tendency to produce agents, it is likely that modern chain of thought models are essentially agents using the output of a large simulator. Increasing the amount of RL will likely increase the fraction of the network dedicated to the agentic type of processing.</p>
+        <h3>Summary</h3>
+        <p>We can currently guess at whether an AI will function as a simulator or an agent based on its training process, whereas relying on interpretability alone may run into fundamental challenges.  Such classifications become less crisp when using multiple training processes, but we broadly expect that modern CoT LLMs trained with RL will act as agents using the output of a simulator, with simulator behavior encoded primarily in the early layers of the network and agentic behavior encoded primarily in the later layers.</p>
+        <p>In this post we have:</p>
+        <ul>
+        <li>  Noted that while we can currently classify Simulators and Agents using their training processes, this becomes more challenging when multiple training processes are used.</li>
+        <li>  Attempted an explanation of how agents and simulators might work mechanistically.</li>
+        <li>  Found that using interpretability to find the exact mix of frames appropriate for any given network is challenging.</li>
+        <li>  Found that combining interpretability techniques with knowledge about training methods can produce insights into the appropriate interpretations for entities with multiple stages of training.</li>
+        <li>  Used this to predict that modern CoT LLMs trained with RL will act as agents using the output of a simulator.</li>
+        </ul>
+        <hr>
+        <section class="footnotes">
+        <h3>Footnotes</h3>
+        <ol>
+        <li id="fn-6k7tll8yowg">Many models are now trained with multi-token prediction, as promoted by this paper. Interestingly, this is because of increased reasoning capabilities, potentially due to increased agentic behaviour, although we will for simplicity mainly assume single token prediction for the rest of the article. <a href="#fnref-6k7tll8yowg">↩</a></li>
+        <li id="fn-ityqs9cv46p">Admittedly on LessWrong the dream is more likely to be a transhuman utopia, but the point is the same <a href="#fnref-ityqs9cv46p">↩</a></li>
+        <li id="fn-i8gmcsnlqc">Although we emphasise again that we have no empirical evidence to support this, we believe this would be a simple and well compressed way to represent the information <a href="#fnref-i8gmcsnlqc">↩</a></li>
+        <li id="fn-k7sduv0t66e">Epistemic status: I tested this out briefly on a couple of small models, which confirmed some of the intuitions, although early layers still changed. I'd expect the assumptions to hold more steadfastly in larger models because more concepts are being dealt with. <a href="#fnref-k7sduv0t66e">↩</a></li>
+        </ol>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

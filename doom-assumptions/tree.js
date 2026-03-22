@@ -332,10 +332,14 @@
 
   // --- Monte Carlo range propagation ---
   var MC_SAMPLES = 20000;
-  var _mcCache = null; // { nodeId -> { lo, hi } }
+  var _mcCache = null;       // { nodeId -> { lo, hi } }
+  var _mcLeafSamples = null; // { leafId -> [sample0, sample1, ...] }
+  var _mcLeafParams = null;  // cached leaf params for replay
 
   function invalidateMCCache() {
     _mcCache = null;
+    _mcLeafSamples = null;
+    _mcLeafParams = null;
   }
 
   function ensureMCCache() {
@@ -348,8 +352,12 @@
     // Collect all leaf/pinned params to sample
     var leafParams = [];
     collectLeafParams(root, leafParams);
+    _mcLeafParams = leafParams;
 
-    if (leafParams.length === 0) return;
+    if (leafParams.length === 0) {
+      _mcLeafSamples = {};
+      return;
+    }
 
     // Collect all node IDs to track
     var allNodes = [];
@@ -359,12 +367,20 @@
     var nodeSamples = {};
     allNodes.forEach(function (n) { nodeSamples[n.id] = []; });
 
+    // Store per-sample leaf values for replay
+    _mcLeafSamples = {};
+    for (var i = 0; i < leafParams.length; i++) {
+      _mcLeafSamples[leafParams[i].id] = [];
+    }
+
     // Run Monte Carlo once for entire tree
     for (var s = 0; s < MC_SAMPLES; s++) {
       // Sample each leaf from its beta distribution
       for (var i = 0; i < leafParams.length; i++) {
         var lp = leafParams[i];
-        probabilities[lp.id] = sampleBeta(lp.a, lp.b);
+        var val = sampleBeta(lp.a, lp.b);
+        probabilities[lp.id] = val;
+        _mcLeafSamples[lp.id].push(val);
       }
       // Compute all node values for this sample
       collectNodeValues(root, nodeSamples);
@@ -1323,6 +1339,12 @@
 
   function computeUncertaintyReduction() {
     if (!rangeMode) return [];
+
+    // Ensure MC has run so we have stored leaf samples
+    if (rangeIndependent) {
+      ensureMCCache();
+    }
+
     var tree = getTree();
     var root = tree.tree;
     var leaves = getFreeParams(root);
@@ -1333,26 +1355,67 @@
 
     var results = [];
 
-    leaves.forEach(function (leaf) {
-      var origRange = probRanges[leaf.id];
-      if (!origRange) return;
+    if (rangeIndependent && _mcLeafSamples && _mcLeafParams && _mcLeafParams.length > 0) {
+      // Replay stored MC samples with each leaf fixed at midpoint
+      leaves.forEach(function (leaf) {
+        var origRange = probRanges[leaf.id];
+        if (!origRange || origRange.lo === origRange.hi) return;
+        if (!_mcLeafSamples[leaf.id]) return;
 
-      // Pin this leaf to its midpoint
-      var mid = (origRange.lo + origRange.hi) / 2;
-      probRanges[leaf.id] = { lo: mid, hi: mid };
-      var pinnedRange = computeProbRange(root);
-      probRanges[leaf.id] = origRange; // restore
+        var mid = (origRange.lo + origRange.hi) / 2;
+        var rootSamples = [];
 
-      var pinnedWidth = pinnedRange.hi - pinnedRange.lo;
-      var reduction = (baseWidth - pinnedWidth) * 100; // in pp
+        for (var s = 0; s < MC_SAMPLES; s++) {
+          // Restore all leaf values from stored samples
+          for (var i = 0; i < _mcLeafParams.length; i++) {
+            var lp = _mcLeafParams[i];
+            probabilities[lp.id] = _mcLeafSamples[lp.id][s];
+          }
+          // Override this leaf with midpoint
+          probabilities[leaf.id] = mid;
+          rootSamples.push(computeProb(root));
+        }
 
-      results.push({
-        id: leaf.id,
-        name: leaf.name,
-        reduction: reduction,
-        leafWidth: (origRange.hi - origRange.lo) * 100
+        // Restore original probabilities
+        for (var i = 0; i < _mcLeafParams.length; i++) {
+          probabilities[_mcLeafParams[i].id] = _mcLeafParams[i].original;
+        }
+
+        rootSamples.sort(function (a, b) { return a - b; });
+        var idx10 = Math.floor(MC_SAMPLES * 0.1);
+        var idx90 = Math.floor(MC_SAMPLES * 0.9);
+        var pinnedWidth = rootSamples[idx90] - rootSamples[idx10];
+        var reduction = (baseWidth - pinnedWidth) * 100;
+
+        results.push({
+          id: leaf.id,
+          name: leaf.name,
+          reduction: reduction,
+          leafWidth: (origRange.hi - origRange.lo) * 100
+        });
       });
-    });
+    } else {
+      // Worst-case mode: analytical
+      leaves.forEach(function (leaf) {
+        var origRange = probRanges[leaf.id];
+        if (!origRange) return;
+
+        var mid = (origRange.lo + origRange.hi) / 2;
+        probRanges[leaf.id] = { lo: mid, hi: mid };
+        var pinnedRange = computeProbRange(root);
+        probRanges[leaf.id] = origRange;
+
+        var pinnedWidth = pinnedRange.hi - pinnedRange.lo;
+        var reduction = (baseWidth - pinnedWidth) * 100;
+
+        results.push({
+          id: leaf.id,
+          name: leaf.name,
+          reduction: reduction,
+          leafWidth: (origRange.hi - origRange.lo) * 100
+        });
+      });
+    }
 
     results.sort(function (a, b) { return b.reduction - a.reduction; });
     return results;

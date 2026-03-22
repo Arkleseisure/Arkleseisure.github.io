@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking the endgames of AI development &mdash; Life, The Universe &amp; That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>Ranking the endgames of AI development</h1>
+        <p class="article-meta">
+          <time datetime="2025-09-27">September 27, 2025</time> &middot; 7 min read
+        </p>
+      </header>
+
+      <div class="article-content">
+        <h3>Intro</h3>
+        <p>As a voracious consumer of AI Safety everything, I have come across a fair few arguments of the kind "either we align AGI and live happily ever after, or we don't and everyone dies." I too subscribed to this worldview until I realised:</p>
+        <p>a) We might not actually create AGI (due to e.g legal controls)</p>
+        <p>b) The future cannot usually be described with 1 bit of information.</p>
+        <p>This post is therefore my attempt to wrangle the future into broad categories as best I can. I've tried to use clear boundaries, but I fully expect some bizarre possibilities, such as those discussed in <a href="https://www.lesswrong.com/posts/cWjK3SbRcLkb3gN69/building-weirdtopia">Building Weirdtopia,</a><sup><a href="#fn-ec1frz3nsl6" id="fnref-ec1frz3nsl6">[1]</a></sup> to escape sensible categorisation. I equally hope to write "life in the day of" posts for each category soon as a visualisation of what each of these worlds entails.</p>
+        <h3>Setting</h3>
+        <p>Setting up this view of future worlds as "endgames" requires the rather large assumption that the future stays relatively stationary. Given the history of humankind, with the rise and fall of empires over millennia, it seems regimes good and bad have existed and coexisted in what looks under certain lenses something like a moral random walk over time. Indeed, historically increasing technological progress has tended to mean people's situations have changed more quickly as time has passed; extrapolation would suggest this continues for superintelligence. So how can I justify rating any single future, let alone entire classes of them, by moral desirability?</p>
+        <p>I think there are a few considerations here. First, I will acknowledge I am largely utilitarian in nature and do not mind shrugging and estimating the quality of life of the average person in any given world.</p>
+        <p>Second, there is likely an upper bound to what is theoretically possible with science. I don't think we're close yet, but an intelligence explosion would likely bring us out of the exponential part of the sigmoid curve. The timelines I am considering for the endgames are 100-200+ years away, which could bring us to the point where science has slowed significantly, allowing a stable state to form.</p>
+        <p>Third, I think that being ruled by a superintelligence, as happens in many scenarios, will have a strong stabilising effect on the variability of the quality of human experience, largely due to most plausible superintelligences having stable values<sup><a href="#fn-f890ess5po" id="fnref-f890ess5po">[2]</a></sup>, and optimising according to those.</p>
+        <p>Fourth, in multipolar scenarios where your quality of life depends greatly on where you are, I am very happy to describe that as multiple different endgames occurring at once.</p>
+        <p>Other possibilities are there: for example, a semi-aligned AI could alternate between beneficial and destructive policies if these are approximately equal according to its value function.</p>
+        <p>Additional notes: each category covers a broad set of worlds, so there will be overlap in the moral value of many of them.</p>
+        <h3>Relevance</h3>
+        <ul>
+        <li>  It seems valuable to have a good idea what the possibilities humanity is playing with are: you don't play chess as well if you don't realise a draw is a possibility</li>
+        <li>  Improved world models</li>
+        <li>  Finding new threat models (I noticed multiple possibilities for the future through doing this exercise which I wouldn't have otherwise)</li>
+        </ul>
+        <h3>Methods</h3>
+        <p>So I've basically gone through this in two phases:</p>
+        <ul>
+        <li> Attempting to think of all the ways it seems sensible to me for the world to end up in.</li>
+        <li> Formalising the assumptions required for those worlds to exist and then checking whether this logically includes all worlds.</li>
+        </ul>
+        <p>I have structured these assumptions as a tree, with later branches containing more assumptions than the higher ones.</p>
+        <h3>Assumptions</h3>
+        <p>In doing this breakdown, we have split worlds down by binary metrics. The issue with this is many worlds will be ambiguous in their categorisation and therefore not intuitively fit into the descriptions given by these categories. If people have suggestions for critical distinctions I have missed, feel free to put them in the comments.</p>
+        <p>Here is a more technical description of the branches in the tree:</p>
+        <p>Major Catastrophe: A disaster occurs which is large enough that we have not recovered our current technological level 100 years from now.</p>
+        <p>ASI Created: An Artificial Intelligence is created which convincingly outperforms all humans at all cognitive tasks. i.e No real-world relevant task is in practise found (restricted to the set of tasks which can be performed with a computer) where the top human scores a greater than 50% win rate against the computer.</p>
+        <p>Technical Alignment Solved: The technical problem of ensuring that an abstract human preference can be specified to any AI, with the AI then keeping this preference out of distribution with a known, >90% probability, is solved.</p>
+        <p>Implemented with a minus: A fully aligned ASI training schedule is performed with a minus sign flipped as explained <a href="https://youtu.be/qV_rOlHjvvs?si=N7daxhmTlOhRwZS-">here</a>. Said AI is not contained.</p>
+        <p>AI Takeover: AI ends up in control of the planet's resources, without humans having a means to regain that control.</p>
+        <p>Aligned to Creators: AI is specifically aligned to the will of the segment of society which created it (with possible govt intervention). Rest of society has little to no control over AI use and deployment.</p>
+        <p>Kill Everyone: >99.9% population decline over the 100 years following takeover.</p>
+        <p>AI Centralised: ASI technology is controlled by <= 10 companies which have ~sole influence over its use.</p>
+        <p>Value Net Positive: >50% of humans in resulting world would prefer to be alive than dead. (In a Coherent Extrapolated Volition sense, without being e.g drugged to say this).</p>
+        <p>Humans better off than today: It would be preferable on average for humans to live in this world than in 2025.</p>
+        <p>Aligned to sentience in general: The welfare of non-human animals is valued in the structure of society, as is that of possibly sentient AIs.</p>
+        <h3>Results</h3>
+        <p>Here is the tree as I have designed it.</p>
+        <p>EDIT: Note that to compress the tree I have combined the "Yes" and "No" branches of "Alignment solved" either side of the AI Takeover branch.</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/7c169cdd7bd7ad443bc255b62f4909c1589f45e36e77bff5.jpg" alt="" style="max-width:100%"></p>
+        <h3>Ranking</h3>
+        <p>Next to the end nodes of the graph, I have labelled the outcomes according to my personal preference for the broad categories (remember, the categories will likely overlap, with some worlds within them being better than others).</p>
+        <ul>
+        <li> ASI Eutopia - AI is aligned and controlled by certain centralised firms, but the values are controlled by society, while respecting other forms of consciousness such as non-human animals and (potentially) AI itself. General flourishing expected.</li>
+        <li> Decentralised ASI - Many members, groups in society (maybe everyone) has control of a superintelligence. Assuming we have made it a couple of hundred years in the future, this presumably means that there are good systems for preventing complete anarchy, although I expect there may still be a few negative externalities from misuse.</li>
+        <li> No ASI - Humanity collectively chooses not to build superintelligence (or cannot build it). History continues with technological gains from lesser intelligences.</li>
+        <li> Semi-Aligned ASI - AI is aligned and controlled by certain centralised firms, but the values are controlled by society. Humans are the sole beneficiaries, and in many of these worlds things like factory farms still exist, pushing this category down the list.</li>
+        <li> ASI Aligned to Creators - AI is aligned, but controlled more or less solely by the company and/or government which created it. How nice it is to be a part of this society therefore depends on the values of creators of the superintelligence.</li>
+        <li> Misaligned AI without Takeover<sup><a href="#fn-pzksdsnc4ya" id="fnref-pzksdsnc4ya">[3]</a></sup> \- AI is misaligned but decides against takeover. This could be because of strong control methods or subtle arguments not obvious to humans.</li>
+        <li> AI Takeover with positive externalities - AI takes over the world, with positive outcomes for humans (e.g new tech, AI optimises for something close enough to the human utility function)<sup><a href="#fn-yo0ypgpggdo" id="fnref-yo0ypgpggdo">[4]</a></sup>.</li>
+        <li> AI Tyranny - AI takes over the world, without killing everyone. Humans live on, but in worse conditions than today.</li>
+        <li> Major Catastrophe - A significant disaster takes out a large fraction of human civilisation. This could be AI related or not - examples include disasters such as nuclear war, disastrous effects from climate change or pandemics due to engineered bioweapons.</li>
+        <li> Everyone dies - The straightforward x-risk scenario. The AI sets out to kill everyone on the planet. Technically I have defined this as >99.9% population decline, although I expect the population to continue to decrease in most worlds where the death toll is not 100%.</li>
+        <li> S-Risk - AI takes over, and creates a world with humans who would prefer to die. Examples include putting people in factory farms where upvotes on AI answers are continuously sought.</li>
+        <li> Hyper risk - AI explicitly optimised for human suffering. I could give a more in depth description but would rather not.</li>
+        </ul>
+        <p>Note that some of these endgames are extremely unlikely (e.g no 12 requires the unlikely event of a sign flip on the utility function). The goal was to categorise all possible ones. If I have missed anything, please put it in the comments.</p>
+        <hr>
+        <section class="footnotes">
+        <h3>Footnotes</h3>
+        <ol>
+        <li id="fn-ec1frz3nsl6">I am aware that Yudkowsky was talking about how an ideal future will probably seem strange to us, but I imagine many non-ideal futures will appear equally odd. <a href="#fnref-ec1frz3nsl6">↩</a></li>
+        <li id="fn-f890ess5po">At least, most superintelligences which don't blow up like those subject to substrate needs convergence do <a href="#fnref-f890ess5po">↩</a></li>
+        <li id="fn-pzksdsnc4ya">This is the scenario I am least certain of how to rank. I would be interested in people's thoughts here. <a href="#fnref-pzksdsnc4ya">↩</a></li>
+        <li id="fn-yo0ypgpggdo">Personally I feel the most likely scenario for this is via a superintelligence with behaviour largely predicted by something stemming from Janus's simulator theory, making it more "human" in its actions. <a href="#fnref-yo0ypgpggdo">↩</a></li>
+        </ol>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

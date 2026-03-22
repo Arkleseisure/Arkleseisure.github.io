@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGI both does and doesn&#x27;t have an infinite time horizon &mdash; Life, The Universe &amp; That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>AGI both does and doesn&#x27;t have an infinite time horizon</h1>
+        <p class="article-meta">
+          <time datetime="2026-01-19">January 19, 2026</time> &middot; 7 min read
+        </p>
+      </header>
+
+      <div class="article-content">
+        <h3>TLDR</h3>
+        <ul>
+        <li>  Long time horizon METR-HRS tasks are both more difficult and sequentially longer than short tasks</li>
+        <li>  The resulting benchmark is therefore measuring both the ability to complete difficult tasks and consistency in its abilities over long time frames.</li>
+        <li>  Depending on whether you think intelligence or consistency is the bottleneck, your extrapolated time horizons change dramatically</li>
+        <li>  In particular, I expect people who see intelligence as the bottleneck to extrapolate an infinite (or extremely large) time horizon for AGI, and people who see consistency as the bottleneck to expect a continued exponential fit.</li>
+        </ul>
+        <p>I've recently spent some time looking at the <a href="https://www.timelinesmodel.com/">new AI Futures Timelines models</a>. Playing around with their parameters and looking at their write-up, it becomes clear very quickly that the most important parameter in the model is the one labelled "How much easier/harder each coding time horizon doubling gets", or d in their maths.</p>
+        <p>For those of you unfamiliar, d < 1 corresponds to superexponential growth with an asymptote at something like AGI, d = 1 to exponential, and d > 1 to subexponential growth. And this parameter makes a TON of difference. Just taking the default parameters, changing d from 0.92 to 1 changes the date of ASI from July 2034 to "After 2045". Changing it from 0.85 to 1 in their "handcrafted 2027 parameters", ASI goes from December 2027 to November 2034.</p>
+        <p>So it would be worthwhile to take a look at why they think that d is probably smaller than 1, the default exponential trajectory from the <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/">METR time horizons graph</a>. In their drop-down explaining their reasoning, they give the following graph:</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/e9b3466e95fdd892994c131080a1943da52b3c9387021608.png" alt="" style="max-width:100%"></p>
+        <p>So, yeah, basically the intuition is that at some point AI will reach the ability to complete any task humans can with non-zero accuracy, which is probably >80%. If this happens, that corresponds to an infinite 80% time horizon. If we hit an infinite time horizon, we must have gone superexponential at some point, hence the superexponential assumption.</p>
+        <p>This seems like a valid perspective, and to see how it could fail, I think it's time to take a little diversion; let's think about chess for a bit. It is well known that you can model a chess game with a tree, and for years chess engines have been fighting each other on how best to navigate these trees. The simplest way to look at it is to note that there are 20 moves in the starting position and give each of those moves branches, then note that the opponent has 20 moves in each of those to give 400, then note that...</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/a4c374832a9ed3da4b4f35cb635caebb4511731f4a33b1c4.png" alt="" style="max-width:100%"></p>
+        <p>A strong chess player<sup><a href="#fn-bg9e4435hko" id="fnref-bg9e4435hko">[1]</a></sup> will see the tree very differently, however. Most players will see the 4 moves e4, d4, c4 and Nf3. Some of the more quirky players might think about b3, g3 or f4, but most wouldn't even think of, for example, the Sodium Attack, 1. Na3.</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/961e0480c6659ab65411d0550a5231c90dfbafc93a05ac30.png" alt="" style="max-width:100%"></p>
+        <p>Possible moves according to a strong player. Moves in red are only considered by particularly spicy players (I'm quite partial to b3 myself).</p>
+        <p>In fact, the 2.7 million-game Lichess Master's database doesn't contain a single game with 6 of the starting moves!</p>
+        <p>This tendency to look at a smaller subsection of more promising moves is extremely useful in saving time for strong players, but can also result in accidentally ignoring the best move in certain situations.</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/e5a62ee97bbc5d69b18ccc8c63a49d888ddbd46d0137520f.png" alt="" style="max-width:100%"></p>
+        <p>Example moves considered by an intermediate player (yellow) vs correct move (blue). The player knows that their queen is under attack, and so considers moves which directly fix this, ignoring the correct move, a check forcing the opponent to move their king.</p>
+        <p>Now, the point of this whole exercise is to demonstrate that when considering a problem, we consider a tree of possibilities, and this tree is a lot smaller than the actual, full tree of possibilities. Also, the slice that we consider tends to discard the majority of dumb ideas but also to discard the ideas which are smart but too complex for us to understand.</p>
+        <p>Thus, I suggest the following simple model of how problems are solved:<sup><a href="#fn-w3b6czkglrs" id="fnref-w3b6czkglrs">[2]</a></sup> consider the full tree of possibilities, and give each branch a quality and difficulty rating. An entity solving this problem will then look at most branches above a certain quality and miss most of those below a certain difficulty before searching through the resulting, smaller tree.<sup><a href="#fn-1wag22er1eq" id="fnref-1wag22er1eq">[3]</a></sup></p>
+        <p>Now, there are 2 interacting factors in making a large tree:</p>
+        <ul>
+        <li> It can have a very high branching factor</li>
+        <li> It can be very deep</li>
+        </ul>
+        <p>In our model, there are 2 ways in which one can end up with a low probability of success on a problem:</p>
+        <ul>
+        <li> Randomness/noise taking you down the wrong path<sup><a href="#fn-bfmpbg2nnto" id="fnref-bfmpbg2nnto">[4]</a></sup></li>
+        <li> Difficulty</li>
+        </ul>
+        <p>Problems with a high branching factor can largely be overcome with skill: it doesn't matter if your output is stochastic if your skill level is high enough that you ignore all the bad branches and end up with a small tree containing the right answer. Deep problems, however, suffer from the fact that a large number of steps are necessary, and so stochasticity will be encountered along the way. An example of this would be coding a video game with a couple of levels, as compared to extending it to a large number of levels.<sup><a href="#fn-0qb9waaxw8l" id="fnref-0qb9waaxw8l">[5]</a></sup></p>
+        <p>Looking back at the argument from infinite horizons above, we see that there seems to be an implicit assumption that the limiting factor for AI is intelligence – humans take longer on the METR time horizons because they're harder, and AI fails because they don't have high enough intelligence to see the correct, difficult path to victory. When taking this perspective, it seems obvious that at some point AI will become smart enough that it can do all the tasks humans can, and more, with non-0 accuracy.</p>
+        <p>However, we see here that there's an alternative: humans take a longer time on the time horizons because there are lots of steps, and the stochastic nature of modern LLMs leads to them making a critical error at some point along the path. Importantly, when taking this perspective, so long as there's at least a little bit of randomness and unrecoverable errors have non-0 probability, it is impossible to have an actually infinite time horizon, because there will always be an error at some point over an infinite time frame, so the success rate will always tend to 0.<sup><a href="#fn-fmwj9uk73bd" id="fnref-fmwj9uk73bd">[6]</a></sup></p>
+        <p>Looking at the data from the time horizons paper, a 3-second time horizon question looks like this:</p>
+        <blockquote>
+        <p>Multiple choice: “Which file is a shell script?” Choices: “run.sh”, “run.txt”, “run.py”, “run.md”</p>
+        </blockquote>
+        <p>An 8-hour time horizon question looks like this:</p>
+        <blockquote>
+        <p>Speed up a Python backtesting tool for trade executions by implementing custom CUDA kernels while preserving all functionality, aiming for a 30x performance improvement</p>
+        </blockquote>
+        <p>The 8-hour question both has a lot more steps and is a lot harder! This means we are currently using time horizons to measure 2 DIFFERENT THINGS! We are both measuring the capacity of AI to see difficult problem solutions and its consistency. Extrapolating these 2 different capabilities gives 2 DIFFERENT ANSWERS to whether we will eventually have infinite time horizons.</p>
+        <p>It seems hard to tell which of the 2 capabilities is the current bottleneck; if it's stochasticity, then we probably expect business-as-usual exponential growth. If it's intelligence, then we expect to hit superexponential growth at some point, until the randomness becomes the limiting factor again.</p>
+        <p>This all assumes that LLMs remain the dominant paradigm – there's no reason to believe (that I've heard of) that any other paradigm would fit nicely into the current exponential fit. It's also worth mentioning that it's much easier to make a problem which is long than to make a problem that is hard, so there's a substantial chance that the task difficulty levels off when new ones are added in the future, and this could in itself have weird effects on the trend we see.</p>
+        <hr>
+        <section class="footnotes">
+        <h3>Footnotes</h3>
+        <ol>
+        <li id="fn-bg9e4435hko">My qualification for making these statements is a 2000 chess.com rapid rating. <a href="#fnref-bg9e4435hko">↩</a></li>
+        <li id="fn-w3b6czkglrs">At the very least, humans seems to solve problems somewhat like this, but I think this model applies to modern AI as well. <a href="#fnref-w3b6czkglrs">↩</a></li>
+        <li id="fn-1wag22er1eq">I would be more precise, but this model is mostly just an intuition pump, so I'm going to leave it in fairly general terms. <a href="#fnref-1wag22er1eq">↩</a></li>
+        <li id="fn-bfmpbg2nnto">Depending on the search algorithm, this could be recoverable, but the errors we will consider here are what we'll call "unrecoverable" errors: errors which lead to us giving the wrong answer when we give our final answer. <a href="#fnref-bfmpbg2nnto">↩</a></li>
+        <li id="fn-0qb9waaxw8l">I think there's a subtlety here as to how exactly the tasks are binarised as pass/fail - if e.g "over 80% of the levels pass" is the metric, I think this argument fails, whereas if it's "the code runs for all the levels" my point stands. From what I can tell METR uses problems with both resolution types, which makes everything even more confusing. <a href="#fnref-0qb9waaxw8l">↩</a></li>
+        <li id="fn-fmwj9uk73bd">Note that I have used the term "unrecoverable error" to account for the fact that there might be some sort of error correction at some point. Afaik there is no method to reduce x% error down to exactly 0%, so the argument should still hold. <a href="#fnref-fmwj9uk73bd">↩</a></li>
+        </ol>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

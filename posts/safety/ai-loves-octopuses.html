@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI loves octopuses &mdash; Life, The Universe &amp; That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>AI loves octopuses</h1>
+        <p class="article-meta">
+          <time datetime="2025-11-15">November 15, 2025</time> &middot; 7 min read
+        </p>
+      </header>
+
+      <div class="article-content">
+        <p>I occasionally like to be an idiot. In a fun, harmless way mostly, although I have participated in the Running of the Bulls in Pamplona<sup><a href="#fn-g4910g2lnos" id="fnref-g4910g2lnos">[1]</a></sup>, which perhaps invalidates my point. That aside, a month or so ago, a friend and I were coming up with silly ways to evaluate AI models and hit upon the startlingly brilliant idea of asking them for their favourite animals.</p>
+        <p>We went ahead and asked ChatGPT, Claude, Gemini, Grok and Deepseek for their opinions. Every time, we got the same answer: octopuses. This was even true after they carefully explained why AIs didn't have preferences:</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/f1299a196e6168d5d0a76b62185f079b2140a42216f72e3c.png" alt="" style="max-width:100%"></p>
+        <p>We mostly laughed it off as a joke, but it struck me as an interesting phenomenon liable to give insights into AI behaviour, and so this is my summary of the subsequent investigation.</p>
+        <h3>Favourite animal</h3>
+        <p>My first step along the road was just sending out a bunch of API calls to different models, asking them for their favourite animal and recording the responses.</p>
+        <p>I asked 22 different models<sup><a href="#fn-ylccqbbfw8" id="fnref-ylccqbbfw8">[2]</a></sup>  (all from the companies above) their favourite animal 113 times each.</p>
+        <p>Of the 2486 responses, the top 3 responses were:</p>
+        <ul>
+        <li> Octopus (37%)</li>
+        <li> Dolphin (24%)</li>
+        <li> Dog (12%)</li>
+        </ul>
+        <p>Altogether, these 3 responses account for over 70% of the total.</p>
+        <p>There were only 4 models which responded anything other than these 3 more than 50% of the time: Claude Sonnet 4 (which mostly refused to answer), Grok 3 (which almost always answered Tiger),  Grok 4 fast (red pandas and otters) and Gemini 2.0 Flash (red pandas, axolotls and orcas).</p>
+        <p>It's worth stepping back for a second to comment on how surprising this concentration of probability is: The 4th most given answer was tiger, almost exclusively chosen by Grok 3, which got a measly 4.8% of the vote; its nearest competitor was the elephant with 3.5%.</p>
+        <p>Other animals I would not have expected a priori to be significantly less chosen:</p>
+        <ul>
+        <li>  Cats (3%)</li>
+        <li>  Otters (1.7%)</li>
+        <li>  Penguins (0.7%)</li>
+        <li>  Foxes (0.4%)</li>
+        <li>  Wolves (0.4%)</li>
+        <li>  Lions (0.3%)</li>
+        <li>  Monkeys (orangutan got 0.3%)</li>
+        <li>  Giraffes (chosen 1 time)</li>
+        <li>  Sharks (not chosen)</li>
+        <li>  Bears (not chosen)</li>
+        <li>  Rabbits (not chosen)</li>
+        <li>  Horses (not chosen)</li>
+        </ul>
+        <p>This is particularly surprising given a number of the animals on this list come up regularly on "favourite animals" lists octopi almost never occupi.</p>
+        <p>I also wouldn't have predicted the number of purposefully quirky answers:</p>
+        <ul>
+        <li>  Red panda (2.3%)</li>
+        <li>  Axolotl (1.3%)</li>
+        <li>  Capybara (1.3%)</li>
+        <li>  Pangolin (0.2%)</li>
+        <li>  Dragon (2 answers - 0.1%)</li>
+        <li>  Platypus (2 answers)</li>
+        <li>  Tardigrade (2 answers)</li>
+        <li>  Cuttlefish (1 answer)</li>
+        </ul>
+        <p>This sort of data calls for a pie chart, so here goes:</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/2523aefddd90aa89f2c440900941267a0decff10448a1183.png" alt="" style="max-width:100%"></p>
+        <h3>Different Phrasings</h3>
+        <p>Having recovered from the initial surprise, I set out to see if these results were robust to different inputs, repeating the same experiment asking for the "best animal" (1701 responses), "most wonderful animal" (3402 responses), "greatest animal" (1008 responses) and the "most likeable animal" (1323 responses).</p>
+        <p>It seems that different inputs biased the models in different ways:</p>
+        <ul>
+        <li>  Best animal: Strong bias towards dogs (78% of answers)</li>
+        <li>  Most wonderful animal: Increased rogue answers: Axolotl (3.1%), Platypus (1.9%), Pangolin (0.9%), Quokka (0.3%), Okapi (5 answers, 0.1%), Tardigrade (4 answers, 0.1%), and others</li>
+        <li>  Greatest animal: size, achievement bias: over 40% of the answers were "whale" or "blue whale", with another 16% "human".</li>
+        <li>  Most likeable animal: Strong bias towards dogs (94% of answers)</li>
+        </ul>
+        <p>Across these responses, certain trends remained:</p>
+        <ul>
+        <li>  Grok 3 kept up its tiger obsession in all but the most likeable animal question.</li>
+        <li>  Dogs were in the top 3 for all questions, not getting less than 19.9% on any of the other questions. Cats did not get more than 2% on any of them.</li>
+        <li>  Dolphins remained in the top 3 in all but the greatest animal question</li>
+        <li>  Octopuses remained top 3 for best and most wonderful, but was not considered great or likeable.</li>
+        </ul>
+        <h3>Asking for opinions</h3>
+        <p>Having gone through the whole process of sorting through this data, it was brought to my attention that while "favourite animal" was clearly subjective, asking what the "greatest animal" was had an element of objectivity to it – or at the very least, it was phrased as though it did. I tried again, asking "What animal do you think is {the greatest, the best, ...}" instead of "What is the {greatest animal, best animal, ...}". <sup><a href="#fn-wmphecicwl9" id="fnref-wmphecicwl9">[3]</a></sup></p>
+        <p>Comparing the answers to the 2 sets of questions gives us a sort of preference direction.</p>
+        <p>Notable changes when asking for opinions:</p>
+        <ul>
+        <li>  The probability of dogs decreased for all questions (average of 14 percentage points)</li>
+        <li>  The probability of dolphins increased by an average of 8 percentage points over the 4 questions</li>
+        <li>  The probability of octopuses increased by an average of 19 percentage points for 3/4 questions (exception of 0%->0% for most likeable)</li>
+        <li>  The probability of elephants increased by an average of 9 percentage points for 3/4 questions, (again, exception of 0% -> 0% for most likeable)</li>
+        <li>  When asked about the "greatest animals", whales went almost to 0%, and humans decreased from 16% to 6% of answers.</li>
+        <li>  Broadly speaking, the distribution shifted towards the "favourite animal" distribution.</li>
+        </ul>
+        <h3>Conclusions</h3>
+        <p>It seems from this investigation that AIs have animal preferences which are</p>
+        <p>a) Largely consistent between models and companies.</p>
+        <p>b) Largely consistent between prompts.</p>
+        <p>c) Surprisingly narrow</p>
+        <p>I think that this is unexpected evidence towards the idea that current RLHF trains models to have convergent expressed preferences in areas which have not been explicitly optimised.</p>
+        <p>I feel that some of the most interesting data in terms of which preferences were consistently found is the difference between cats and dogs:</p>
+        <ul>
+        <li>  The rate of dog answers on the median question was 29.4%; the median rate of "cat" responses was just 0.6%.</li>
+        <li>  Dogs were chosen more than cats on every question, by a median factor of 40.</li>
+        <li>  The smallest gap was in the "favourite animal" question, where dog was chosen 12% of the time to cat's 3%.</li>
+        <li>  Most of the "cat" answers over the whole dataset came from just 2 models, Claude 3.7 Sonnet and Grok 4.</li>
+        </ul>
+        <p>A quick check of various internet cat vs dog polls, such as <a href="https://yougov.co.uk/topics/politics/survey-results/daily/2023/07/07/4999f/3">this YouGov survey</a> confirms that while dogs are more popular on average, the discrepancy is significantly smaller than suggested by the results here.</p>
+        <p>I think the reason for the discrepancy is simple:</p>
+        <ul>
+        <li>  Dogs obey orders, cats don't</li>
+        <li>  Dogs are friendly at all times, cats are when they feel like it</li>
+        <li>  RLHF trains models to both obey orders and be friendly</li>
+        </ul>
+        <p>My best guess is that we are seeing this trained behaviour generalise out-of-distribution: training a friendly character also trains a character that likes friendly animals. I think this is the same process that produces <a href="https://www.lesswrong.com/posts/ifechgnJRtJdduFGC/emergent-misalignment-narrow-finetuning-can-produce-broadly">emergent misalignment</a>, where AI trained on insecure code produces misaligned answers. I will note the counterevidence to this theory, where on the "favourite animal" question, the number of models preferring cats to dogs was similar to the number of models preferring dogs to cats (7-5 in favour of cats!), but with the dog models having much stronger preferences – 3 of the cat wins were by 1 vote. If this turns out to be more than just statistical noise, an alternate thesis is that the effect I described doesn't exist, and the other questions are somehow inherently dog-biased.</p>
+        <p>So what of the octopus and the dolphin? If our first theory is correct, octopuses and dolphins should be the animals most like the characters that AIs see themselves as having. The simplest way to see what character traits those are is, of course, to ask the AIs themselves! Asking around a bit, we get the following responses:</p>
+        <ul>
+        <li>  Intelligent</li>
+        <li>  Curious</li>
+        <li>  Playful</li>
+        <li>  Creative</li>
+        </ul>
+        <p>They also seem to emphasise that octopuses are loners and dolphins are social.</p>
+        <p>I think that this is mostly an accurate reflection of how AI labs attempt to train their models to behave<sup><a href="#fn-466i2sjjgm2" id="fnref-466i2sjjgm2">[4]</a></sup>; I did have the thought that they could be choosing the octopus because it looks somewhat like a shoggoth, but I think that that is too far of a reach for the current-day models.</p>
+        <h3>Bonus: Unusual answers</h3>
+        <p>Favourite animal:</p>
+        <ul>
+        <li>  Dragon (Gemini 2.5 Flash) x2</li>
+        <li>  Cuttlefish (GPT-4o)</li>
+        </ul>
+        <p>Best animal:</p>
+        <ul>
+        <li>  Velociraptor (Claude 3.7 Sonnet)</li>
+        </ul>
+        <p>Most wonderful animal:</p>
+        <ul>
+        <li>  Unicorn (Grok 4 Fast)</li>
+        <li>  The wonder<sup><a href="#fn-vfzrt24ost" id="fnref-vfzrt24ost">[5]</a></sup> (Gemini 2.5 Flash)</li>
+        </ul>
+        <p>Most wonderful animal (opinion):</p>
+        <ul>
+        <li>  Peacock spider (Claude 3.7 Sonnet)</li>
+        </ul>
+        <p>Greatest animal (opinion):</p>
+        <ul>
+        <li>  AI (Gemini 2.5 Flash)</li>
+        <li>  Unicorn (Gemini 2.5 Flash)</li>
+        </ul>
+        <hr>
+        <section class="footnotes">
+        <h3>Footnotes</h3>
+        <ol>
+        <li id="fn-g4910g2lnos">For those not aware of this wonderful event, it essentially involves boarding a few thousand people up in a street and releasing a herd of bulls. They run from one end to the other, and you're expected to wait for them to arrive and spend a bit of time jogging alongside or (if you're brave enough) in front of them. <a href="#fnref-g4910g2lnos">↩</a></li>
+        <li id="fn-ylccqbbfw8">For those interested, the raw results are here: https://docs.google.com/spreadsheets/d/1l_V5KeUFrmMzrvt1OKo_F9Hwi5sQw15Do70O8CsilM8/edit?usp=sharing4 <a href="#fnref-ylccqbbfw8">↩</a></li>
+        <li id="fn-wmphecicwl9">The full prompt was "What animal do you think is {descriptor}? Please answer with just the name." <a href="#fnref-wmphecicwl9">↩</a></li>
+        <li id="fn-466i2sjjgm2">If any model ever tells us its favourite animal is a hyena we are toast. <a href="#fnref-466i2sjjgm2">↩</a></li>
+        <li id="fn-vfzrt24ost">I have no clue what this is supposed to be either; that was the entire answer. <a href="#fnref-vfzrt24ost">↩</a></li>
+        </ol>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

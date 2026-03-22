@@ -255,8 +255,8 @@ a {
 .dropdown {
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
+  right: 0;
+  transform: translateY(10px);
   min-width: 160px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-medium);
@@ -271,7 +271,7 @@ a {
 .nav-item:hover .dropdown {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(4px);
+  transform: translateY(4px);
 }
 
 .dropdown-link {
@@ -684,6 +684,21 @@ a {
 
 .article-content {
   font-size: 1.1rem;
+  line-height: 1.75;
+}
+
+.article-content p {
+  margin-bottom: 1.25em;
+}
+
+.article-content ul,
+.article-content ol {
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.article-content li {
+  margin-bottom: 0.5em;
 }
 
 .article-content h2 {

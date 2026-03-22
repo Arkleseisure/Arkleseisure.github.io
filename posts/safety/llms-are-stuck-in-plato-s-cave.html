@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLMs are stuck in Plato&#x27;s cave &mdash; Life, The Universe &amp; That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>LLMs are stuck in Plato&#x27;s cave</h1>
+        <p class="article-meta">
+          <time datetime="2025-07-13">July 13, 2025</time> &middot; 9 min read
+        </p>
+      </header>
+
+      <div class="article-content">
+        <p><em>Epistemic status</em>: This is an intuition pump for why making LLMs multimodal is helpful. I am ~90% confident that my later claims which build on this are at least somewhat correct. This article was created over an unclear number of hours (20-50?) and red-teamed by GPT-4o.</p>
+        <p>I recently went to a festival at a Buddhist temple in Korea. There were a range of festive activities – lamp making, tea tasting, calligraphy and the like. Chairs were set up in front of a stage by a big central praying hall. This is where the main event was held. A speaker stood up and started talking to us in Korean. Not speaking Korean, I distracted myself with a leaflet I'd found on my seat. I tried to decipher the symbols in front of me and, having learned the Korean alphabet, was able to figure out approximate sounds for some of them. However, I had no concept of meaning. It was at this point I realised just how difficult a task traditional large language models are given.</p>
+        <p>When we first learn to speak as small children, we are shown objects and learn to associate them with sounds made by our parents. My first word was "car", which I presumably figured out by associating the sounds "c", "a" and "r" with the thing with wheels. This was unfortunately not an entirely correct generalisation, as to my infant mind the dishwasher tray counted as a "car", but points for trying nevertheless. Indeed, I am now in Vietnam and am realising just how hard the task of learning a language is, even in the presence of reference objects. Sure, you can in principle figure out what the word for "table" is, given this word may be said in the presence of the object, but good luck filtering that out in the midst of drunken Vietnamese banter during a rowdy evening with locals<sup><a href="#fn-6otp0hbjn7a" id="fnref-6otp0hbjn7a">[1]</a></sup>.</p>
+        <p>My point is that both of the tasks I've mentioned are significantly easier than the standard LLM next token prediction task. In Vietnamese conversation I can use situational clues to build up knowledge of what words are used when, noticing that "mot hai ba yo!" always comes before the clinking of glasses and drinking, for instance. In reading the passage in Korean, I didn't know where to start. What does this word mean? Giraffe? Quaint? Sticky toffee pudding? It's shocking how hard it is to deduce anything from text like this. There's no context you can use when the entire context is equally meaningless. It gets worse, because I would still expect most of the words on the page to reference concepts I had prior experience with, in a way that just cannot be the case for a large language model which has not seen, heard or touched the world it describes.</p>
+        <p>Like, think about this for a minute: you wake up with no knowledge of anything. You're given a sequence of tokens and told to predict what comes next. 58, 2, 74, 578, fill in the blank. 78? Wrong, it was actually 43<sup><a href="#fn-8ptovlvprmt" id="fnref-8ptovlvprmt">[2]</a></sup>.</p>
+        <p>Sure, you can in principle make progress. Grammar is probably the simplest thing to start noticing - 34 (I) is regularly followed by 51 (am). Maybe over time you're able to connect nouns to adjectives – 765 (elephant) seems to relate to 383 (big). I think language models have quite clearly demonstrated it is possible to become very good at this, but think for a moment how it would feel to have no concept of a word other than its relation to other words. Even in the parable of the <a href="https://en.m.wikipedia.org/wiki/Blind_men_and_an_elephant">blind men and the elephant</a> they had a sense of touch to relate the elephant to.</p>
+        <p>Presumably this goes a long way to explaining why most modern LLMs are multimodal, accepting images as well as text – it's a lot easier to understand how an elephant fits together from an image than from text. As an example, here is its Wikipedia description:</p>
+        <blockquote>
+        <p>Distinctive features of elephants include a long proboscis called a trunk, tusks, large ear flaps, pillar-like legs, and tough but sensitive grey skin. The trunk is prehensile, bringing food and water to the mouth and grasping objects. Tusks, which are derived from the incisor teeth, serve both as weapons and as tools for moving objects and digging. The large ear flaps assist in maintaining a constant body temperature as well as in communication. African elephants have larger ears and concave backs, whereas Asian elephants have smaller ears and convex or level backs.</p>
+        </blockquote>
+        <p>And here is an image which fits the description<sup><a href="#fn-kiofzo5rww7" id="fnref-kiofzo5rww7">[3]</a></sup>:</p>
+        <p><img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/a732b311f0b2764cce898a7a747a6f9efc1d69ba65f471d8.png" alt="" style="max-width:100%"></p>
+        <p>Obviously language models have access to a ton more data, but they also don't have an easily accessible model of the world. Just creating this image includes an implicit assumption that we already know what "trunks", "tusks", and "ears" are. Note that I am not arguing it is impossible to figure these relations out, as in the limit of infinite compute, data, etc., it may be. What this is meant to be is an intuition pump for the fact that looking at things with a different mode of input gives a fundamentally different perspective. In this new perspective, it is likely that many things which were not previously clear become so.</p>
+        <p>So what happens now that we have multimodal models? Well, they still mostly only have access to text and images. This is a long way from the information humans have at our disposal, so let's do a comparison. Let us imagine that we've understood language and images well enough to match the labels to the images and understand grammar and adjectives and that sort of thing. What might be limiting us now?</p>
+        <p>Imagine you are given a few videos of a completely alien species which moves using an unknown-to-us 4th dimension of space and are tasked with creating a simple explanation for how it moves<sup><a href="#fn-j6m7dgrbyoi" id="fnref-j6m7dgrbyoi">[4]</a></sup>. You might be able to, but this would be a hell of a lot easier if you had direct experience with the extra dimension. In the same way, our text-and-image-trained AI has no real experience with 3D space, or for that matter with time (save possibly a few sets of images taken one after another). This immediately makes a lot of things which happen in 3 dimensions of space and 1 dimension of time very counterintuitive. I feel like this is a true statement independent of whether a human or an AI is doing the learning: it is easier to learn about a phenomenon which is directly observed than one which has to be inferred from other data.</p>
+        <p>Naturally different forms of input will be useful in different contexts – I doubt giving AI a sense of smell will help with its coding, while it might well improve its cooking. However, I do expect many new forms of input to produce new capabilities just through giving a new lens to look at the world. Notably, all human senses must have evolved through some form of evolutionary pressure and must therefore be helpful in the ancestral environment. While this does not directly follow, I imagine that giving AI access to human senses would unlock new capabilities, if only in helping them understand humans.</p>
+        <p>As it stands, the key gaps between the inputs<sup><a href="#fn-g6jqzax9f8" id="fnref-g6jqzax9f8">[5]</a></sup> that humans have and the inputs that modern AI has seem to me to be the following<sup><a href="#fn-ib1ucxhitm" id="fnref-ib1ucxhitm">[6]</a></sup>:</p>
+        <ul>
+        <li> Sound (for most models)</li>
+        <li> Continuous motion through space</li>
+        <li> Continuous motion through time</li>
+        <li> Touch</li>
+        <li> Temperature</li>
+        <li> Smell/Taste</li>
+        <li> Proprioception (sense of where our body is in space)</li>
+        <li> Nociception (Pain)</li>
+        </ul>
+        <p>The first 3 can probably come from video, and I imagine understanding cause and effect, the flow of time and interactions between objects more generally is much easier if long series of events can be experienced in one go. Placing a model in a virtual world and letting it interact with objects also seems like it would help with notions of motion through space and time.</p>
+        <p>I should probably pause here to recognise that there are challenges inherent to actually training on different modes of data properly, and it is not obvious how to design a neural network to integrate varied data into a system which can process them together cleanly. Notably, I think the later items on the list would most likely be harder to implement and give more marginal improvements (as well as having significantly less readily available data).</p>
+        <p>However, I don't think that many of these challenges are more difficult than your standard AI research. For instance, I feel like it will be much easier for frontier AI companies to fully integrate video data into the LLM training pipeline than it will be for alignment researchers to make similarly sized progress on the alignment problem. I also feel like many of the flaws with LLMs commonly pointed out by sceptics can in various ways be narrowed down to lack of experience with "the real world". In particular, finding the solution to many of the <a href="https://arcprize.org/play?task=03560426">ARC-AGI 2</a> problems seems to require something like moving the "objects" in the image around, a difficult concept for anything that has never seen anything move.</p>
+        <p>Now, we've discussed how AI is currently held back compared to humans by its lack of senses, but in the future it may well push beyond them – we are in Plato's cave ourselves and are limited in our perception of the world by the tools given to us by evolution, which has endowed other animals with a variety of other modes of input – echolocation, electroreception and infrared vision, to name just a few<sup><a href="#fn-ja0xzaoiyjj" id="fnref-ja0xzaoiyjj">[7]</a></sup>.</p>
+        <p>We also need not limit ourselves solely to extant senses – future AI should equally be able to think natively about radio waves and x-rays, weather data and just about any other form of data. Each new mode of input gives a new perspective, and with this comes new capabilities and insights. I have a friend who is blind but plays ice hockey remarkably well. I imagine she would play even better with her sight restored, and the ability to echolocate the puck and other players would probably help in other, novel ways.</p>
+        <p>I think this is one of the intuitions people have when they say we won't reach AGI solely by scaling up LLMs. It's not that it's impossible in principle; it's that it takes several quorpleflops<sup><a href="#fn-ba88im964g" id="fnref-ba88im964g">[8]</a></sup> of compute to recreate intuitions much more easily derived from other sources. On the other hand, if AI can already do so much while being so limited, significant progress may be coming in the near future. For the doomers among us (myself included), this is bad news.</p>
+        <hr>
+        <section class="footnotes">
+        <h3>Footnotes</h3>
+        <ol>
+        <li id="fn-6otp0hbjn7a">I am so much more grateful now for the existence of Duolingo. <a href="#fnref-6otp0hbjn7a">↩</a></li>
+        <li id="fn-8ptovlvprmt">Quick warning not to try to look for a pattern, I am very much making these up on the spot. Unless it amuses you, in which case do whatever you want. <a href="#fnref-8ptovlvprmt">↩</a></li>
+        <li id="fn-kiofzo5rww7">I tried to create something even more cursed but chatgpt couldn't generate it for me. I think there's a lot more stuff you could fiddle with to make this look less like an elephant while still fitting the description. <a href="#fnref-kiofzo5rww7">↩</a></li>
+        <li id="fn-j6m7dgrbyoi">Physicists out there, please don't shoot me. I know that there are very strong reasons not to believe in more than 3 large dimensions, but this was the best illustration I could think of. <a href="#fnref-j6m7dgrbyoi">↩</a></li>
+        <li id="fn-g6jqzax9f8">Here taken to mean "something experienced at some point in the training data" <a href="#fnref-g6jqzax9f8">↩</a></li>
+        <li id="fn-ib1ucxhitm">It is possible I have missed some. If so, please tell me and I'll add them. <a href="#fnref-ib1ucxhitm">↩</a></li>
+        <li id="fn-ja0xzaoiyjj">There's an entire discussion about the possibility of forms of subjective experience completely separate from anything humans have experienced here, but I will leave that for another time. <a href="#fnref-ja0xzaoiyjj">↩</a></li>
+        <li id="fn-ba88im964g">My submission for a new word meaning "way more flops than should ever be used on anything by any reasonable person" <a href="#fnref-ba88im964g">↩</a></li>
+        </ol>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../../js/main.js"></script>
+</body>
+</html>
