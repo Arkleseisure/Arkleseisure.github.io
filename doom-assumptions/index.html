@@ -14,7 +14,7 @@
 
   <!-- Main site styles + local overrides -->
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="tree.css">
+  <link rel="stylesheet" href="tree.css?v=8">
 </head>
 <body>
   <!-- Header (matches main site) -->
@@ -92,11 +92,16 @@
     <div class="tree-with-labels">
       <!-- Labels sidebar -->
       <aside class="labels-sidebar" id="variables-container"></aside>
-      <!-- Tree graph area — full width, horizontally scrollable -->
-      <div class="tg-scroll" id="tg-scroll">
-        <div class="tg-tree" id="tree-graph">
-          <svg class="tg-svg" id="tree-svg"></svg>
-          <div id="tree-root"></div>
+      <!-- Tree column: title + scrollable graph -->
+      <div class="tree-main">
+        <div class="worldview-title-bar">
+          <span id="worldview-title" class="worldview-title"></span>
+        </div>
+        <div class="tg-scroll" id="tg-scroll">
+          <div class="tg-tree" id="tree-graph">
+            <svg class="tg-svg" id="tree-svg"></svg>
+            <div id="tree-root"></div>
+          </div>
         </div>
       </div>
       <!-- Action buttons sidebar -->
@@ -106,7 +111,7 @@
         <button type="button" id="export-btn" class="action-btn" title="Export worldview to file">Export</button>
         <button type="button" id="import-btn" class="action-btn" title="Import worldview from file">Import</button>
         <input type="file" id="import-file" accept=".json" style="display:none">
-        <button type="button" id="share-btn" class="action-btn" title="Copy shareable link">Share</button>
+        <button type="button" id="share-btn" class="action-btn" title="Share this worldview">Share</button>
       </aside>
     </div>
 
@@ -163,6 +168,25 @@
     </div>
   </main>
 
+  <!-- Share Modal (shown as fallback when Web Share API is unavailable) -->
+  <div class="share-modal" id="share-modal" style="display:none">
+    <div class="share-modal-backdrop" id="share-modal-backdrop"></div>
+    <div class="share-modal-panel">
+      <button type="button" class="share-modal-close" id="share-modal-close" aria-label="Close">&times;</button>
+      <h3 class="share-modal-title">Share your worldview</h3>
+      <div class="share-modal-preview">
+        <img id="share-modal-img" alt="Worldview preview">
+      </div>
+      <div class="share-modal-url">
+        <input type="text" id="share-modal-url-input" readonly>
+      </div>
+      <div class="share-modal-actions">
+        <button type="button" class="btn btn-sm" id="share-copy-link">Copy link</button>
+        <button type="button" class="btn btn-sm" id="share-download-img">Download image</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
@@ -176,8 +200,8 @@
     </div>
   </footer>
 
-  <script src="data.js"></script>
-  <script src="tree.js"></script>
+  <script src="data.js?v=8"></script>
+  <script src="tree.js?v=8"></script>
   <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="../js/main.js"></script>
 </body>

@@ -110,6 +110,13 @@
   align-items: flex-start;
 }
 
+.tree-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .tree-with-labels .tg-scroll {
   flex: 1;
   min-width: 0;
@@ -150,6 +157,73 @@
   padding: var(--space-xs) var(--space-sm);
 }
 
+.labels-sidebar .sidebar-sep {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--space-xs) 0;
+}
+
+.label-with-help {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.help-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--border-medium);
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 600;
+  cursor: help;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.help-icon:hover,
+.help-icon:focus {
+  color: var(--accent-safety);
+  border-color: var(--accent-safety);
+  outline: none;
+}
+
+.help-icon::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 240px;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: pre-line;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.help-icon:hover::after,
+.help-icon:focus::after {
+  opacity: 1;
+}
+
 .var-group {
   display: flex;
   align-items: center;
@@ -182,6 +256,134 @@
   padding: var(--space-xs) var(--space-md);
   font-size: 0.85rem;
   margin-left: auto;
+}
+
+/* ---------- Share image footer (only present in exported image) ---------- */
+.tree-image-footer {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Share Modal ---------- */
+.share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.share-modal-panel {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  max-width: 540px;
+  width: calc(100% - 2rem);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.share-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+
+.share-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.share-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0 0 var(--space-md) 0;
+}
+
+.share-modal-preview {
+  margin-bottom: var(--space-md);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.share-modal-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.share-modal-url {
+  margin-bottom: var(--space-md);
+}
+
+.share-modal-url input {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.share-modal-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.share-modal-actions .btn {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* ---------- Worldview Title Bar ---------- */
+.worldview-title-bar {
+  text-align: center;
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  min-height: 1.5em;
+}
+
+.worldview-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.worldview-title:empty::before {
+  content: " ";
+  white-space: pre;
 }
 
 /* ---------- Tree Scroll Container ---------- */
