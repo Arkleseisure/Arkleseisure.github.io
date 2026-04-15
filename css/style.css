@@ -910,7 +910,7 @@ a {
     position: static;
     transform: none;
     opacity: 1;
-    visibility: visible;
+    visibility: inherit;
     box-shadow: none;
     border: none;
     background: transparent;
