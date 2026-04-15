@@ -201,7 +201,9 @@
     const note = document.getElementById('author-filter-note');
     if (note && d.author_min_posts) {
       note.textContent =
-        `Ranked by mean post score. Limited to authors with at least ${d.author_min_posts} posts ` +
+        `Ranked by mean post score, expressed as standard deviations above the ` +
+        `mean author (normalised against the spread of author means, not post scores). ` +
+        `Limited to authors with at least ${d.author_min_posts} posts ` +
         `(⅔ of the ${d.n_days} residency days so far) to avoid small-sample flukes.`;
     }
   }
