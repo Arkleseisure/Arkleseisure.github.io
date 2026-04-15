@@ -81,8 +81,7 @@
             <thead>
               <tr>
                 <th class="num" data-sort="rank">#</th>
-                <th class="num" data-sort="score">Score (σ)</th>
-                <th class="num">95% CI</th>
+                <th class="num" data-sort="score">Score (σ, mean ± SE)</th>
                 <th data-sort="author">Author</th>
                 <th data-sort="title">Title</th>
                 <th data-sort="date">Date</th>
@@ -128,8 +127,7 @@
             <thead>
               <tr>
                 <th class="num">#</th>
-                <th class="num">Score (σ)</th>
-                <th class="num">95% CI</th>
+                <th class="num">Score (σ, mean ± SE)</th>
                 <th>Author</th>
                 <th>Title</th>
               </tr>
@@ -142,9 +140,8 @@
       <p class="bench-note">
         Scores come from a Bradley-Terry model fit on pairwise LLM rankings of
         all Inkhaven posts. Each post's σ-score is its BT log-strength divided
-        by the dataset standard deviation; 95% CIs are bootstrap percentiles
-        across resampled ranking groups. P(top 20%) is the bootstrap frequency
-        of the post landing in the top 20% across resamples.
+        by the dataset standard deviation; the ± uncertainty is one bootstrap
+        standard error across resampled ranking groups.
       </p>
 
     </div>

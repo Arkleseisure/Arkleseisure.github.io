@@ -17,13 +17,9 @@
     return (s >= 0 ? '+' : '') + s.toFixed(2) + 'σ';
   }
 
-  function fmtCI(lo, hi) {
-    const f = (x) => (x >= 0 ? '+' : '') + x.toFixed(2);
-    return '[' + f(lo) + ', ' + f(hi) + ']';
-  }
-
-  function fmtPct(p) {
-    return (p * 100).toFixed(0) + '%';
+  function fmtMeanSE(mean, se) {
+    const sign = mean >= 0 ? '+' : '';
+    return `${sign}${mean.toFixed(2)} ± ${se.toFixed(2)}σ`;
   }
 
   function escapeHTML(s) {
@@ -107,13 +103,12 @@
     rows = applySort(rows, cur.key, cur.dir);
 
     if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="bench-empty">No posts match.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="bench-empty">No posts match.</td></tr>';
     } else {
       const html = rows.map((r, i) => `
         <tr>
           <td class="num muted">${i + 1}</td>
-          <td class="${scoreClass(r.score)}">${fmtScore(r.score)}</td>
-          <td class="num muted">${fmtCI(r.lo95, r.hi95)}</td>
+          <td class="${scoreClass(r.score)}">${fmtMeanSE(r.score, r.se)}</td>
           <td>${escapeHTML(r.author)}</td>
           <td>${linkCell(r.title, r.url)}</td>
           <td class="num muted">${escapeHTML(r.date)}</td>
@@ -162,14 +157,13 @@
       .sort((a, b) => b.score - a.score);
 
     if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="bench-empty">No posts on this date.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="bench-empty">No posts on this date.</td></tr>';
       return;
     }
     tbody.innerHTML = rows.map((r, i) => `
       <tr>
         <td class="num muted">${i + 1}</td>
-        <td class="${scoreClass(r.score)}">${fmtScore(r.score)}</td>
-        <td class="num muted">${fmtCI(r.lo95, r.hi95)}</td>
+        <td class="${scoreClass(r.score)}">${fmtMeanSE(r.score, r.se)}</td>
         <td>${escapeHTML(r.author)}</td>
         <td>${linkCell(r.title, r.url)}</td>
       </tr>`).join('');
