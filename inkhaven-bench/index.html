@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inkhaven residency blog posts ranked by Bradley-Terry score, expressed as standard deviations above the mean.">
+
+  <title>Inkhaven Leaderboard — Life, The Universe & That Safety Thing</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="bench.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="home-link">Home</a>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../safety.html" class="dropdown-link">Articles</a>
+              <a href="../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <header class="page-header safety">
+    <div class="container">
+      <span class="section-label safety">Project</span>
+      <h1>Inkhaven Leaderboard</h1>
+      <p class="lead">
+        Posts from the Inkhaven writing residency, ranked by a Bradley-Terry
+        model fit on LLM pairwise judgments. Scores are expressed as standard
+        deviations above the dataset mean, with bootstrap 95% confidence intervals.
+      </p>
+    </div>
+  </header>
+
+  <section class="bench-section">
+    <div class="container">
+
+      <div class="bench-meta" id="bench-meta">Loading…</div>
+
+      <div class="bench-tabs" role="tablist">
+        <button type="button" class="bench-tab active" data-tab="posts" role="tab">Top Posts</button>
+        <button type="button" class="bench-tab" data-tab="authors" role="tab">Top Authors</button>
+        <button type="button" class="bench-tab" data-tab="byday" role="tab">By Day</button>
+      </div>
+
+      <!-- Top Posts -->
+      <div class="bench-panel active" id="panel-posts" role="tabpanel">
+        <div class="bench-controls">
+          <input type="search" id="post-search" class="bench-search" placeholder="Filter by title or author…">
+        </div>
+        <div class="bench-table-wrap">
+          <table class="bench-table" id="posts-table">
+            <thead>
+              <tr>
+                <th class="num" data-sort="rank">#</th>
+                <th class="num" data-sort="score">Score (σ)</th>
+                <th class="num">95% CI</th>
+                <th data-sort="author">Author</th>
+                <th data-sort="title">Title</th>
+                <th data-sort="date">Date</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Top Authors -->
+      <div class="bench-panel" id="panel-authors" role="tabpanel">
+        <p class="bench-note bench-note-inline" id="author-filter-note"></p>
+        <div class="bench-controls">
+          <input type="search" id="author-search" class="bench-search" placeholder="Filter by author…">
+        </div>
+        <div class="bench-table-wrap">
+          <table class="bench-table" id="authors-table">
+            <thead>
+              <tr>
+                <th class="num" data-sort="rank">#</th>
+                <th class="num" data-sort="score">Avg score (σ)</th>
+                <th class="num" data-sort="n">Posts</th>
+                <th data-sort="author">Author</th>
+                <th data-sort="title">Best post</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- By Day -->
+      <div class="bench-panel" id="panel-byday" role="tabpanel">
+        <div class="bench-controls">
+          <label class="control-label" for="date-picker">Date</label>
+          <input type="date" id="date-picker" class="bench-date">
+          <button type="button" class="btn btn-secondary btn-sm" id="date-prev">&larr;</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="date-next">&rarr;</button>
+        </div>
+        <div class="bench-table-wrap">
+          <table class="bench-table" id="byday-table">
+            <thead>
+              <tr>
+                <th class="num">#</th>
+                <th class="num">Score (σ)</th>
+                <th class="num">95% CI</th>
+                <th>Author</th>
+                <th>Title</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="bench-note">
+        Scores come from a Bradley-Terry model fit on pairwise LLM rankings of
+        all Inkhaven posts. Each post's σ-score is its BT log-strength divided
+        by the dataset standard deviation; 95% CIs are bootstrap percentiles
+        across resampled ranking groups. P(top 20%) is the bootstrap frequency
+        of the post landing in the top 20% across resamples.
+      </p>
+
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="bench.js?v=1"></script>
+</body>
+</html>

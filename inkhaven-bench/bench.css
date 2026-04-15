@@ -1,0 +1,209 @@
+/* Inkhaven Leaderboard — local overrides on top of css/style.css */
+
+.bench-section {
+  padding: var(--space-lg) 0 var(--space-2xl);
+}
+
+.bench-meta {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* Tabs */
+.bench-tabs {
+  display: flex;
+  gap: var(--space-xs);
+  border-bottom: 1px solid var(--border-medium);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.bench-tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  margin-bottom: -1px;
+}
+
+.bench-tab:hover {
+  color: var(--text-primary);
+}
+
+.bench-tab.active {
+  color: var(--accent-safety);
+  border-bottom-color: var(--accent-safety);
+}
+
+.bench-panel {
+  display: none;
+}
+
+.bench-panel.active {
+  display: block;
+}
+
+/* Controls row */
+.bench-controls {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.bench-search,
+.bench-date {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 4px;
+  transition: border-color var(--transition-fast);
+}
+
+.bench-search {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.bench-search:focus,
+.bench-date:focus {
+  outline: none;
+  border-color: var(--accent-safety);
+}
+
+.bench-date {
+  color-scheme: dark;
+}
+
+/* Table */
+.bench-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: var(--bg-card);
+}
+
+.bench-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.bench-table th,
+.bench-table td {
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.bench-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-medium);
+  white-space: nowrap;
+}
+
+.bench-table th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+}
+
+.bench-table th[data-sort]:hover {
+  color: var(--text-primary);
+}
+
+.bench-table th[data-sort].sorted-asc::after {
+  content: ' ▲';
+  font-size: 0.7em;
+  color: var(--accent-safety);
+}
+
+.bench-table th[data-sort].sorted-desc::after {
+  content: ' ▼';
+  font-size: 0.7em;
+  color: var(--accent-safety);
+}
+
+.bench-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bench-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.bench-table td a {
+  color: var(--text-primary);
+  border-bottom: 1px dotted var(--text-muted);
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.bench-table td a:hover {
+  color: var(--accent-safety);
+  border-bottom-color: var(--accent-safety);
+}
+
+.bench-table .num {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bench-table td.score-pos {
+  color: #6ee7b7;
+}
+
+.bench-table td.score-neg {
+  color: #fca5a5;
+}
+
+.bench-table td.muted {
+  color: var(--text-muted);
+}
+
+.bench-empty {
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.bench-note {
+  margin-top: var(--space-lg);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 720px;
+}
+
+.bench-note-inline {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+}
+
+@media (max-width: 640px) {
+  .bench-table th,
+  .bench-table td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
