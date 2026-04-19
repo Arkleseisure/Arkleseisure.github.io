@@ -24,6 +24,7 @@
   const treeRoot = document.getElementById("tree-root");
   const treeSvg = document.getElementById("tree-svg");
   const treeGraph = document.getElementById("tree-graph");
+  const tgScroll = document.getElementById("tg-scroll");
   const infoPanel = document.getElementById("info-panel");
   const variablesContainer = document.getElementById("variables-container");
   const rangeToggle = document.getElementById("range-toggle");
@@ -1297,6 +1298,8 @@
   }
 
   function drawConnectors() {
+    // Measure / draw at natural scale so offset-based positioning is correct.
+    treeGraph.style.zoom = "";
     var w = treeGraph.scrollWidth;
     var h = treeGraph.scrollHeight;
 
@@ -1306,6 +1309,18 @@
 
     drawNodeConnectors(getTree().tree);
     drawComplementLinks();
+
+    applyAutoFit(w);
+  }
+
+  function applyAutoFit(naturalWidth) {
+    if (!tgScroll) return;
+    var avail = tgScroll.clientWidth;
+    if (!avail || !naturalWidth) return;
+    var MIN_SCALE = 0.6;
+    var scale = Math.min(1, avail / naturalWidth);
+    if (scale < MIN_SCALE) scale = MIN_SCALE;
+    treeGraph.style.zoom = scale === 1 ? "" : String(scale);
   }
 
   function drawNodeConnectors(node) {
@@ -2063,6 +2078,15 @@
     });
   }
 
+  function seedDefaultCollapsed() {
+    collapsedNodes = {};
+    (function walk(node) {
+      if (!node) return;
+      if (node.defaultCollapsed) collapsedNodes[node.id] = true;
+      if (node.children) node.children.forEach(walk);
+    })(getTree().tree);
+  }
+
   function init() {
     populateTreeSelect();
 
@@ -2081,6 +2105,7 @@
     }
 
     populateCruxSelectors();
+    seedDefaultCollapsed();
     renderTree();
     renderCrux();
   }
@@ -2090,7 +2115,6 @@
   treeSelect.addEventListener("change", function () {
     currentTreeIndex = parseInt(treeSelect.value);
     selectedNodeId = null;
-    collapsedNodes = {};
     initProbabilities();
     initVariables();
     populateWorldviewSelect();
@@ -2103,6 +2127,7 @@
     renderVariables();
 
     populateCruxSelectors();
+    seedDefaultCollapsed();
     renderTree();
     renderCrux();
     infoPanel.querySelector(".info-panel-empty").style.display = "block";
@@ -2166,7 +2191,7 @@
     }
     syncWorldviewMetaInputs();
     updateWorldviewTitle();
-    collapsedNodes = {};
+    seedDefaultCollapsed();
     renderTree();
     updateInfoPanel();
   });
