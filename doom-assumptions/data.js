@@ -291,12 +291,6 @@ const TREES = [
           type: "and",
           children: [
             {
-              id: "t-ai-inc",
-              name: "AI makes D more likely",
-              description: "Your credence that D is more likely within T in this timeline than in a counterfactual where AI research plateaued before meaningfully affecting D (for example, shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises the probability of D.",
-              type: "leaf"
-            },
-            {
               id: "t-d-given-inc",
               name: "D occurs, given AI raises its probability",
               description: "Given that AI raises P(D), the conditional probability that D actually occurs within T. Decomposed by whether the danger comes from a single dominant AI or from a multipolar landscape of several AIs acting together.",
@@ -309,12 +303,6 @@ const TREES = [
                   type: "and",
                   children: [
                     {
-                      id: "t-single",
-                      name: "Danger comes from a single dominant AI",
-                      description: "Given AI raises P(D), your credence that the dangerous pathway runs through a single dominant AI system — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
-                      type: "leaf"
-                    },
-                    {
                       id: "t-d-given-single",
                       name: "D occurs, given a single dominant AI",
                       description: "Given AI raises P(D) via a single dominant AI, the conditional probability that D occurs within T. Decomposed by whether the AI has an internal model of D as a concept.",
@@ -326,12 +314,6 @@ const TREES = [
                           description: "The sub-branch in which the single dominant AI has an internal model of D, and D occurs. Further decomposed by whether the AI expects D to become more likely.",
                           type: "and",
                           children: [
-                            {
-                              id: "t-has-rep",
-                              name: "The AI has an internal model of D",
-                              description: "Given a single dominant AI raising P(D), your credence that it has an internal representation of D as a concept — i.e. it 'knows what D is', whether in its world-model, goal specification, or learned features. The alternative is an AI that raises P(D) without representing the danger as such (e.g. via reward hacking, side-effects, or emergent behaviour).",
-                              type: "leaf"
-                            },
                             {
                               id: "t-d-given-rep",
                               name: "D occurs, given AI has an internal model of D",
@@ -346,15 +328,15 @@ const TREES = [
                                   type: "and",
                                   children: [
                                     {
-                                      id: "t-expects",
-                                      name: "The AI expects D to become more likely",
-                                      description: "Given an AI with an internal model of D, your credence that the AI expects or intends D to become more likely. This is the 'deliberate or foreseen' case: the AI is acting in ways it expects will raise P(D), whether because D serves its goals or is a known consequence of its actions.",
-                                      type: "leaf"
-                                    },
-                                    {
                                       id: "t-d-expects",
                                       name: "D | AI expects it",
                                       description: "Given an AI that has an internal model of D and expects D to become more likely, the conditional probability that D actually occurs within T. High values correspond to the AI's expectation being reliable; lower values allow for interventions, containment, or the AI's plans going wrong.",
+                                      type: "leaf"
+                                    },
+                                    {
+                                      id: "t-expects",
+                                      name: "The AI expects D to become more likely",
+                                      description: "Given an AI with an internal model of D, your credence that the AI expects or intends D to become more likely. This is the 'deliberate or foreseen' case: the AI is acting in ways it expects will raise P(D), whether because D serves its goals or is a known consequence of its actions.",
                                       type: "leaf"
                                     }
                                   ]
@@ -381,6 +363,12 @@ const TREES = [
                                   ]
                                 }
                               ]
+                            },
+                            {
+                              id: "t-has-rep",
+                              name: "The AI has an internal model of D",
+                              description: "Given a single dominant AI raising P(D), your credence that it has an internal representation of D as a concept — i.e. it 'knows what D is', whether in its world-model, goal specification, or learned features. The alternative is an AI that raises P(D) without representing the danger as such (e.g. via reward hacking, side-effects, or emergent behaviour).",
+                              type: "leaf"
                             }
                           ]
                         },
@@ -406,6 +394,12 @@ const TREES = [
                           ]
                         }
                       ]
+                    },
+                    {
+                      id: "t-single",
+                      name: "Danger comes from a single dominant AI",
+                      description: "Given AI raises P(D), your credence that the dangerous pathway runs through a single dominant AI system — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
+                      type: "leaf"
                     }
                   ]
                 },
@@ -431,6 +425,12 @@ const TREES = [
                   ]
                 }
               ]
+            },
+            {
+              id: "t-ai-inc",
+              name: "AI makes D more likely",
+              description: "Your credence that D is more likely within T in this timeline than in a counterfactual where AI research plateaued before meaningfully affecting D (for example, shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises the probability of D.",
+              type: "leaf"
             }
           ]
         },
