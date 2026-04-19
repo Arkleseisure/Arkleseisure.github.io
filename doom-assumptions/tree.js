@@ -1300,6 +1300,7 @@
   function drawConnectors() {
     // Measure / draw at natural scale so offset-based positioning is correct.
     treeGraph.style.zoom = "";
+    equalizeRowHeights();
     var w = treeGraph.scrollWidth;
     var h = treeGraph.scrollHeight;
 
@@ -1311,6 +1312,33 @@
     drawComplementLinks();
 
     applyAutoFit(w);
+  }
+
+  function equalizeRowHeights() {
+    // Within each .tg-children row, force sibling cards to the max card height
+    // so their nested rows line up — keeps complement links from going diagonal.
+    var rows = treeGraph.querySelectorAll(".tg-children");
+    rows.forEach(function (row) {
+      var wrappers = row.children;
+      var cards = [];
+      for (var i = 0; i < wrappers.length; i++) {
+        var card = wrappers[i].firstElementChild;
+        if (card && card.classList.contains("tg-card")) cards.push(card);
+      }
+      if (cards.length < 2) {
+        cards.forEach(function (c) { c.style.minHeight = ""; });
+        return;
+      }
+      cards.forEach(function (c) { c.style.minHeight = ""; });
+      var max = 0;
+      cards.forEach(function (c) {
+        var h = c.getBoundingClientRect().height;
+        if (h > max) max = h;
+      });
+      if (max > 0) {
+        cards.forEach(function (c) { c.style.minHeight = max + "px"; });
+      }
+    });
   }
 
   function applyAutoFit(naturalWidth) {

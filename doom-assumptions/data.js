@@ -310,7 +310,7 @@ const TREES = [
                       children: [
                         {
                           id: "t-rep-path",
-                          name: "AI has an internal model of D, and D occurs",
+                          name: "AI has internal model of D, and D occurs",
                           description: "The sub-branch in which the single dominant AI has an internal model of D, and D occurs. Further decomposed by whether the AI expects D to become more likely.",
                           type: "and",
                           children: [
@@ -323,7 +323,7 @@ const TREES = [
                               children: [
                                 {
                                   id: "t-expects-path",
-                                  name: "AI expects D to become more likely, and D occurs",
+                                  name: "AI expects D, and D occurs",
                                   description: "The sub-branch in which the AI has an internal model of D and expects D to become more likely — and D occurs.",
                                   type: "and",
                                   children: [
@@ -343,7 +343,7 @@ const TREES = [
                                 },
                                 {
                                   id: "t-no-expects-path",
-                                  name: "AI doesn't expect D, but it occurs",
+                                  name: "AI doesn't expect D, and D occurs",
                                   description: "The sub-branch in which the AI has an internal model of D but doesn't expect D to become more likely — yet D occurs anyway through miscalculation, wrong beliefs, or plans going astray.",
                                   type: "and",
                                   children: [
@@ -374,7 +374,7 @@ const TREES = [
                         },
                         {
                           id: "t-no-rep-path",
-                          name: "AI lacks an internal model of D, but it occurs",
+                          name: "AI has no internal model of D, and D occurs",
                           description: "The sub-branch in which the single dominant AI raises P(D) without having an internal model of D as a concept. Harm from misaligned optimisation, side-effects, reward hacking, or emergent behaviour the AI isn't 'aware' of.",
                           type: "and",
                           children: [
@@ -436,7 +436,7 @@ const TREES = [
         },
         {
           id: "t-no-inc-path",
-          name: "AI doesn't raise P(D), but D occurs anyway",
+          name: "AI doesn't make D more likely, and D occurs",
           description: "The branch in which AI's development doesn't raise P(D) relative to the counterfactual, but D still occurs through other causes — the 'base rate' pathway for this worldview.",
           type: "and",
           children: [
