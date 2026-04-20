@@ -645,7 +645,7 @@
 
         var label = document.createElement("label");
         label.className = "control-label";
-        label.textContent = key;
+        label.textContent = varDef.displayName || key;
         label.setAttribute("for", "var-" + key);
         label.title = varDef.label || key;
         group.appendChild(label);
