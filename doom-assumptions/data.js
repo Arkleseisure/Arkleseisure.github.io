@@ -297,11 +297,38 @@ const TREES = [
               type: "or",
               children: [
                 {
+                  id: "t-multi-path",
+                  name: "Multipolar AI landscape, and D occurs",
+                  description: "The sub-branch in which, given AI raises P(D), the dangerous pathway runs through multiple AIs acting simultaneously — coordination failures, race dynamics, AI-on-AI interactions, or several AIs of different types existing at once.",
+                  type: "and",
+                  children: [
+                    {
+                      id: "t-d-multi",
+                      name: "D | multipolar AI landscape",
+                      description: "Given AI raises P(D) via a multipolar landscape, the conditional probability that D occurs within T. Note: a multipolar scenario can involve AIs of several different types simultaneously, so this leaf aggregates across those sub-cases rather than splitting further.",
+                      type: "leaf"
+                    },
+                    {
+                      id: "t-multi",
+                      name: "Danger comes from multiple AIs",
+                      description: "The complement: given AI raises P(D), the dangerous pathway runs through interactions among multiple AIs rather than a single dominant system. Includes AI-on-AI dynamics, race conditions, coordination failures, and worlds with several AIs of different types coexisting. Computed as 1 − P(single dominant AI).",
+                      type: "leaf",
+                      complement_of: "t-single"
+                    }
+                  ]
+                },
+                {
                   id: "t-single-path",
                   name: "Single dominant AI, and D occurs",
                   description: "The sub-branch in which, given AI raises P(D), the dangerous pathway runs through a single dominant AI — and D occurs. Further decomposed by whether that AI has an internal model of D.",
                   type: "and",
                   children: [
+                    {
+                      id: "t-single",
+                      name: "Danger comes from a single dominant AI",
+                      description: "Given AI raises P(D), your credence that the dangerous pathway runs through a single dominant AI system — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
+                      type: "leaf"
+                    },
                     {
                       id: "t-d-given-single",
                       name: "D occurs, given a single dominant AI",
@@ -394,33 +421,6 @@ const TREES = [
                           ]
                         }
                       ]
-                    },
-                    {
-                      id: "t-single",
-                      name: "Danger comes from a single dominant AI",
-                      description: "Given AI raises P(D), your credence that the dangerous pathway runs through a single dominant AI system — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
-                      type: "leaf"
-                    }
-                  ]
-                },
-                {
-                  id: "t-multi-path",
-                  name: "Multipolar AI landscape, and D occurs",
-                  description: "The sub-branch in which, given AI raises P(D), the dangerous pathway runs through multiple AIs acting simultaneously — coordination failures, race dynamics, AI-on-AI interactions, or several AIs of different types existing at once.",
-                  type: "and",
-                  children: [
-                    {
-                      id: "t-multi",
-                      name: "Danger comes from multiple AIs",
-                      description: "The complement: given AI raises P(D), the dangerous pathway runs through interactions among multiple AIs rather than a single dominant system. Includes AI-on-AI dynamics, race conditions, coordination failures, and worlds with several AIs of different types coexisting. Computed as 1 − P(single dominant AI).",
-                      type: "leaf",
-                      complement_of: "t-single"
-                    },
-                    {
-                      id: "t-d-multi",
-                      name: "D | multipolar AI landscape",
-                      description: "Given AI raises P(D) via a multipolar landscape, the conditional probability that D occurs within T. Note: a multipolar scenario can involve AIs of several different types simultaneously, so this leaf aggregates across those sub-cases rather than splitting further.",
-                      type: "leaf"
                     }
                   ]
                 }
