@@ -26,7 +26,7 @@
   border-bottom: 1px solid var(--border-subtle);
   padding: var(--space-md) 0;
   position: sticky;
-  top: 60px;
+  top: 80px;
   z-index: 100;
   backdrop-filter: blur(12px);
 }
