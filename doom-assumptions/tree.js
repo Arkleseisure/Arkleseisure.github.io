@@ -1308,23 +1308,6 @@
     treeSvg.setAttribute("height", h);
     treeSvg.innerHTML = "";
 
-    // Arrowhead marker for parent → child connectors (shows probability flow).
-    var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    var marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
-    marker.setAttribute("id", "tg-arrow");
-    marker.setAttribute("viewBox", "0 0 10 10");
-    marker.setAttribute("refX", "8");
-    marker.setAttribute("refY", "5");
-    marker.setAttribute("markerWidth", "6");
-    marker.setAttribute("markerHeight", "6");
-    marker.setAttribute("orient", "auto-start-reverse");
-    var mPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    mPath.setAttribute("d", "M0,2 L8,5 L0,8 Z");
-    mPath.setAttribute("fill", "rgba(255,255,255,0.35)");
-    marker.appendChild(mPath);
-    defs.appendChild(marker);
-    treeSvg.appendChild(defs);
-
     drawNodeConnectors(getTree().tree);
     drawComplementLinks();
 
@@ -1391,8 +1374,7 @@
       var midY = py + (cy - py) * 0.4;
 
       var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      // Draw child → parent so the arrow sits at the parent end, showing
-      // that probability flows up from children to the parent.
+      // Draw child → parent so that conceptually probability flows upward.
       path.setAttribute("d",
         "M" + cx + "," + cy +
         " C" + cx + "," + midY +
@@ -1402,8 +1384,23 @@
       path.setAttribute("stroke", "rgba(255,255,255,0.18)");
       path.setAttribute("stroke-width", "2");
       path.setAttribute("fill", "none");
-      path.setAttribute("marker-end", "url(#tg-arrow)");
       treeSvg.appendChild(path);
+
+      // Small arrow halfway along the curve, oriented along the tangent,
+      // same stroke colour as the line so it reads as a directional hint.
+      // Cubic Bézier points: P0=(cx,cy), P1=(cx,midY), P2=(px,midY), P3=(px,py)
+      var t = 0.5, mt = 1 - t;
+      var bx = mt*mt*mt*cx + 3*mt*mt*t*cx + 3*mt*t*t*px + t*t*t*px;
+      var by = mt*mt*mt*cy + 3*mt*mt*t*midY + 3*mt*t*t*midY + t*t*t*py;
+      var tangX = 3*mt*mt*(cx-cx) + 6*mt*t*(px-cx) + 3*t*t*(px-px);
+      var tangY = 3*mt*mt*(midY-cy) + 6*mt*t*(midY-midY) + 3*t*t*(py-midY);
+      var angle = Math.atan2(tangY, tangX) * 180 / Math.PI;
+
+      var arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      arrow.setAttribute("points", "-4,-3 4,0 -4,3");
+      arrow.setAttribute("fill", "rgba(255,255,255,0.35)");
+      arrow.setAttribute("transform", "translate(" + bx + " " + by + ") rotate(" + angle + ")");
+      treeSvg.appendChild(arrow);
 
       drawNodeConnectors(child);
     }
