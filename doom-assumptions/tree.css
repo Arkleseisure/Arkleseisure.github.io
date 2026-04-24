@@ -12,6 +12,14 @@
   pointer-events: auto;
 }
 
+/* Header always has a blurred opaque region so cards don't show through when scrolling */
+.site-header {
+  background: rgba(10, 10, 15, 0.88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
 /* ---------- Controls Bar ---------- */
 .tree-controls {
   background: var(--bg-secondary);
@@ -397,6 +405,29 @@
   padding: var(--space-lg) var(--space-lg) var(--space-xl);
   display: flex;
   justify-content: center;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 158, 11, 0.3) transparent;
+}
+
+.tg-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.tg-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tg-scroll::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.25);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.tg-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.45);
+  background-clip: padding-box;
+}
+.tg-scroll::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* ---------- Tree Graph ---------- */
@@ -405,7 +436,9 @@
   display: inline-flex;
   justify-content: center;
   min-width: min-content;
-  overflow: hidden;
+  /* overflow: visible so the root card's hover-lift doesn't get clipped */
+  overflow: visible;
+  padding-top: 4px;
 }
 
 .tg-svg {
@@ -430,8 +463,8 @@
 .tg-children {
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
-  padding-top: 2.25rem;
+  gap: 1.25rem;
+  padding-top: 2.5rem;
 }
 
 .tg-children.collapsed {
@@ -627,11 +660,12 @@
 
 .tg-slider {
   flex: 1;
-  height: 4px;
+  height: 6px;
   -webkit-appearance: none;
   appearance: none;
-  background: var(--bg-tertiary);
-  border-radius: 2px;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
 }

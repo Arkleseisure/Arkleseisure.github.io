@@ -1308,6 +1308,23 @@
     treeSvg.setAttribute("height", h);
     treeSvg.innerHTML = "";
 
+    // Arrowhead marker for parent → child connectors (shows probability flow).
+    var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    var marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+    marker.setAttribute("id", "tg-arrow");
+    marker.setAttribute("viewBox", "0 0 10 10");
+    marker.setAttribute("refX", "8");
+    marker.setAttribute("refY", "5");
+    marker.setAttribute("markerWidth", "6");
+    marker.setAttribute("markerHeight", "6");
+    marker.setAttribute("orient", "auto-start-reverse");
+    var mPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    mPath.setAttribute("d", "M0,2 L8,5 L0,8 Z");
+    mPath.setAttribute("fill", "rgba(255,255,255,0.35)");
+    marker.appendChild(mPath);
+    defs.appendChild(marker);
+    treeSvg.appendChild(defs);
+
     drawNodeConnectors(getTree().tree);
     drawComplementLinks();
 
@@ -1345,7 +1362,7 @@
     if (!tgScroll) return;
     var avail = tgScroll.clientWidth;
     if (!avail || !naturalWidth) return;
-    var MIN_SCALE = 0.6;
+    var MIN_SCALE = 0.55;
     var scale = Math.min(1, avail / naturalWidth);
     if (scale < MIN_SCALE) scale = MIN_SCALE;
     treeGraph.style.zoom = scale === 1 ? "" : String(scale);
@@ -1374,15 +1391,18 @@
       var midY = py + (cy - py) * 0.4;
 
       var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      // Draw child → parent so the arrow sits at the parent end, showing
+      // that probability flows up from children to the parent.
       path.setAttribute("d",
-        "M" + px + "," + py +
-        " C" + px + "," + midY +
-        " " + cx + "," + midY +
-        " " + cx + "," + cy
+        "M" + cx + "," + cy +
+        " C" + cx + "," + midY +
+        " " + px + "," + midY +
+        " " + px + "," + py
       );
-      path.setAttribute("stroke", "rgba(255,255,255,0.1)");
+      path.setAttribute("stroke", "rgba(255,255,255,0.18)");
       path.setAttribute("stroke-width", "2");
       path.setAttribute("fill", "none");
+      path.setAttribute("marker-end", "url(#tg-arrow)");
       treeSvg.appendChild(path);
 
       drawNodeConnectors(child);
