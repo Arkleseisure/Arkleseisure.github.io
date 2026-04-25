@@ -575,6 +575,36 @@
   width: 100%;
 }
 
+/* Summary row for an absorbed subtree inside a leaf-and-subtree joint:
+   shows the subtree's name + computed probability, clickable to select. */
+.tg-joint-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border: 1px dashed var(--border-subtle);
+}
+.tg-joint-summary:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.tg-joint-summary.selected {
+  border-color: var(--accent-safety);
+  background: rgba(245, 158, 11, 0.08);
+}
+.tg-joint-summary .tg-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.tg-joint-summary .tg-prob {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
 /* Card header row: type + probability + collapse toggle */
 .tg-card-header {
   display: flex;

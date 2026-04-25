@@ -983,19 +983,31 @@
     renderUncertaintyReduction();
   }
 
-  // A "joint" AND is one whose two children are both leaves — we render
-  // these compressed: the AND card holds the two leaves' sliders inline.
+  // A "joint" AND has 2 children with at least one leaf — we compress it:
+  //   - "double": both children are leaves, both shown inline in one card
+  //   - "subtree": one leaf (inline) + one subtree (absorbed; its children
+  //     surface as the joint's visual children below the card)
   function isJointAnd(node) {
-    if (node.type !== "and") return false;
-    if (!node.children || node.children.length !== 2) return false;
-    return node.children.every(function (c) { return c.type === "leaf"; });
+    if (node.type !== "and") return null;
+    if (!node.children || node.children.length !== 2) return null;
+    var leaves = node.children.filter(function (c) { return c.type === "leaf"; });
+    if (leaves.length === 2) {
+      return { kind: "double" };
+    }
+    if (leaves.length === 1) {
+      var leaf = leaves[0];
+      var subtree = node.children[0] === leaf ? node.children[1] : node.children[0];
+      return { kind: "subtree", leaf: leaf, subtree: subtree };
+    }
+    return null;
   }
 
   function buildNodeEl(node) {
     var hasChildren = node.children && node.children.length > 0;
     var isCollapsed = !!collapsedNodes[node.id];
     var isPinned = !!pinnedNodes[node.id];
-    var isJoint = isJointAnd(node);
+    var jointInfo = isJointAnd(node);
+    var isJoint = !!jointInfo;
     var prob = computeProb(node);
 
     // Wrapper
@@ -1008,6 +1020,7 @@
     var card = document.createElement("div");
     card.className = "tg-card";
     if (isJoint) card.classList.add("tg-card-joint");
+    if (jointInfo && jointInfo.kind === "subtree") card.classList.add("tg-card-joint-subtree");
     if (node.id === selectedNodeId) card.classList.add("selected");
     if (isPinned) card.classList.add("pinned");
 
@@ -1030,13 +1043,19 @@
     }
     header.appendChild(probEl);
 
+    // For "subtree" joints, the collapse toggle drives the absorbed subtree's
+    // collapse state — that's what controls the visual children below the card.
+    var collapseTargetId = (jointInfo && jointInfo.kind === "subtree")
+      ? jointInfo.subtree.id : node.id;
+    var collapseTargetCollapsed = !!collapsedNodes[collapseTargetId];
+
     var collapseBtn = document.createElement("span");
     collapseBtn.className = "tg-collapse";
     if (!hasChildren) collapseBtn.classList.add("hidden-toggle");
-    collapseBtn.textContent = isCollapsed ? "+" : "\u2212";
+    collapseBtn.textContent = collapseTargetCollapsed ? "+" : "\u2212";
     collapseBtn.addEventListener("click", function (e) {
       e.stopPropagation();
-      toggleCollapse(node.id);
+      toggleCollapse(collapseTargetId);
     });
     header.appendChild(collapseBtn);
 
@@ -1310,8 +1329,8 @@
 
     // Children
     if (hasChildren) {
-      if (isJoint) {
-        // Joint AND: render the two leaves *inside* the parent's card, compactly.
+      if (jointInfo && jointInfo.kind === "double") {
+        // Both children are leaves — render them inside the joint card, compactly.
         var inner = document.createElement("div");
         inner.className = "tg-joint-inner";
         if (isCollapsed) inner.classList.add("collapsed");
@@ -1319,6 +1338,49 @@
           inner.appendChild(buildNodeEl(child));
         });
         card.appendChild(inner);
+      } else if (jointInfo && jointInfo.kind === "subtree") {
+        // Leaf + subtree: leaf goes inside as a sub-control, the subtree is
+        // shown as a clickable summary row, and the subtree's *children*
+        // become the joint's visual children below.
+        var inner = document.createElement("div");
+        inner.className = "tg-joint-inner";
+        inner.appendChild(buildNodeEl(jointInfo.leaf));
+
+        var summary = document.createElement("div");
+        summary.className = "tg-joint-summary";
+        summary.dataset.id = jointInfo.subtree.id;
+        if (jointInfo.subtree.id === selectedNodeId) summary.classList.add("selected");
+
+        var sLabel = document.createElement("span");
+        sLabel.className = "tg-label";
+        var subRawName = jointInfo.subtree.name || jointInfo.subtree.label || jointInfo.subtree.id;
+        sLabel.textContent = getTree().substituteNames === false ? subRawName : subVars(subRawName);
+        summary.appendChild(sLabel);
+
+        var sProb = document.createElement("span");
+        sProb.className = "tg-prob";
+        sProb.textContent = formatProb(computeProb(jointInfo.subtree));
+        summary.appendChild(sProb);
+
+        summary.addEventListener("click", function (e) {
+          e.stopPropagation();
+          selectNode(jointInfo.subtree);
+        });
+
+        inner.appendChild(summary);
+        card.appendChild(inner);
+
+        // Visual children: the absorbed subtree's children
+        if (jointInfo.subtree.children && jointInfo.subtree.children.length > 0) {
+          var childrenEl = document.createElement("div");
+          childrenEl.className = "tg-children";
+          if (collapsedNodes[jointInfo.subtree.id]) childrenEl.classList.add("collapsed");
+          if (isPinned) childrenEl.classList.add("dimmed");
+          jointInfo.subtree.children.forEach(function (child) {
+            childrenEl.appendChild(buildNodeEl(child));
+          });
+          wrapper.appendChild(childrenEl);
+        }
       } else {
         var childrenEl = document.createElement("div");
         childrenEl.className = "tg-children";
@@ -1415,9 +1477,20 @@
 
   function drawNodeConnectors(node) {
     if (!node.children || node.children.length === 0) return;
-    if (collapsedNodes[node.id]) return;
-    // Joint AND nodes embed their leaves inside their own card — no parent→child connectors needed.
-    if (isJointAnd(node)) return;
+
+    var jointInfo = isJointAnd(node);
+    // "double" joints have no visible children below the card.
+    if (jointInfo && jointInfo.kind === "double") return;
+
+    // The id whose collapse state controls visibility of children below this card.
+    var collapseGuardId = (jointInfo && jointInfo.kind === "subtree")
+      ? jointInfo.subtree.id : node.id;
+    if (collapsedNodes[collapseGuardId]) return;
+
+    // Visual children: the cards that actually appear below this node's card.
+    var visualChildren = (jointInfo && jointInfo.kind === "subtree")
+      ? (jointInfo.subtree.children || [])
+      : node.children;
 
     var parentCard = treeRoot.querySelector('[data-id="' + node.id + '"] > .tg-card');
     if (!parentCard) return;
@@ -1426,8 +1499,8 @@
     var px = parentPos.x + parentCard.offsetWidth / 2;
     var py = parentPos.y + parentCard.offsetHeight;
 
-    for (var i = 0; i < node.children.length; i++) {
-      var child = node.children[i];
+    for (var i = 0; i < visualChildren.length; i++) {
+      var child = visualChildren[i];
       var childCard = treeRoot.querySelector('[data-id="' + child.id + '"] > .tg-card');
       if (!childCard) continue;
 
@@ -2118,12 +2191,19 @@
   function selectNode(node) {
     selectedNodeId = node.id;
 
-    document.querySelectorAll(".tg-card.selected").forEach(function (el) {
+    document.querySelectorAll(".tg-card.selected, .tg-joint-summary.selected").forEach(function (el) {
       el.classList.remove("selected");
     });
     var wrapper = treeRoot.querySelector('[data-id="' + node.id + '"]');
     if (wrapper) {
-      wrapper.querySelector(":scope > .tg-card").classList.add("selected");
+      // Normal node wrapper: highlight its direct .tg-card child.
+      // Joint summary row: it IS the wrapper for the absorbed subtree node.
+      var card = wrapper.querySelector(":scope > .tg-card");
+      if (card) {
+        card.classList.add("selected");
+      } else if (wrapper.classList.contains("tg-joint-summary")) {
+        wrapper.classList.add("selected");
+      }
     }
 
     updateInfoPanel();
