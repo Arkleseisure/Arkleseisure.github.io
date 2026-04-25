@@ -1383,7 +1383,9 @@
     var avail = tgScroll.clientWidth;
     if (!avail || !naturalWidth) return;
     var MIN_SCALE = 0.55;
-    var scale = Math.min(1, avail / naturalWidth);
+    // Leave a few pixels of slack so subpixel rounding doesn't trigger a scrollbar.
+    var SLACK = 4;
+    var scale = Math.min(1, (avail - SLACK) / naturalWidth);
     if (scale < MIN_SCALE) scale = MIN_SCALE;
     treeGraph.style.zoom = scale === 1 ? "" : String(scale);
   }
