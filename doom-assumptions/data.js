@@ -169,7 +169,7 @@ const TREES = [
             {
               id: "t-ai-inc",
               name: "AI makes D more likely",
-              description: "Your credence that D is more likely within T in this timeline than in a counterfactual where AI research plateaued before meaningfully affecting D (for example, shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises the probability of D.",
+              description: "Your credence that D is more likely within T in this timeline than in a counterfactual where AI research plateaued before meaningfully affecting D (for example, shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises the probability of D.\n\nTechnical note: strictly speaking, 'more likely' is slippery in a Bayesian frame since there's only one real timeline. A cleaner reading: across the distribution of possible worlds similar to ours, is the fraction that undergo D higher among those where AI develops than among those where it doesn't (e.g. worlds where AI research plateaued around or before the first GPT model)?",
               type: "leaf"
             }
           ]
@@ -241,6 +241,76 @@ const TREES = [
           "t-expects": 0.05,
           "t-d-expects": 0.6,
           "t-d-no-expects": 0.1
+        }
+      }
+    }
+  },
+
+  // =============================================
+  // TOY EXAMPLE — minimal illustrative tree for presentations
+  // =============================================
+  {
+    id: "toy-example",
+    title: "Toy example",
+    substituteNames: false,
+    description: "A minimal tree illustrating the core structure: OR root, AND paths, leaf sliders, and a complement pair.",
+    tree: {
+      id: "toy-root",
+      name: "P(E)",
+      description: "The probability of event E. Decomposed by conditioning on whether A occurs.",
+      type: "or",
+      children: [
+        {
+          id: "toy-a-path",
+          name: "E via A",
+          description: "P(A) × P(E | A) — the pathway where A occurs and E follows.",
+          type: "and",
+          children: [
+            {
+              id: "toy-e-given-a",
+              name: "P(E | A)",
+              description: "Probability E occurs given A.",
+              type: "leaf"
+            },
+            {
+              id: "toy-a",
+              name: "P(A)",
+              description: "Probability of A.",
+              type: "leaf"
+            }
+          ]
+        },
+        {
+          id: "toy-not-a-path",
+          name: "E via ¬A",
+          description: "P(¬A) × P(E | ¬A) — the pathway where A doesn't occur but E still does.",
+          type: "and",
+          children: [
+            {
+              id: "toy-not-a",
+              name: "P(¬A)",
+              description: "Complement: 1 − P(A).",
+              type: "leaf",
+              complement_of: "toy-a"
+            },
+            {
+              id: "toy-e-given-not-a",
+              name: "P(E | ¬A)",
+              description: "Probability E occurs given A doesn't.",
+              type: "leaf"
+            }
+          ]
+        }
+      ]
+    },
+    worldviews: {
+      default: {
+        name: "Default",
+        description: "Neutral 50% priors.",
+        probabilities: {
+          "toy-a": 0.5,
+          "toy-e-given-a": 0.5,
+          "toy-e-given-not-a": 0.5
         }
       }
     }

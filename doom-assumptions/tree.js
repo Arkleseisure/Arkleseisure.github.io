@@ -8,6 +8,7 @@
   let currentWorldview = null;
   let probabilities = {};      // node id -> probability (leaves + pinned nodes)
   let pinnedNodes = {};         // node id -> true if user has pinned this node's probability
+  let overrideValues = {};      // node id -> user's override value, preserved across pin toggles
   let selectedNodeId = null;
   let collapsedNodes = {};
   let variableValues = {};
@@ -795,6 +796,8 @@
     var entry = all[treeId] && all[treeId][name];
     if (!entry) return;
     pinnedNodes = {};
+
+    overrideValues = {};
     Object.keys(entry.probabilities).forEach(function (id) {
       probabilities[id] = entry.probabilities[id];
     });
@@ -942,6 +945,8 @@
     currentWorldview = key;
     // Clear pins when switching worldview
     pinnedNodes = {};
+
+    overrideValues = {};
     var leaves = getLeaves(tree.tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of && wv.probabilities[leaf.id] != null) {
@@ -1128,6 +1133,7 @@
         } else {
           probRanges[node.id] = { lo: lo, hi: hi };
           probabilities[node.id] = (lo + hi) / 2;
+          if (hasChildren) overrideValues[node.id] = (lo + hi) / 2;
         }
         currentWorldview = null;
         worldviewSelect.value = "custom";
@@ -1143,21 +1149,35 @@
       loInput.addEventListener("input", onRangeInput);
       hiInput.addEventListener("input", onRangeInput);
 
-      // Unpin button for pinned branch nodes
-      if (hasChildren && isPinned) {
-        var unpinBtn = document.createElement("span");
-        unpinBtn.className = "tg-unpin tg-range-unpin";
-        unpinBtn.textContent = "\u00d7";
-        unpinBtn.title = "Unpin — use children's values";
-        unpinBtn.addEventListener("click", function (e) {
+      // Two-state pin toggle (range mode): preserves override across toggles.
+      if (hasChildren && overrideValues[node.id] != null) {
+        var toggleBtn = document.createElement("button");
+        toggleBtn.type = "button";
+        toggleBtn.className = "tg-pin-toggle tg-range-toggle" + (isPinned ? " active" : "");
+        toggleBtn.textContent = isPinned ? "▲" : "▼";
+        toggleBtn.title = isPinned
+          ? "Your override is driving this node. Click to use children's computed value."
+          : "Children's computed value is driving this node. Click to restore your override.";
+        toggleBtn.addEventListener("click", function (e) {
           e.stopPropagation();
-          delete pinnedNodes[node.id];
-          delete probabilities[node.id];
-          delete probRanges[node.id];
+          if (pinnedNodes[node.id]) {
+            delete pinnedNodes[node.id];
+            delete probRanges[node.id];
+          } else {
+            pinnedNodes[node.id] = true;
+            probabilities[node.id] = overrideValues[node.id];
+            if (rangeMode) {
+              probRanges[node.id] = { lo: overrideValues[node.id], hi: overrideValues[node.id] };
+            }
+          }
+          currentWorldview = null;
+          worldviewSelect.value = "custom";
           renderTree();
           updateInfoPanel();
+          renderSensitivity();
+          renderUncertaintyReduction();
         });
-        rangeWrap.appendChild(unpinBtn);
+        rangeWrap.appendChild(toggleBtn);
       }
 
       rangeWrap.appendChild(loInput);
@@ -1213,11 +1233,12 @@
           return;
         }
         probabilities[node.id] = newVal;
+        if (hasChildren) overrideValues[node.id] = newVal;
         currentWorldview = null;
         worldviewSelect.value = "custom";
 
         if (hasChildren && !pinnedNodes[node.id]) {
-          // First move on a branch node — pin it and re-render to show unpin button/dual slider
+          // First move on a branch node — pin it and re-render to show toggle
           pinnedNodes[node.id] = true;
           if (rangeMode) {
             probRanges[node.id] = { lo: newVal, hi: newVal };
@@ -1237,21 +1258,37 @@
       sliderVal.className = "tg-slider-val";
       sliderVal.textContent = formatProb(prob);
 
-      // Unpin button for branch nodes
-      if (hasChildren && isPinned) {
-        var unpinBtn = document.createElement("span");
-        unpinBtn.className = "tg-unpin";
-        unpinBtn.textContent = "\u00d7";
-        unpinBtn.title = "Unpin — use children's values";
-        unpinBtn.addEventListener("click", function (e) {
+      // Two-state pin toggle: appears once a branch node has an override.
+      // Active = user's override drives this node (top-down).
+      // Inactive = children's computed value drives it (bottom-up); override preserved.
+      if (hasChildren && overrideValues[node.id] != null) {
+        var toggleBtn = document.createElement("button");
+        toggleBtn.type = "button";
+        toggleBtn.className = "tg-pin-toggle" + (isPinned ? " active" : "");
+        toggleBtn.textContent = isPinned ? "▲" : "▼";
+        toggleBtn.title = isPinned
+          ? "Your override (" + formatProb(overrideValues[node.id]) + ") is driving this node. Click to switch to children's computed value."
+          : "Children's computed value is driving this node. Click to restore your override (" + formatProb(overrideValues[node.id]) + ").";
+        toggleBtn.addEventListener("click", function (e) {
           e.stopPropagation();
-          delete pinnedNodes[node.id];
-          delete probabilities[node.id];
-          delete probRanges[node.id];
+          if (pinnedNodes[node.id]) {
+            delete pinnedNodes[node.id];
+            delete probRanges[node.id];
+          } else {
+            pinnedNodes[node.id] = true;
+            probabilities[node.id] = overrideValues[node.id];
+            if (rangeMode) {
+              probRanges[node.id] = { lo: overrideValues[node.id], hi: overrideValues[node.id] };
+            }
+          }
+          currentWorldview = null;
+          worldviewSelect.value = "custom";
           renderTree();
           updateInfoPanel();
+          renderSensitivity();
+          renderUncertaintyReduction();
         });
-        sliderWrap.appendChild(unpinBtn);
+        sliderWrap.appendChild(toggleBtn);
       }
 
       sliderWrap.appendChild(slider);
@@ -1817,6 +1854,8 @@
     });
     var savedPins = pinnedNodes;
     pinnedNodes = {};
+
+    overrideValues = {};
     var result = computeProb(tree.tree);
     pinnedNodes = savedPins;
     leaves.forEach(function (leaf) {
@@ -2113,6 +2152,8 @@
   function initProbabilities() {
     probabilities = {};
     pinnedNodes = {};
+
+    overrideValues = {};
     probRanges = {};
     _betaFitCache = {};
     var leaves = getLeaves(getTree().tree);

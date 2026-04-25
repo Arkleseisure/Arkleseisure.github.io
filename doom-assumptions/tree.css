@@ -472,8 +472,8 @@
 }
 
 .tg-children.dimmed {
-  opacity: 0.4;
-  pointer-events: none;
+  opacity: 0.45;
+  /* Children stay interactive while parent is pinned; they just look muted. */
 }
 
 /* ---------- Node Card ---------- */
@@ -656,6 +656,38 @@
 
 .tg-unpin:hover {
   background: var(--text-primary);
+}
+
+/* Two-state pin toggle on branch nodes. Active = user's override is driving
+   the node; inactive = children's computed value is driving, but override is
+   preserved so one click restores it. */
+.tg-pin-toggle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--accent-universe);
+  color: var(--accent-universe);
+  font-size: 0.65rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+.tg-pin-toggle:hover {
+  background: rgba(168, 85, 247, 0.15);
+}
+.tg-pin-toggle.active {
+  background: var(--accent-universe);
+  color: var(--bg-primary);
+}
+.tg-pin-toggle.active:hover {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .tg-slider {
@@ -904,6 +936,7 @@
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.6;
+  white-space: pre-line;
 }
 
 .info-probability {
