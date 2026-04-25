@@ -1339,47 +1339,24 @@
         });
         card.appendChild(inner);
       } else if (jointInfo && jointInfo.kind === "subtree") {
-        // Leaf + subtree: leaf goes inside as a sub-control, the subtree is
-        // shown as a clickable summary row, and the subtree's *children*
-        // become the joint's visual children below.
+        // Leaf + subtree: build both children fully, then put the subtree's
+        // card+slider inside the joint and lift its children section out so
+        // it renders below the joint (as the joint's "visual children").
         var inner = document.createElement("div");
         inner.className = "tg-joint-inner";
         inner.appendChild(buildNodeEl(jointInfo.leaf));
 
-        var summary = document.createElement("div");
-        summary.className = "tg-joint-summary";
-        summary.dataset.id = jointInfo.subtree.id;
-        if (jointInfo.subtree.id === selectedNodeId) summary.classList.add("selected");
-
-        var sLabel = document.createElement("span");
-        sLabel.className = "tg-label";
-        var subRawName = jointInfo.subtree.name || jointInfo.subtree.label || jointInfo.subtree.id;
-        sLabel.textContent = getTree().substituteNames === false ? subRawName : subVars(subRawName);
-        summary.appendChild(sLabel);
-
-        var sProb = document.createElement("span");
-        sProb.className = "tg-prob";
-        sProb.textContent = formatProb(computeProb(jointInfo.subtree));
-        summary.appendChild(sProb);
-
-        summary.addEventListener("click", function (e) {
-          e.stopPropagation();
-          selectNode(jointInfo.subtree);
-        });
-
-        inner.appendChild(summary);
+        var subtreeWrapper = buildNodeEl(jointInfo.subtree);
+        var liftedChildren = subtreeWrapper.querySelector(":scope > .tg-children");
+        if (liftedChildren && liftedChildren.parentNode === subtreeWrapper) {
+          subtreeWrapper.removeChild(liftedChildren);
+        }
+        inner.appendChild(subtreeWrapper);
         card.appendChild(inner);
 
-        // Visual children: the absorbed subtree's children
-        if (jointInfo.subtree.children && jointInfo.subtree.children.length > 0) {
-          var childrenEl = document.createElement("div");
-          childrenEl.className = "tg-children";
-          if (collapsedNodes[jointInfo.subtree.id]) childrenEl.classList.add("collapsed");
-          if (isPinned) childrenEl.classList.add("dimmed");
-          jointInfo.subtree.children.forEach(function (child) {
-            childrenEl.appendChild(buildNodeEl(child));
-          });
-          wrapper.appendChild(childrenEl);
+        if (liftedChildren) {
+          if (isPinned) liftedChildren.classList.add("dimmed");
+          wrapper.appendChild(liftedChildren);
         }
       } else {
         var childrenEl = document.createElement("div");
