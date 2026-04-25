@@ -26,41 +26,41 @@ const TREES = [
       children: [
         {
           id: "t-inc-path",
-          name: "AI makes D more likely, and D occurs",
-          description: "The branch in which AI's development raises P(D), and D actually occurs within T. Further decomposed by what kind of AI is responsible.",
+          name: "AI-driven pathway",
+          description: "The branch where AI raises P(D) and D actually occurs within T. Decomposed below by what kind of AI is responsible.",
           type: "and",
           children: [
             {
               id: "t-d-given-inc",
-              name: "D occurs, given AI raises its probability",
-              description: "Given that AI raises P(D), the conditional probability that D actually occurs within T. Decomposed by whether the danger comes from a single dominant AI or from a multipolar landscape of several AIs acting together.",
+              name: "D | AI raises P(D)",
+              description: "Conditional credence that D occurs within T, given AI raises its probability. Split below by whether the dangerous pathway runs through a single dominant AI or a multipolar one.",
               type: "or",
               children: [
                 {
                   id: "t-multi-path",
-                  name: "Multipolar AI landscape, and D occurs",
-                  description: "The sub-branch in which, given AI raises P(D), the dangerous pathway runs through multiple AIs acting simultaneously — coordination failures, race dynamics, AI-on-AI interactions, or several AIs of different types existing at once.",
+                  name: "Multipolar AI pathway",
+                  description: "The branch where AI raises P(D) via multiple AIs acting at once — coordination failures, race dynamics, or AIs of different types coexisting.",
                   type: "and",
                   children: [
                     {
-                      id: "t-d-multi",
-                      name: "D | multipolar AI landscape",
-                      description: "Given AI raises P(D) via a multipolar landscape, the conditional probability that D occurs within T. Note: a multipolar scenario can involve AIs of several different types simultaneously, so this leaf aggregates across those sub-cases rather than splitting further.",
-                      type: "leaf"
-                    },
-                    {
                       id: "t-multi",
                       name: "Danger comes from multiple AIs",
-                      description: "The complement: given AI raises P(D), the dangerous pathway runs through interactions among multiple AIs rather than a single dominant system. Includes AI-on-AI dynamics, race conditions, coordination failures, and worlds with several AIs of different types coexisting. Computed as 1 − P(single dominant AI).",
+                      description: "Given AI raises P(D), your credence that the danger comes from multiple AIs rather than a single dominant one. Computed as 1 − P(single dominant AI).",
                       type: "leaf",
                       complement_of: "t-single"
+                    },
+                    {
+                      id: "t-d-multi",
+                      name: "D | multipolar AI",
+                      description: "Conditional credence that D occurs within T given AI raises P(D) via a multipolar landscape. A multipolar world can mix AIs of different types, so this aggregates across those sub-cases.",
+                      type: "leaf"
                     }
                   ]
                 },
                 {
                   id: "t-single-path",
-                  name: "Single dominant AI, and D occurs",
-                  description: "The sub-branch in which, given AI raises P(D), the dangerous pathway runs through a single dominant AI — and D occurs. Further decomposed by whether that AI has an internal model of D.",
+                  name: "Single dominant AI pathway",
+                  description: "The branch where AI raises P(D) via a single dominant AI. Decomposed below by whether the AI has an internal model of D.",
                   type: "and",
                   children: [
                     {
@@ -71,60 +71,60 @@ const TREES = [
                     },
                     {
                       id: "t-d-given-single",
-                      name: "D occurs, given a single dominant AI",
-                      description: "Given AI raises P(D) via a single dominant AI, the conditional probability that D occurs within T. Decomposed by whether the AI has an internal model of D as a concept.",
+                      name: "D | single dominant AI",
+                      description: "Conditional credence that D occurs within T, given the danger runs through a single dominant AI. Split below by whether the AI has an internal model of D.",
                       type: "or",
                       children: [
                         {
                           id: "t-rep-path",
-                          name: "AI has internal model of D, and D occurs",
-                          description: "The sub-branch in which the single dominant AI has an internal model of D, and D occurs. Further decomposed by whether the AI expects D to become more likely.",
+                          name: "Internal-model pathway",
+                          description: "The branch where the single dominant AI has an internal model of D. Decomposed below by whether the AI expects D.",
                           type: "and",
                           children: [
                             {
                               id: "t-d-given-rep",
-                              name: "D occurs, given AI has an internal model of D",
-                              description: "Given a single dominant AI with an internal model of D, the conditional probability that D occurs within T. Decomposed by whether the AI expects or intends D to become more likely.",
+                              name: "D | AI has internal model of D",
+                              description: "Conditional credence that D occurs within T, given a single dominant AI with an internal model of D. Split below by whether the AI expects D.",
                               type: "or",
                               defaultCollapsed: true,
                               children: [
                                 {
                                   id: "t-expects-path",
-                                  name: "AI expects D, and D occurs",
-                                  description: "The sub-branch in which the AI has an internal model of D and expects D to become more likely — and D occurs.",
+                                  name: "AI expects D pathway",
+                                  description: "The branch where the AI has an internal model of D and expects D to become more likely.",
                                   type: "and",
                                   children: [
                                     {
-                                      id: "t-d-expects",
-                                      name: "D | AI expects it",
-                                      description: "Given an AI that has an internal model of D and expects D to become more likely, the conditional probability that D actually occurs within T. High values correspond to the AI's expectation being reliable; lower values allow for interventions, containment, or the AI's plans going wrong.",
+                                      id: "t-expects",
+                                      name: "The AI expects D to become more likely",
+                                      description: "Given an AI with an internal model of D, your credence it expects or intends D — the 'deliberate or foreseen' case where the AI's actions are aimed at, or are knowingly consistent with, D.",
                                       type: "leaf"
                                     },
                                     {
-                                      id: "t-expects",
-                                      name: "The AI expects D to become more likely",
-                                      description: "Given an AI with an internal model of D, your credence that the AI expects or intends D to become more likely. This is the 'deliberate or foreseen' case: the AI is acting in ways it expects will raise P(D), whether because D serves its goals or is a known consequence of its actions.",
+                                      id: "t-d-expects",
+                                      name: "D | AI expects D",
+                                      description: "Conditional credence that D occurs within T given the AI expects D. High values mean the AI's expectation tends to come true; lower values leave room for interventions, containment, or the AI's plans going wrong.",
                                       type: "leaf"
                                     }
                                   ]
                                 },
                                 {
                                   id: "t-no-expects-path",
-                                  name: "AI doesn't expect D, and D occurs",
-                                  description: "The sub-branch in which the AI has an internal model of D but doesn't expect D to become more likely — yet D occurs anyway through miscalculation, wrong beliefs, or plans going astray.",
+                                  name: "AI doesn't expect D pathway",
+                                  description: "The branch where the AI has an internal model of D but doesn't expect D to become more likely — D arrives via miscalculation, wrong beliefs, or plans going astray.",
                                   type: "and",
                                   children: [
                                     {
                                       id: "t-no-expects",
                                       name: "The AI doesn't expect D to become more likely",
-                                      description: "The complement: the AI has an internal model of D but does not expect D to become more likely. Covers cases where the AI represents D, believes its actions are safe, misjudges consequences, or holds wrong beliefs about the world. Computed as 1 − P(AI expects D).",
+                                      description: "Given an AI with an internal model of D, your credence it does not expect D — perhaps believing its actions are safe, misjudging consequences, or holding wrong beliefs. Computed as 1 − P(AI expects D).",
                                       type: "leaf",
                                       complement_of: "t-expects"
                                     },
                                     {
                                       id: "t-d-no-expects",
-                                      name: "D | AI doesn't expect it",
-                                      description: "Given an AI with an internal model of D that does not expect D to become more likely, the conditional probability that D occurs within T. D materialises despite the AI's beliefs — through miscalculation, deception by others, plans going wrong, or incorrect world-models.",
+                                      name: "D | AI doesn't expect D",
+                                      description: "Conditional credence that D occurs within T, given an AI with an internal model of D that does not expect D — through miscalculation, deception, or plans going wrong.",
                                       type: "leaf"
                                     }
                                   ]
@@ -141,21 +141,21 @@ const TREES = [
                         },
                         {
                           id: "t-no-rep-path",
-                          name: "AI has no internal model of D, and D occurs",
-                          description: "The sub-branch in which the single dominant AI raises P(D) without having an internal model of D as a concept. Harm from misaligned optimisation, side-effects, reward hacking, or emergent behaviour the AI isn't 'aware' of.",
+                          name: "No internal model pathway",
+                          description: "The branch where the single dominant AI raises P(D) without representing D as a concept — misaligned optimisation, reward hacking, side-effects, or emergent behaviour.",
                           type: "and",
                           children: [
                             {
                               id: "t-no-rep",
                               name: "The AI has no internal model of D",
-                              description: "The complement: the single dominant AI raises P(D) without representing D as a concept. This is the 'unaware harm' case — misaligned optimisation, side-effects, reward hacking, mesa-optimisation, or emergent behaviour that produces D without the AI 'knowing' that's what it's doing. Computed as 1 − P(has internal model of D).",
+                              description: "Given a single dominant AI raising P(D), your credence that it does so without representing D — the 'unaware harm' case. Computed as 1 − P(has internal model of D).",
                               type: "leaf",
                               complement_of: "t-has-rep"
                             },
                             {
                               id: "t-d-no-rep",
                               name: "D | AI has no internal model",
-                              description: "Given a single dominant AI that raises P(D) without an internal model of D, the conditional probability that D occurs within T.",
+                              description: "Conditional credence that D occurs within T, given a single dominant AI that raises P(D) without an internal model of D.",
                               type: "leaf"
                             }
                           ]
@@ -176,21 +176,21 @@ const TREES = [
         },
         {
           id: "t-no-inc-path",
-          name: "AI doesn't make D more likely, and D occurs",
-          description: "The branch in which AI's development doesn't raise P(D) relative to the counterfactual, but D still occurs through other causes — the 'base rate' pathway for this worldview.",
+          name: "Non-AI pathway",
+          description: "The branch where AI doesn't raise P(D) but D still occurs through other causes — the 'base rate' pathway for this worldview.",
           type: "and",
           children: [
             {
               id: "t-no-ai-inc",
               name: "AI doesn't make D more likely",
-              description: "The complement: AI's development does not raise P(D) in this timeline relative to the counterfactual. Includes both worlds where AI is beneficial or neutral for D, and worlds where AI has little effect on D either way. Computed as 1 − P(AI makes D more likely).",
+              description: "AI's development does not raise P(D) relative to the counterfactual. Includes worlds where AI is beneficial or neutral for D, and worlds where AI has little effect either way. Computed as 1 − P(AI makes D more likely).",
               type: "leaf",
               complement_of: "t-ai-inc"
             },
             {
               id: "t-d-no-inc",
-              name: "D happens anyway",
-              description: "The conditional probability that D occurs within T, given that AI doesn't raise P(D). This is the base rate of D in the branch where AI isn't contributing — nuclear war, pandemics, natural catastrophes, or other risks unrelated to AI.",
+              name: "D | AI doesn't raise its probability",
+              description: "Conditional credence that D occurs within T, given AI doesn't raise its probability — the base rate of D from non-AI causes (nuclear war, pandemics, natural catastrophes, etc.).",
               type: "leaf"
             }
           ]
