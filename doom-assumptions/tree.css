@@ -517,6 +517,64 @@
   border-color: var(--accent-safety);
 }
 
+/* ---------- Joint Compressed Card ----------
+   AND nodes whose two children are leaves get rendered as a single
+   wider card with the leaves' sliders inline. */
+.tg-card-joint {
+  width: 250px;
+  text-align: left;
+  padding-bottom: 0.5rem;
+}
+.tg-joint-inner {
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tg-joint-inner.collapsed {
+  display: none;
+}
+/* Inner leaf node sitting inside a joint card: strip card chrome down to
+   just name + slider so the row reads as a sub-control rather than a card. */
+.tg-joint-inner .tg-node {
+  display: contents;
+}
+.tg-joint-inner .tg-card {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: none;
+  transform: none !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.tg-joint-inner .tg-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: none;
+  transform: none;
+}
+.tg-joint-inner .tg-card-header {
+  display: none;
+}
+.tg-joint-inner .tg-bar {
+  display: none;
+}
+.tg-joint-inner .tg-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.tg-joint-inner .tg-slider-wrap {
+  margin-top: 0;
+  width: 100%;
+}
+
 /* Card header row: type + probability + collapse toggle */
 .tg-card-header {
   display: flex;

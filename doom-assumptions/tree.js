@@ -983,20 +983,31 @@
     renderUncertaintyReduction();
   }
 
+  // A "joint" AND is one whose two children are both leaves — we render
+  // these compressed: the AND card holds the two leaves' sliders inline.
+  function isJointAnd(node) {
+    if (node.type !== "and") return false;
+    if (!node.children || node.children.length !== 2) return false;
+    return node.children.every(function (c) { return c.type === "leaf"; });
+  }
+
   function buildNodeEl(node) {
     var hasChildren = node.children && node.children.length > 0;
     var isCollapsed = !!collapsedNodes[node.id];
     var isPinned = !!pinnedNodes[node.id];
+    var isJoint = isJointAnd(node);
     var prob = computeProb(node);
 
     // Wrapper
     var wrapper = document.createElement("div");
     wrapper.className = "tg-node";
+    if (isJoint) wrapper.classList.add("tg-node-joint");
     wrapper.dataset.id = node.id;
 
     // Card
     var card = document.createElement("div");
     card.className = "tg-card";
+    if (isJoint) card.classList.add("tg-card-joint");
     if (node.id === selectedNodeId) card.classList.add("selected");
     if (isPinned) card.classList.add("pinned");
 
@@ -1067,8 +1078,9 @@
 
     wrapper.appendChild(card);
 
-    // Slider — available on ALL nodes (#1), not just leaves
-    var showSlider = (node.type === "leaf") || hasChildren;
+    // Slider — available on ALL nodes (#1), not just leaves.
+    // Joint AND nodes don't get an external slider; their leaves' sliders sit inside the card.
+    var showSlider = ((node.type === "leaf") || hasChildren) && !isJoint;
     var isComplement = !!node.complement_of;
 
     var showDualRange = showSlider && rangeMode &&
@@ -1298,17 +1310,28 @@
 
     // Children
     if (hasChildren) {
-      var childrenEl = document.createElement("div");
-      childrenEl.className = "tg-children";
-      if (isCollapsed) childrenEl.classList.add("collapsed");
-      // Dim children when parent is pinned
-      if (isPinned) childrenEl.classList.add("dimmed");
+      if (isJoint) {
+        // Joint AND: render the two leaves *inside* the parent's card, compactly.
+        var inner = document.createElement("div");
+        inner.className = "tg-joint-inner";
+        if (isCollapsed) inner.classList.add("collapsed");
+        node.children.forEach(function (child) {
+          inner.appendChild(buildNodeEl(child));
+        });
+        card.appendChild(inner);
+      } else {
+        var childrenEl = document.createElement("div");
+        childrenEl.className = "tg-children";
+        if (isCollapsed) childrenEl.classList.add("collapsed");
+        // Dim children when parent is pinned
+        if (isPinned) childrenEl.classList.add("dimmed");
 
-      node.children.forEach(function (child) {
-        childrenEl.appendChild(buildNodeEl(child));
-      });
+        node.children.forEach(function (child) {
+          childrenEl.appendChild(buildNodeEl(child));
+        });
 
-      wrapper.appendChild(childrenEl);
+        wrapper.appendChild(childrenEl);
+      }
     }
 
     return wrapper;
@@ -1393,6 +1416,8 @@
   function drawNodeConnectors(node) {
     if (!node.children || node.children.length === 0) return;
     if (collapsedNodes[node.id]) return;
+    // Joint AND nodes embed their leaves inside their own card — no parent→child connectors needed.
+    if (isJointAnd(node)) return;
 
     var parentCard = treeRoot.querySelector('[data-id="' + node.id + '"] > .tg-card');
     if (!parentCard) return;
