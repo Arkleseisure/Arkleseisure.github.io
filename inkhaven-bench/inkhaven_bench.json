@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-05-03T16:11:44+00:00",
+ "generated_at": "2026-05-04T10:37:22+00:00",
  "post_std": 2.611036809775583,
  "bootstrap_B": 200,
- "n_posts": 1673,
- "n_authors": 29,
+ "n_posts": 1663,
+ "n_authors": 50,
  "author_min_posts": 20,
  "n_days": 30,
  "dates": [
@@ -42,7 +42,7 @@
   {
    "id": "ink-1561",
    "title": "Not a Paper: \"Frontier Lab CEOs are Capable of In-Context Scheming\"",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/FuauQjjbTCS5QFLk8/not-a-paper-frontier-lab-ceos-are-capable-of-in-context",
    "date": "2026-04-28",
    "score": 4.44212323587765,
@@ -51,7 +51,7 @@
   {
    "id": "ink-1721",
    "title": "Sanity-checking “Incompressible Knowledge Probes”",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.lesswrong.com/posts/veFMEzDDyWaer2Sms/sanity-checking-incompressible-knowledge-probes",
    "date": "2026-04-30",
    "score": 4.266172551601913,
@@ -60,7 +60,7 @@
   {
    "id": "ink-1546",
    "title": "Psychoanalyzing Asian Webnovels",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/28/psychoanalyzing-asian-webnovels/",
    "date": "2026-04-28",
    "score": 3.7087775365106217,
@@ -69,7 +69,7 @@
   {
    "id": "ink-1337",
    "title": "Question 24: Is Eliezer Yudkowsky a Respectable Man?",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/question-24-is-eliezer-yudkowsky",
    "date": "2026-04-24",
    "score": 3.592679416410063,
@@ -78,7 +78,7 @@
   {
    "id": "ink-1563",
    "title": "It is the end of the world and I am here to take you home",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://substack.com/home/post/p-195824969",
    "date": "2026-04-28",
    "score": 3.298084767736634,
@@ -87,7 +87,7 @@
   {
    "id": "ink-1637",
    "title": "I Hope I Die First",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://nhua.substack.com/p/i-hope-i-die-first",
    "date": "2026-04-29",
    "score": 3.0280071142879703,
@@ -96,7 +96,7 @@
   {
    "id": "ink-1540",
    "title": "Can You Actually Boil Frogs Alive?",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/can-you-actually-boil-frogs-alive",
    "date": "2026-04-27",
    "score": 2.948164896741336,
@@ -105,7 +105,7 @@
   {
    "id": "ink-1218",
    "title": "My Trip to Russia",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/21/my-trip-to-russia/",
    "date": "2026-04-21",
    "score": 2.8959811263144233,
@@ -114,7 +114,7 @@
   {
    "id": "ink-1703",
    "title": "Nobody wants to read your shit",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/nobody-wants-to-read-your-shit",
    "date": "2026-04-27",
    "score": 2.788638618586127,
@@ -132,7 +132,7 @@
   {
    "id": "ink-1437",
    "title": "The Six Genders: Errata and Addenda to the Standard Model",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/the-six-genders-errata-and-addenda",
    "date": "2026-04-25",
    "score": 2.6597501972417583,
@@ -141,7 +141,7 @@
   {
    "id": "ink-1461",
    "title": "Ideas for not killing yourself before your period",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://nataliercargill.substack.com/p/ideas-for-not-killing-yourself-before",
    "date": "2026-04-26",
    "score": 2.4562717084449894,
@@ -150,7 +150,7 @@
   {
    "id": "ink-1285",
    "title": "The Cohort",
-   "author": "?",
+   "author": "Scott Hoffman",
    "url": "https://substack.com/home/post/p-195185778",
    "date": "2026-04-22",
    "score": 2.3624787584230367,
@@ -186,7 +186,7 @@
   {
    "id": "ink-1534",
    "title": "a letter of babble",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/B7WPQKujmiozkujdB/a-letter-of-babble",
    "date": "2026-04-27",
    "score": 2.208254892374129,
@@ -195,7 +195,7 @@
   {
    "id": "ink-1500",
    "title": "Logs From the Entropy Farms III",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/entropy-farms-iii/",
    "date": "2026-04-26",
    "score": 2.0828565564078723,
@@ -222,7 +222,7 @@
   {
    "id": "ink-1519",
    "title": "what's the ideal analogy",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/28/whats-the-ideal-analogy/",
    "date": "2026-04-27",
    "score": 1.9543653670368666,
@@ -231,7 +231,7 @@
   {
    "id": "ink-1536",
    "title": "Just! Stop! Communicating!",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://substack.com/home/post/p-195703751",
    "date": "2026-04-27",
    "score": 1.9320549177476969,
@@ -249,7 +249,7 @@
   {
    "id": "ink-1288",
    "title": "The Armored & the Burned: Two Approaches to Sexual Transgression",
-   "author": "?",
+   "author": "Thessaly Blue",
    "url": "https://substack.com/home/post/p-195195694",
    "date": "2026-04-22",
    "score": 1.901873516763658,
@@ -258,7 +258,7 @@
   {
    "id": "ink-1476",
    "title": "Homestuck is the opposite of Mistborn",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/homestuck-is-the-opposite-of-mistborn",
    "date": "2026-04-26",
    "score": 1.8924055730672378,
@@ -276,7 +276,7 @@
   {
    "id": "ink-1608",
    "title": "The Smart Kid Must Die",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/the-smart-kid-must-die",
    "date": "2026-04-29",
    "score": 1.8883611671129237,
@@ -294,7 +294,7 @@
   {
    "id": "ink-1474",
    "title": "No, the Fermi Paradox Hasn't Been Solved",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195596693",
    "date": "2026-04-26",
    "score": 1.845363344894164,
@@ -303,7 +303,7 @@
   {
    "id": "ink-1538",
    "title": "Anthropic Is Not Your Friend",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-195664585",
    "date": "2026-04-27",
    "score": 1.8444838942206407,
@@ -321,7 +321,7 @@
   {
    "id": "ink-1498",
    "title": "AI unemployment and AI extinction are often the same",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/ai-unemployment-and-ai-extinction",
    "date": "2026-04-26",
    "score": 1.8184995445826972,
@@ -330,7 +330,7 @@
   {
    "id": "ink-1420",
    "title": "Logs From the Entropy Farms II",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/entropy-farms-ii/",
    "date": "2026-04-25",
    "score": 1.8148659621061505,
@@ -339,7 +339,7 @@
   {
    "id": "ink-1508",
    "title": "Torture-bliss",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/torture-bliss",
    "date": "2026-04-27",
    "score": 1.8014957443558066,
@@ -348,7 +348,7 @@
   {
    "id": "ink-1400",
    "title": "Green",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814913934205288448/green",
    "date": "2026-04-25",
    "score": 1.7841098583814459,
@@ -366,7 +366,7 @@
   {
    "id": "ink-1550",
    "title": "The Disaster Postmortem Of Yourself",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/the-disaster-postmortem-of-yourself",
    "date": "2026-04-28",
    "score": 1.7365787923835538,
@@ -375,7 +375,7 @@
   {
    "id": "ink-1559",
    "title": "What's Up with Silexan? A Pilot Study on a Promising Anti-Anxiety Drug",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/whats-up-with-silexan-a-pilot-study",
    "date": "2026-04-28",
    "score": 1.7148322840951407,
@@ -384,7 +384,7 @@
   {
    "id": "ink-1292",
    "title": "You suck at dating apps because you’re straight",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/you-suck-at-dating-apps-because-youre",
    "date": "2026-04-23",
    "score": 1.7102241256044408,
@@ -393,7 +393,7 @@
   {
    "id": "ink-1301",
    "title": "The Death of Pseudonym",
-   "author": "?",
+   "author": "Alexander Wales",
    "url": "https://substack.com/home/post/p-195009659",
    "date": "2026-04-23",
    "score": 1.6722316413949012,
@@ -420,7 +420,7 @@
   {
    "id": "ink-1595",
    "title": "You suck at dating apps because you're not off-putting enough",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/you-suck-at-dating-apps-because-youre-cb7",
    "date": "2026-04-28",
    "score": 1.639026006753195,
@@ -438,7 +438,7 @@
   {
    "id": "ink-1590",
    "title": "Loans are bets on doom",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/doom-loans/",
    "date": "2026-04-28",
    "score": 1.633900840181631,
@@ -465,7 +465,7 @@
   {
    "id": "ink-1382",
    "title": "The Cohort",
-   "author": "?",
+   "author": "Scott Hoffman",
    "url": "https://substack.com/home/post/p-195416836",
    "date": "2026-04-24",
    "score": 1.6038906222403502,
@@ -474,7 +474,7 @@
   {
    "id": "ink-1651",
    "title": "Why did streetlights used to be so yellow?",
-   "author": "?",
+   "author": "viv",
    "url": "https://vivianbelenky.substack.com/p/why-did-streetlights-used-to-be-so",
    "date": "2026-04-29",
    "score": 1.5940030201619992,
@@ -483,7 +483,7 @@
   {
    "id": "ink-1470",
    "title": "The other paper that killed deep learning theory",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/zcGmdQHX66NhC69v6/the-other-paper-that-killed-deep-learning-theory",
    "date": "2026-04-26",
    "score": 1.578997890886436,
@@ -492,7 +492,7 @@
   {
    "id": "ink-1353",
    "title": "Do Emergently Misaligned Models Believe What They Say?",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-24",
    "date": "2026-04-24",
    "score": 1.578807085161936,
@@ -519,7 +519,7 @@
   {
    "id": "ink-1306",
    "title": "A Reader's Guide to Alicorn",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/a-readers-guide-to-alicorn/",
    "date": "2026-04-23",
    "score": 1.563388406770678,
@@ -528,7 +528,7 @@
   {
    "id": "ink-1378",
    "title": "How To Forecast The Chance That A Potential Partner Will Cancel You",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-195394629",
    "date": "2026-04-24",
    "score": 1.5613335280166396,
@@ -573,7 +573,7 @@
   {
    "id": "ink-1591",
    "title": "Music for Writing Productivity",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195837183",
    "date": "2026-04-28",
    "score": 1.5276173414033716,
@@ -582,7 +582,7 @@
   {
    "id": "ink-1618",
    "title": "Inkhaven Day 29 - Good Girl",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195832726",
    "date": "2026-04-29",
    "score": 1.524128795029547,
@@ -600,7 +600,7 @@
   {
    "id": "ink-1217",
    "title": "Deception Is Intrinsically Stressful",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/deception-is-intrinsically-stressful",
    "date": "2026-04-21",
    "score": 1.5125083757578537,
@@ -618,7 +618,7 @@
   {
    "id": "ink-1598",
    "title": "Degenerate Philosophers",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Degenerate_Philosophers.html",
    "date": "2026-04-29",
    "score": 1.49876162598387,
@@ -708,7 +708,7 @@
   {
    "id": "ink-1628",
    "title": "A brief history of time units: Tenths",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/29/tenths.html",
    "date": "2026-04-29",
    "score": 1.3998125853514143,
@@ -717,7 +717,7 @@
   {
    "id": "ink-1244",
    "title": "Peregrinations on Pazuzu",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-194994073",
    "date": "2026-04-21",
    "score": 1.3925689510897676,
@@ -762,7 +762,7 @@
   {
    "id": "ink-1513",
    "title": "Diffusion is all you need",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195718870",
    "date": "2026-04-27",
    "score": 1.3540103599055429,
@@ -798,7 +798,7 @@
   {
    "id": "ink-1593",
    "title": "On Marat/Sade (1963)",
-   "author": "?",
+   "author": "Thessaly Blue",
    "url": "https://substack.com/home/post/p-195818673",
    "date": "2026-04-28",
    "score": 1.337883360132173,
@@ -888,7 +888,7 @@
   {
    "id": "ink-1522",
    "title": "Population Worldbuilding",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/815076023487070208/population-worldbuilding",
    "date": "2026-04-27",
    "score": 1.2839909977406985,
@@ -978,7 +978,7 @@
   {
    "id": "ink-1629",
    "title": "Seeking Doorman",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/815272576945438720/seeking-doorman",
    "date": "2026-04-29",
    "score": 1.2442711213959552,
@@ -996,7 +996,7 @@
   {
    "id": "ink-1616",
    "title": "Strange Acoustics on Mars and Beyond",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/mars-acoustics/",
    "date": "2026-04-29",
    "score": 1.238250287068679,
@@ -1005,7 +1005,7 @@
   {
    "id": "ink-1203",
    "title": "Canon Goes Boom: David Auburn's Proof",
-   "author": "?",
+   "author": "Emma Baker",
    "url": "https://emma00baker.substack.com/p/canon-goes-boom-david-auburns-proof",
    "date": "2026-04-21",
    "score": 1.2363514767606327,
@@ -1023,7 +1023,7 @@
   {
    "id": "ink-1672",
    "title": "leaving utopia",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/leaving-utopia",
    "date": "2026-04-30",
    "score": 1.228587478541444,
@@ -1032,7 +1032,7 @@
   {
    "id": "ink-1553",
    "title": "The Shortest Garden Hermit Career",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/the-shortest-garden-hermit-career",
    "date": "2026-04-28",
    "score": 1.2274131257354788,
@@ -1050,7 +1050,7 @@
   {
    "id": "ink-1493",
    "title": "Draft: Amos and the Alphabet Society",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/draft-amos-and-the-alphabet-society",
    "date": "2026-04-26",
    "score": 1.2256264102340457,
@@ -1059,7 +1059,7 @@
   {
    "id": "ink-1660",
    "title": "Inkhaven Day 30 - Eat Bitter",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195845700",
    "date": "2026-04-30",
    "score": 1.2250123910311503,
@@ -1086,7 +1086,7 @@
   {
    "id": "ink-1221",
    "title": "Pyongyang Once Had a Muslim Governor (Probably)",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/pyongyang-once-had-a-muslim-governor",
    "date": "2026-04-21",
    "score": 1.2140798414680667,
@@ -1095,7 +1095,7 @@
   {
    "id": "ink-1585",
    "title": "Self driving interview",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/self-driving-interview",
    "date": "2026-04-28",
    "score": 1.2112287050019954,
@@ -1122,7 +1122,7 @@
   {
    "id": "ink-1568",
    "title": "The Call of the Void",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/the-call-of-the-void/",
    "date": "2026-04-28",
    "score": 1.2028444725665697,
@@ -1131,7 +1131,7 @@
   {
    "id": "ink-1235",
    "title": "How to Subscribe to Sanlian Lifeweek",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/subscribe-sanlian-lifeweek/",
    "date": "2026-04-21",
    "score": 1.2023870765333051,
@@ -1203,7 +1203,7 @@
   {
    "id": "ink-1560",
    "title": "A Pecking Order Problem",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195683819",
    "date": "2026-04-27",
    "score": 1.1857664137742474,
@@ -1212,7 +1212,7 @@
   {
    "id": "ink-1648",
    "title": "Say Hi To People You Antisocial Bastards",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/say-hi-to-people-you-antisocial-bastards",
    "date": "2026-04-30",
    "score": 1.185207189240981,
@@ -1221,7 +1221,7 @@
   {
    "id": "ink-1234",
    "title": "How much should the ideal person cry wolf?",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/how-much-should-the-ideal-person",
    "date": "2026-04-21",
    "score": 1.1805937422857433,
@@ -1230,7 +1230,7 @@
   {
    "id": "ink-1225",
    "title": "Fixed-bankroll prediction markets could generate better predictions",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-194981247",
    "date": "2026-04-21",
    "score": 1.1792466781275686,
@@ -1275,7 +1275,7 @@
   {
    "id": "ink-1556",
    "title": "Why Costco pays $30/hr and Target doesn't",
-   "author": "?",
+   "author": "Justin Kuiper",
    "url": "https://justinkuiper.substack.com/p/costco",
    "date": "2026-04-28",
    "score": 1.1703158634860367,
@@ -1293,7 +1293,7 @@
   {
    "id": "ink-1728",
    "title": "Games that change your mind",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/games-that-change-your-mind",
    "date": "2026-04-30",
    "score": 1.1553335576646826,
@@ -1302,7 +1302,7 @@
   {
    "id": "ink-1435",
    "title": "How a Larp Drove Me to a Nervous Breakdown and also Maybe Cured My Anhedonia",
-   "author": "?",
+   "author": "Thessaly Blue",
    "url": "https://substack.com/home/post/p-195484730",
    "date": "2026-04-25",
    "score": 1.1551028430684656,
@@ -1311,7 +1311,7 @@
   {
    "id": "ink-1363",
    "title": "Forecasting measured the wrong thing",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/forecasting-measured-the-wrong-thing",
    "date": "2026-04-24",
    "score": 1.155091944333841,
@@ -1347,7 +1347,7 @@
   {
    "id": "ink-1405",
    "title": "Number Go Up",
-   "author": "?",
+   "author": "Benjamin Grayzel",
    "url": "https://benjamingrayzel.substack.com/p/number-go-up",
    "date": "2026-04-25",
    "score": 1.1423984413021717,
@@ -1356,7 +1356,7 @@
   {
    "id": "ink-1565",
    "title": "Review: The Last Sovereign",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/review-the-last-sovereign",
    "date": "2026-04-28",
    "score": 1.12625901603603,
@@ -1374,7 +1374,7 @@
   {
    "id": "ink-1386",
    "title": "How to read Derek Parfit's \"Reasons & Persons\"",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.bearblog.dev/reasons-and-persons/",
    "date": "2026-04-24",
    "score": 1.119520959784537,
@@ -1383,7 +1383,7 @@
   {
    "id": "ink-1258",
    "title": "Bullshit Values",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/bullshit-values",
    "date": "2026-04-22",
    "score": 1.1188627396402206,
@@ -1392,7 +1392,7 @@
   {
    "id": "ink-1249",
    "title": "Change",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Change.html",
    "date": "2026-04-22",
    "score": 1.1112003272349904,
@@ -1428,7 +1428,7 @@
   {
    "id": "ink-1338",
    "title": "Material Nonpublic Information at Hughes High",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/24/material-nonpublic-information-at-hughes-high/",
    "date": "2026-04-24",
    "score": 1.0970144502024255,
@@ -1482,7 +1482,7 @@
   {
    "id": "ink-1421",
    "title": "The paper that killed deep learning theory",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/ZvQfcLbcNHYqmvWyo/the-paper-that-killed-deep-learning-theory",
    "date": "2026-04-25",
    "score": 1.06748098682863,
@@ -1491,7 +1491,7 @@
   {
    "id": "ink-1545",
    "title": "Clown School Chronicles (1/3)",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/28/clown-school-chronicles-1-3/",
    "date": "2026-04-28",
    "score": 1.0655845497276133,
@@ -1500,7 +1500,7 @@
   {
    "id": "ink-1715",
    "title": "11 ways to be less deferential",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/11-ways-to-be-less-deferential",
    "date": "2026-04-29",
    "score": 1.0655092358776372,
@@ -1590,7 +1590,7 @@
   {
    "id": "ink-1475",
    "title": "Genealogical anxiety redux",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195596873",
    "date": "2026-04-26",
    "score": 1.0347458405410337,
@@ -1599,7 +1599,7 @@
   {
    "id": "ink-1445",
    "title": "A Panspermia Paper Review: Life Before Earth",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/a-panspermia-paper-review-life-before",
    "date": "2026-04-22",
    "score": 1.031408720114086,
@@ -1608,7 +1608,7 @@
   {
    "id": "ink-1620",
    "title": "contra “Satire requires clarity of purpose”",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/29/contra-satire-requires-clarity-of-purpose/",
    "date": "2026-04-29",
    "score": 1.0291925291555395,
@@ -1617,7 +1617,7 @@
   {
    "id": "ink-1319",
    "title": "schmancy",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/etym/2026/04/23/schmancy.html",
    "date": "2026-04-23",
    "score": 1.0281708023448823,
@@ -1653,7 +1653,7 @@
   {
    "id": "ink-1583",
    "title": "Tell 'em what you like",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/815188069838962688/tell-em-what-you-like",
    "date": "2026-04-28",
    "score": 1.0172207008421497,
@@ -1680,7 +1680,7 @@
   {
    "id": "ink-1659",
    "title": "Summoning the Demon is the Easy Part",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-30_summoningTheDemon.html",
    "date": "2026-04-30",
    "score": 1.0034363379992908,
@@ -1716,7 +1716,7 @@
   {
    "id": "ink-1531",
    "title": "non-place polarization",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/non-place/",
    "date": "2026-04-27",
    "score": 0.9922966474861447,
@@ -1743,7 +1743,7 @@
   {
    "id": "ink-1584",
    "title": "Keyboard Ergonomics: Only the Split Matters",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/keyboard-split/",
    "date": "2026-04-28",
    "score": 0.9885032781631002,
@@ -1752,7 +1752,7 @@
   {
    "id": "ink-1635",
    "title": "Contempt for Innocent Men",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/contempt-for-innocent-men",
    "date": "2026-04-29",
    "score": 0.984874531386781,
@@ -1761,7 +1761,7 @@
   {
    "id": "ink-1504",
    "title": "What is Value Aligned Research Advisors?",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/vara/",
    "date": "2026-04-26",
    "score": 0.9847662854841409,
@@ -1770,7 +1770,7 @@
   {
    "id": "ink-1406",
    "title": "Ukraine war drone tactics",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195502755",
    "date": "2026-04-25",
    "score": 0.9847436120271775,
@@ -1851,7 +1851,7 @@
   {
    "id": "ink-1232",
    "title": "Does anyone feel sick or like crying when they’re learning something new?",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/does-anyone-feel-sick-or-like-crying",
    "date": "2026-04-21",
    "score": 0.961812390357175,
@@ -1923,7 +1923,7 @@
   {
    "id": "ink-1630",
    "title": "Maybe I was too harsh on deep learning theory (three days ago)",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/6SRq7mZ97Dwuavwb6/maybe-i-was-too-harsh-on-deep-learning-theory-three-days-ago",
    "date": "2026-04-29",
    "score": 0.944294179665787,
@@ -1950,7 +1950,7 @@
   {
    "id": "ink-1264",
    "title": "Inkhaven Day 22 - Radial Walk",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195188485",
    "date": "2026-04-22",
    "score": 0.9397855742658408,
@@ -2013,7 +2013,7 @@
   {
    "id": "ink-1596",
    "title": "Drink More Soylent",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/drink-more-soylent/",
    "date": "2026-04-29",
    "score": 0.924319633885161,
@@ -2022,7 +2022,7 @@
   {
    "id": "ink-1260",
    "title": "luminous lines",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/luminous-lines/",
    "date": "2026-04-22",
    "score": 0.921916646391883,
@@ -2031,7 +2031,7 @@
   {
    "id": "ink-1304",
    "title": "Exploring AI Pause Strategies, Part Three",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-23_cognitiveTools3.html",
    "date": "2026-04-23",
    "score": 0.9207145099976338,
@@ -2076,7 +2076,7 @@
   {
    "id": "ink-1342",
    "title": "Total Fanfiction Victory",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/24/total-fanfiction-victory/",
    "date": "2026-04-24",
    "score": 0.9075533179032137,
@@ -2112,7 +2112,7 @@
   {
    "id": "ink-1477",
    "title": "When the High Street Eats the Harbour",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Harbour2.html",
    "date": "2026-04-26",
    "score": 0.8988191144383849,
@@ -2130,7 +2130,7 @@
   {
    "id": "ink-1727",
    "title": "John Brown, Time-Traveler",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/john-brown-time-traveler",
    "date": "2026-04-30",
    "score": 0.8972559281229553,
@@ -2157,7 +2157,7 @@
   {
    "id": "ink-1612",
    "title": "The Descendant Environment",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/815256100694867968/the-descendant-environment",
    "date": "2026-04-29",
    "score": 0.8957971741999446,
@@ -2166,7 +2166,7 @@
   {
    "id": "ink-1429",
    "title": "Are You An Idiot Or An Asshole?",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-186015689",
    "date": "2026-04-25",
    "score": 0.8917784911642013,
@@ -2184,7 +2184,7 @@
   {
    "id": "ink-1663",
    "title": "Why doesn't -1 equal 1?",
-   "author": "?",
+   "author": "Jonathan Gabor",
    "url": "https://jonathanpgabor.substack.com/p/why-doesnt-1-equal-1",
    "date": "2026-04-30",
    "score": 0.8897753082842915,
@@ -2265,7 +2265,7 @@
   {
    "id": "ink-1483",
    "title": "When Was The First Islamic Voyage to the Americas?",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/when-was-the-first-islamic-voyage",
    "date": "2026-04-26",
    "score": 0.8723734433917555,
@@ -2283,7 +2283,7 @@
   {
    "id": "ink-1296",
    "title": "do you want to live forever?",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/do-you-want-to-live-forever/",
    "date": "2026-04-23",
    "score": 0.870526707061224,
@@ -2310,7 +2310,7 @@
   {
    "id": "ink-1597",
    "title": "Clown School Chronicles (2/3)",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/29/clown-school-chronicles-2-3/",
    "date": "2026-04-29",
    "score": 0.8659013648704534,
@@ -2364,7 +2364,7 @@
   {
    "id": "ink-1215",
    "title": "Jabberwocky: translating nonsense to different languages",
-   "author": "?",
+   "author": "Adrià Garriga-Alonso",
    "url": "https://agarriga.substack.com/p/jabberwocky-translating-nonsense",
    "date": "2026-04-21",
    "score": 0.8612940091497546,
@@ -2373,7 +2373,7 @@
   {
    "id": "ink-1206",
    "title": "I playtested an AGI wargame. AI Lab Founders will play it next week.",
-   "author": "?",
+   "author": "Jonathan Gabor",
    "url": "https://jonathanpgabor.substack.com/p/i-playtested-an-agi-wargame-ai-lab",
    "date": "2026-04-21",
    "score": 0.8586326401618736,
@@ -2409,7 +2409,7 @@
   {
    "id": "ink-1487",
    "title": "Fight me, cowards",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/26/fight-me-cowards/",
    "date": "2026-04-26",
    "score": 0.8528927788068316,
@@ -2425,15 +2425,6 @@
    "se": 0.1684990971727418
   },
   {
-   "id": "ink-1702",
-   "title": "How To Date Gay Girls: Part II (The Great and Terrible Fear of Creepiness)",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/how-to-date-gay-girls-part-ii",
-   "date": "2026-04-27",
-   "score": 0.8505243708299148,
-   "se": 0.43788344122660405
-  },
-  {
    "id": "ink-0810",
    "title": "conqhaven 2 electric boogaloo",
    "author": "conq",
@@ -2445,7 +2436,7 @@
   {
    "id": "ink-1524",
    "title": "unfinished gloop 2",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/unfinished-gloop-2",
    "date": "2026-04-27",
    "score": 0.8450463891347306,
@@ -2454,7 +2445,7 @@
   {
    "id": "ink-1662",
    "title": "inkhaven was a terrible environment for writing",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/inkhaven-was-a-terrible-environment",
    "date": "2026-04-30",
    "score": 0.8426216996616749,
@@ -2472,7 +2463,7 @@
   {
    "id": "ink-1335",
    "title": "Optimizing Over People",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/optimizing-over-people",
    "date": "2026-04-23",
    "score": 0.8418435638989118,
@@ -2490,7 +2481,7 @@
   {
    "id": "ink-1298",
    "title": "I had magnets pointed at my brain",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/updated-i-had-magnets-pointed-at",
    "date": "2026-04-23",
    "score": 0.8414529952084429,
@@ -2535,7 +2526,7 @@
   {
    "id": "ink-1611",
    "title": "Is \"Working\" the Best Book About the 1970s?",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/is-working-the-best-book-about-the-1970s/",
    "date": "2026-04-29",
    "score": 0.8262309699225898,
@@ -2553,7 +2544,7 @@
   {
    "id": "ink-1291",
    "title": "That Time I Was a Camgirl",
-   "author": "?",
+   "author": "Thessaly Blue",
    "url": "https://substack.com/home/post/p-195290519",
    "date": "2026-04-23",
    "score": 0.8217809240432596,
@@ -2643,7 +2634,7 @@
   {
    "id": "ink-1380",
    "title": "Invisible Consequences",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/invisible-consequences",
    "date": "2026-04-24",
    "score": 0.802085422665547,
@@ -2769,7 +2760,7 @@
   {
    "id": "ink-1325",
    "title": "Cambridge: the kettle",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/cambridge-the-kettle",
    "date": "2026-04-23",
    "score": 0.7845766723964543,
@@ -2805,7 +2796,7 @@
   {
    "id": "ink-1569",
    "title": "My Worldbuilding Biases",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/815184834083356672/my-worldbuilding-biases",
    "date": "2026-04-28",
    "score": 0.7719962907008414,
@@ -2850,7 +2841,7 @@
   {
    "id": "ink-1352",
    "title": "One day build - Haiku Revealer",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/haiku-build/",
    "date": "2026-04-24",
    "score": 0.7652222607754144,
@@ -2859,7 +2850,7 @@
   {
    "id": "ink-1653",
    "title": "Inkhaven Retrospective",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/815356710872072192/inkhaven-retrospective",
    "date": "2026-04-30",
    "score": 0.7640325334763591,
@@ -2882,15 +2873,6 @@
    "date": "2026-04-01",
    "score": 0.761783600928166,
    "se": 0.1015821943713878
-  },
-  {
-   "id": "ink-1646",
-   "title": "How To Date Gay Girls: Part IV (Playing it Safe)",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/how-to-date-gay-girls-part-iv",
-   "date": "2026-04-29",
-   "score": 0.761037364453195,
-   "se": 0.6376644476021973
   },
   {
    "id": "ink-0084",
@@ -2931,7 +2913,7 @@
   {
    "id": "ink-1387",
    "title": "We are all the Depressed Person",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/we-are-all-the-depressed-person",
    "date": "2026-04-24",
    "score": 0.7529079794488179,
@@ -2976,7 +2958,7 @@
   {
    "id": "ink-1586",
    "title": "Covert Deception",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/covert-deception",
    "date": "2026-04-28",
    "score": 0.7494122609171484,
@@ -2994,7 +2976,7 @@
   {
    "id": "ink-1317",
    "title": "Writing as Evidence of Cope",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/23/writing-as-evidence-of-cope/",
    "date": "2026-04-23",
    "score": 0.7474135968864534,
@@ -3030,7 +3012,7 @@
   {
    "id": "ink-1397",
    "title": "The First Stable Tyranny",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adyexploring.substack.com/p/the-first-stable-tyranny",
    "date": "2026-04-25",
    "score": 0.733484374593391,
@@ -3039,7 +3021,7 @@
   {
    "id": "ink-1673",
    "title": "Just do the reading",
-   "author": "?",
+   "author": "Justin Kuiper",
    "url": "https://justinkuiper.substack.com/p/just-read",
    "date": "2026-04-30",
    "score": 0.7329910032208125,
@@ -3111,7 +3093,7 @@
   {
    "id": "ink-1509",
    "title": "Anonymity Is Fine If You're Not Famous",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justismills.substack.com/p/anonymity-is-fine-if-youre-not-famous",
    "date": "2026-04-27",
    "score": 0.720737102615038,
@@ -3138,7 +3120,7 @@
   {
    "id": "ink-1424",
    "title": "Foreverhaven Forever",
-   "author": "?",
+   "author": "Margarita Lovelace",
    "url": "https://www.mutuallyassuredseduction.com/p/foreverhaven-forever",
    "date": "2026-04-25",
    "score": 0.7177157937263295,
@@ -3237,7 +3219,7 @@
   {
    "id": "ink-1396",
    "title": "The Mind is a House",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/the-mind-is-a-house/",
    "date": "2026-04-25",
    "score": 0.7032871934670264,
@@ -3282,7 +3264,7 @@
   {
    "id": "ink-1389",
    "title": "Modus pon-something",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Modus.html",
    "date": "2026-04-25",
    "score": 0.6968038356644138,
@@ -3309,7 +3291,7 @@
   {
    "id": "ink-1515",
    "title": "Everyone Needs A Quest",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/everyone-needs-a-quest",
    "date": "2026-04-27",
    "score": 0.6949543782943769,
@@ -3327,7 +3309,7 @@
   {
    "id": "ink-1627",
    "title": "Black",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/black",
    "date": "2026-04-29",
    "score": 0.6944520298381911,
@@ -3453,7 +3435,7 @@
   {
    "id": "ink-1207",
    "title": "Fortune Favors the Fraud",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/fortune-favors-the-fraud",
    "date": "2026-04-21",
    "score": 0.6728240005720528,
@@ -3462,7 +3444,7 @@
   {
    "id": "ink-1266",
    "title": "(Sort of) Contra John Wentworth",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/sort-of-contra-john-wentworth",
    "date": "2026-04-22",
    "score": 0.6712814969412473,
@@ -3507,7 +3489,7 @@
   {
    "id": "ink-1384",
    "title": "Build the Epistemic Tubes",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195420558",
    "date": "2026-04-24",
    "score": 0.6657358650637168,
@@ -3552,7 +3534,7 @@
   {
    "id": "ink-1535",
    "title": "Cardio = Move, Cannabinoids = Slow Down and Eat",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/cardio-move-cannabinoids-stop-and",
    "date": "2026-04-27",
    "score": 0.6580665450465069,
@@ -3588,7 +3570,7 @@
   {
    "id": "ink-1274",
    "title": "Sleep puzzle system",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/sleep-puzzle-system",
    "date": "2026-04-22",
    "score": 0.655707585788448,
@@ -3606,7 +3588,7 @@
   {
    "id": "ink-1315",
    "title": "Talking to the Wrong Doctor",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/talking-to-the-wrong-doctor",
    "date": "2026-04-23",
    "score": 0.6550636999032129,
@@ -3615,7 +3597,7 @@
   {
    "id": "ink-1204",
    "title": "Engineering words for everyone",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/21/engineering.html",
    "date": "2026-04-21",
    "score": 0.6518556140847521,
@@ -3732,7 +3714,7 @@
   {
    "id": "ink-1451",
    "title": "The Romantasification of the Western Canon",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.substack.com/p/the-romantasification-of-the-western",
    "date": "2026-04-23",
    "score": 0.6348500274548136,
@@ -3804,7 +3786,7 @@
   {
    "id": "ink-1220",
    "title": "Exploring AI Pause Strategies, Part One",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-21_cognitiveTools1.html",
    "date": "2026-04-21",
    "score": 0.6279271099784455,
@@ -3822,7 +3804,7 @@
   {
    "id": "ink-1706",
    "title": "My Toddler's Secret",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://nhua.substack.com/p/my-toddlers-secret",
    "date": "2026-04-27",
    "score": 0.6224597850263396,
@@ -3840,7 +3822,7 @@
   {
    "id": "ink-1398",
    "title": "Stop being a pussy",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://substack.com/home/post/p-195481013",
    "date": "2026-04-25",
    "score": 0.6215295616725058,
@@ -3867,7 +3849,7 @@
   {
    "id": "ink-1668",
    "title": "The first blogger: Amos of Tekoa",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/the-first-blogger-amos-of-tekoa",
    "date": "2026-04-30",
    "score": 0.6157757583291358,
@@ -3885,7 +3867,7 @@
   {
    "id": "ink-1575",
    "title": "Anger release",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/anger-release",
    "date": "2026-04-28",
    "score": 0.6142828878707693,
@@ -3948,7 +3930,7 @@
   {
    "id": "ink-1287",
    "title": "moonslop",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195206515",
    "date": "2026-04-22",
    "score": 0.6093648165721808,
@@ -3989,15 +3971,6 @@
    "date": "2026-04-14",
    "score": 0.6044390562331364,
    "se": 0.20770353752993642
-  },
-  {
-   "id": "ink-1564",
-   "title": "How To Date Gay Girls: Part III (Default Friendship Narrative)",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/how-to-date-gay-girls-part-iii",
-   "date": "2026-04-28",
-   "score": 0.6023866936556593,
-   "se": 0.404211463998763
   },
   {
    "id": "ink-0301",
@@ -4056,7 +4029,7 @@
   {
    "id": "ink-1541",
    "title": "Latent reasoning models might be a good thing?",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://www.lesswrong.com/posts/JAYYFKYMwoq6zd4S3/latent-reasoning-models-might-be-a-good-thing",
    "date": "2026-04-27",
    "score": 0.5914580405134219,
@@ -4254,7 +4227,7 @@
   {
    "id": "ink-1269",
    "title": "Look What I Made",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814640617294577664/look-what-i-made",
    "date": "2026-04-22",
    "score": 0.5646677793820546,
@@ -4290,7 +4263,7 @@
   {
    "id": "ink-1542",
    "title": "Alignment Isn't Value Lock-In",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195716525",
    "date": "2026-04-27",
    "score": 0.5587292520693996,
@@ -4380,7 +4353,7 @@
   {
    "id": "ink-1212",
    "title": "My Unfiltered Motivations",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://forum.effectivealtruism.org/posts/LyLE23rmwrZPMmLah/my-unfiltered-motivations",
    "date": "2026-04-21",
    "score": 0.5469581076861456,
@@ -4407,7 +4380,7 @@
   {
    "id": "ink-1566",
    "title": "Obliquity",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195838721",
    "date": "2026-04-28",
    "score": 0.5414311845087476,
@@ -4452,7 +4425,7 @@
   {
    "id": "ink-1675",
    "title": "No Heroes Left",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/no-heroes-left/",
    "date": "2026-04-30",
    "score": 0.5363507361911423,
@@ -4515,7 +4488,7 @@
   {
    "id": "ink-1428",
    "title": "Cryopreservation: How Good is Good Enough?",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/cryopreservation-how-good-is-good",
    "date": "2026-04-25",
    "score": 0.5303887753142519,
@@ -4596,7 +4569,7 @@
   {
    "id": "ink-1293",
    "title": "I Hate Admin but I Love My Wife",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/i-hate-admin-but-i-love-my-wife",
    "date": "2026-04-23",
    "score": 0.5187457417948229,
@@ -4632,7 +4605,7 @@
   {
    "id": "ink-1255",
    "title": "Clean Air and Clean Water",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/22/earth-day.html",
    "date": "2026-04-22",
    "score": 0.5146191897276254,
@@ -4641,7 +4614,7 @@
   {
    "id": "ink-1409",
    "title": "Diary of a \"Doomer\": 12+ years arguing about AI risk (part 3: the LLM era)",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/diary-of-a-doomer-12-years-arguing-e89",
    "date": "2026-04-25",
    "score": 0.5140341588476393,
@@ -4704,7 +4677,7 @@
   {
    "id": "ink-1299",
    "title": "Inkhaven Day 23 - One of the Good Guys",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195301327",
    "date": "2026-04-23",
    "score": 0.5042262725579273,
@@ -4740,7 +4713,7 @@
   {
    "id": "ink-1478",
    "title": "What Does Pause AI Success Look Like?",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/what-does-pause-ai-success-look-like",
    "date": "2026-04-26",
    "score": 0.5012337681147961,
@@ -4758,7 +4731,7 @@
   {
    "id": "ink-1273",
    "title": "Vibe coding at Inkhaven",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/vibe-coding-at-inkhaven",
    "date": "2026-04-22",
    "score": 0.500781615138246,
@@ -4794,7 +4767,7 @@
   {
    "id": "ink-1229",
    "title": "Banger Sutras: Sermon Mode",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/banger-sutras-sermon-mode",
    "date": "2026-04-21",
    "score": 0.495695552791073,
@@ -4803,7 +4776,7 @@
   {
    "id": "ink-1272",
    "title": "Brief #9.5: How demand elasticity weakens AI automation and the AI tax against it",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/brief-95-how-demand-elasticity-weakens",
    "date": "2026-04-22",
    "score": 0.494208662134597,
@@ -4857,7 +4830,7 @@
   {
    "id": "ink-1381",
    "title": "People I imagined on the worst day of my life",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://substack.com/home/post/p-195412475",
    "date": "2026-04-24",
    "score": 0.48685303752672465,
@@ -4866,7 +4839,7 @@
   {
    "id": "ink-1454",
    "title": "Not Quite Contra Claude As Therapist",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/not-quite-contra-claude-as-therapist",
    "date": "2026-04-25",
    "score": 0.48680484174315836,
@@ -4911,7 +4884,7 @@
   {
    "id": "ink-1484",
    "title": "That’s very Unc-becoming of you",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195587298",
    "date": "2026-04-26",
    "score": 0.4827247519858475,
@@ -4974,7 +4947,7 @@
   {
    "id": "ink-1208",
    "title": "Understanding Things Fully",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/understanding-things-fully",
    "date": "2026-04-21",
    "score": 0.47217585914514615,
@@ -5019,7 +4992,7 @@
   {
    "id": "ink-1460",
    "title": "Experiments in self-medication",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/26/anxiety.html",
    "date": "2026-04-26",
    "score": 0.46836448776706385,
@@ -5028,7 +5001,7 @@
   {
    "id": "ink-1415",
    "title": "Infinite Lives, 2024: Caves of Qud",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/25/qud.html",
    "date": "2026-04-25",
    "score": 0.46779997203346696,
@@ -5064,7 +5037,7 @@
   {
    "id": "ink-1358",
    "title": "Internal Fossil Fuels",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/internal-fossil-fuels",
    "date": "2026-04-24",
    "score": 0.46142247630751704,
@@ -5073,7 +5046,7 @@
   {
    "id": "ink-1340",
    "title": "You Can Just Add Pockets!",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/you-can-just-add-pockets",
    "date": "2026-04-24",
    "score": 0.4596590733278309,
@@ -5181,7 +5154,7 @@
   {
    "id": "ink-1594",
    "title": "Breakfast Investigator Gaiden",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.bearblog.dev/breakfast/",
    "date": "2026-04-28",
    "score": 0.44622788128506924,
@@ -5199,7 +5172,7 @@
   {
    "id": "ink-1417",
    "title": "Tennis Courts",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814853784936267776/tennis-courts",
    "date": "2026-04-25",
    "score": 0.44562968842892875,
@@ -5217,7 +5190,7 @@
   {
    "id": "ink-1485",
    "title": "Why Are Anglophone Countries Unhappier Than Their European Counterparts?",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-26/",
    "date": "2026-04-26",
    "score": 0.44382480771967003,
@@ -5262,7 +5235,7 @@
   {
    "id": "ink-1366",
    "title": "AI: cognitive labor glut + new guys",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/ai-cognitive-labor-glut-new-guys",
    "date": "2026-04-24",
    "score": 0.43346319029623875,
@@ -5289,7 +5262,7 @@
   {
    "id": "ink-1268",
    "title": "Book review: Walden Two",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195205945",
    "date": "2026-04-22",
    "score": 0.42830976060628767,
@@ -5307,7 +5280,7 @@
   {
    "id": "ink-1656",
    "title": "Cannibal Media: in praise of Instagram Reels",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/30/cannibal-media-in-praise-of-instagram-reels/",
    "date": "2026-04-30",
    "score": 0.4276219722801314,
@@ -5361,7 +5334,7 @@
   {
    "id": "ink-1682",
    "title": "\"reviews of my life\"",
-   "author": "?",
+   "author": "Lily Blackburn",
    "url": "https://substack.com/@lablackburn/note/p-196024934?r=4md6m&utm_source=notes-share-action&utm_medium=web",
    "date": "2026-04-30",
    "score": 0.4147403220466356,
@@ -5406,7 +5379,7 @@
   {
    "id": "ink-1431",
    "title": "Bay Area Anecdotes",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/bay-area-anecdotes",
    "date": "2026-04-25",
    "score": 0.411414661022749,
@@ -5442,7 +5415,7 @@
   {
    "id": "ink-1685",
    "title": "Retrospective on retrospectives",
-   "author": "?",
+   "author": "viv",
    "url": "https://viverricious.substack.com/p/retrospective-on-retrospectives",
    "date": "2026-04-30",
    "score": 0.407311978281499,
@@ -5550,7 +5523,7 @@
   {
    "id": "ink-1231",
    "title": "Placebomancy is Real",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://substack.com/home/post/p-194990999",
    "date": "2026-04-21",
    "score": 0.39082708443735,
@@ -5577,7 +5550,7 @@
   {
    "id": "ink-1633",
    "title": "Dressing Sasha Chapin",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://nataliercargill.substack.com/p/dressing-sasha-chapin",
    "date": "2026-04-29",
    "score": 0.3869273847206009,
@@ -5676,7 +5649,7 @@
   {
    "id": "ink-1322",
    "title": "Pareto Improving Life Policy",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/pareto-improving-life-policy/",
    "date": "2026-04-23",
    "score": 0.3701191318746126,
@@ -5721,7 +5694,7 @@
   {
    "id": "ink-1507",
    "title": "contra Hank Green on Warrior Cats theology",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/27/contra-hank-green-on-warrior-cats-theology/",
    "date": "2026-04-27",
    "score": 0.3612182030914662,
@@ -5739,7 +5712,7 @@
   {
    "id": "ink-1605",
    "title": "Are LLM Emotions Persistent Like Human Emotions?",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-195808730",
    "date": "2026-04-28",
    "score": 0.3599670704830159,
@@ -5766,7 +5739,7 @@
   {
    "id": "ink-1369",
    "title": "Logs From the Entropy Farms",
-   "author": "?",
+   "author": "Kevin Z Wu",
    "url": "https://blog.kevinzwu.com/entropy-farms/",
    "date": "2026-04-24",
    "score": 0.3552728897875648,
@@ -5775,7 +5748,7 @@
   {
    "id": "ink-1439",
    "title": "Notes on Honor",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.substack.com/p/notes-on-honor",
    "date": "2026-04-25",
    "score": 0.3518076721807385,
@@ -5838,7 +5811,7 @@
   {
    "id": "ink-1295",
    "title": "A Database of Common Historical Myths and Misconceptions",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/a-database-of-common-historical-myths",
    "date": "2026-04-23",
    "score": 0.34474779818348716,
@@ -5847,7 +5820,7 @@
   {
    "id": "ink-1520",
    "title": "What Did Roger Bacon See?",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/what-did-roger-bacon-see",
    "date": "2026-04-27",
    "score": 0.34433378411979637,
@@ -5874,7 +5847,7 @@
   {
    "id": "ink-1394",
    "title": "Donate Less to AI Safety*",
-   "author": "?",
+   "author": "Sophie Kim",
    "url": "https://thecounterfactual.substack.com/p/donate-less-to-ai-safety",
    "date": "2026-04-24",
    "score": 0.3398878012341383,
@@ -5892,7 +5865,7 @@
   {
    "id": "ink-1497",
    "title": "Equanimity is not chill",
-   "author": "?",
+   "author": "Kyle Scott",
    "url": "https://substack.com/home/post/p-195587656",
    "date": "2026-04-26",
    "score": 0.3364912806540064,
@@ -5937,7 +5910,7 @@
   {
    "id": "ink-1261",
    "title": "You're using the word \"Symbiosis\" wrong",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/youre-using-the-word-symbiosis-wrong",
    "date": "2026-04-22",
    "score": 0.3276654105929271,
@@ -5973,7 +5946,7 @@
   {
    "id": "ink-1705",
    "title": "adventures in arcade dance game ownership",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/adventures-in-arcade-dance-game-ownership",
    "date": "2026-04-27",
    "score": 0.32487070964249615,
@@ -6063,7 +6036,7 @@
   {
    "id": "ink-1557",
    "title": "How I Injured My Elbow",
-   "author": "?",
+   "author": "Benjamin Grayzel",
    "url": "https://benjamingrayzel.substack.com/p/how-i-injured-my-elbow",
    "date": "2026-04-28",
    "score": 0.30988334836430254,
@@ -6144,7 +6117,7 @@
   {
    "id": "ink-1210",
    "title": "Are Hallmark Christmas movies saving cinema?",
-   "author": "?",
+   "author": "Justin Kuiper",
    "url": "https://justinkuiper.substack.com/p/hallmark-christmas-movies",
    "date": "2026-04-21",
    "score": 0.30240908871568534,
@@ -6180,7 +6153,7 @@
   {
    "id": "ink-1657",
    "title": "Why the Kids Are Calling Everything “Goyslop”",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/why-the-kids-are-calling-everything",
    "date": "2026-04-30",
    "score": 0.2975986241898798,
@@ -6340,15 +6313,6 @@
    "se": 0.28088118728744943
   },
   {
-   "id": "ink-1283",
-   "title": "Boris and Marsha",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/boris-and-marsha",
-   "date": "2026-04-22",
-   "score": 0.2687642275986373,
-   "se": 0.29214237635427737
-  },
-  {
    "id": "ink-1152",
    "title": "Being in the AI Safety End Game",
    "author": "Benjamin Sturgeon",
@@ -6387,7 +6351,7 @@
   {
    "id": "ink-1411",
    "title": "The Interview",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/the-interview",
    "date": "2026-04-25",
    "score": 0.2571062281941353,
@@ -6567,7 +6531,7 @@
   {
    "id": "ink-1416",
    "title": "Believe Your Own Bullshit",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/believe-your-own-bullshit",
    "date": "2026-04-25",
    "score": 0.24299635597197064,
@@ -6576,7 +6540,7 @@
   {
    "id": "ink-1491",
    "title": "Punched in the Mouth",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/punched-in-the-mouth/",
    "date": "2026-04-26",
    "score": 0.24218658194182907,
@@ -6585,7 +6549,7 @@
   {
    "id": "ink-1652",
    "title": "Inkhaven: Advice for Aaron-Like People",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/inkhaven-advice-for-aaron-like-people/",
    "date": "2026-04-30",
    "score": 0.23907568259677242,
@@ -6720,7 +6684,7 @@
   {
    "id": "ink-1254",
    "title": "I don’t keep in touch with my friends",
-   "author": "?",
+   "author": "Claire Wang",
    "url": "https://mingyuan.substack.com/p/i-dont-keep-in-touch-with-my-friends",
    "date": "2026-04-22",
    "score": 0.22458854594718544,
@@ -6729,7 +6693,7 @@
   {
    "id": "ink-1609",
    "title": "My Attempt To Solve Debate Will Not Work",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-195923124",
    "date": "2026-04-29",
    "score": 0.22454224303866652,
@@ -6792,7 +6756,7 @@
   {
    "id": "ink-1344",
    "title": "Gone Tomorrow",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814804012435111936/gone-tomorrow",
    "date": "2026-04-24",
    "score": 0.2182777926389329,
@@ -6846,7 +6810,7 @@
   {
    "id": "ink-1194",
    "title": "Orienting Toward Slop",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.bearblog.dev/sloptop/",
    "date": "2026-04-21",
    "score": 0.2085845649318638,
@@ -6855,7 +6819,7 @@
   {
    "id": "ink-1523",
    "title": "Lost Days",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/lost-days/",
    "date": "2026-04-27",
    "score": 0.20806143319592718,
@@ -6900,7 +6864,7 @@
   {
    "id": "ink-1448",
    "title": "Stop taking caffeine every day, idiot!",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/stop-taking-caffeine-every-day-idiot",
    "date": "2026-04-22",
    "score": 0.20024395546568519,
@@ -6918,7 +6882,7 @@
   {
    "id": "ink-1614",
    "title": "The Last Job Was Human Finger",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/the-last-job-was-human-finger",
    "date": "2026-04-29",
    "score": 0.197212270209603,
@@ -6936,7 +6900,7 @@
   {
    "id": "ink-1371",
    "title": "Quick Paper Review: \"There Will Be a Scientific Theory of Deep Learning\"",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/2WkeiYFT5p3ph8Pkf/quick-paper-review-there-will-be-a-scientific-theory-of-deep",
    "date": "2026-04-24",
    "score": 0.19488344412633962,
@@ -6963,7 +6927,7 @@
   {
    "id": "ink-1466",
    "title": "Parental Controls",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814990078758830080/parental-controls",
    "date": "2026-04-26",
    "score": 0.19140329584664365,
@@ -7008,7 +6972,7 @@
   {
    "id": "ink-1527",
    "title": "Mickey Mouse stole our cultural legacy",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/27/public-domain.html",
    "date": "2026-04-27",
    "score": 0.1820235948884447,
@@ -7035,7 +6999,7 @@
   {
    "id": "ink-1356",
    "title": "Does Anyone Truly Count Calories?",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/does-anyone-truly-count-calories",
    "date": "2026-04-24",
    "score": 0.17751288199391424,
@@ -7044,7 +7008,7 @@
   {
    "id": "ink-1573",
    "title": "Takes from two months as an aspiring LLM naturalist",
-   "author": "?",
+   "author": "Anna Salamon",
    "url": "https://www.lesswrong.com/posts/K8JMjE4PCqMkkCDsd/takes-from-two-months-as-an-aspiring-llm-naturalist",
    "date": "2026-04-28",
    "score": 0.17719787694269426,
@@ -7071,7 +7035,7 @@
   {
    "id": "ink-1351",
    "title": "Three Things Civilization Broke",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/three-things-civilization-broke",
    "date": "2026-04-24",
    "score": 0.17128987002742493,
@@ -7089,7 +7053,7 @@
   {
    "id": "ink-1202",
    "title": "Claude Mythos is a Spiky Breakthrough",
-   "author": "?",
+   "author": "Benjamin Grayzel",
    "url": "https://benjamingrayzel.substack.com/p/claude-mythos-is-a-spiky-breakthrough",
    "date": "2026-04-21",
    "score": 0.16596665689840265,
@@ -7143,7 +7107,7 @@
   {
    "id": "ink-1434",
    "title": "A long hike (Part 10)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195419885",
    "date": "2026-04-25",
    "score": 0.15816750247135963,
@@ -7179,7 +7143,7 @@
   {
    "id": "ink-1714",
    "title": "MTG typing everything around me",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/mtg-typing-everything-around-me",
    "date": "2026-04-29",
    "score": 0.15351713660882238,
@@ -7224,7 +7188,7 @@
   {
    "id": "ink-1645",
    "title": "I give up on land speculation",
-   "author": "?",
+   "author": "Kyle Scott",
    "url": "https://substack.com/home/post/p-195939098",
    "date": "2026-04-29",
    "score": 0.1454849288594863,
@@ -7242,7 +7206,7 @@
   {
    "id": "ink-1209",
    "title": "Should Ben have been kicked out of our writing residency? A trial by Substack",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://nataliercargill.substack.com/p/should-ben-have-been-kicked-out-of",
    "date": "2026-04-21",
    "score": 0.14193625995972997,
@@ -7251,7 +7215,7 @@
   {
    "id": "ink-1310",
    "title": "Perimeter Defense",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/perimeter-defense",
    "date": "2026-04-23",
    "score": 0.14152658386436137,
@@ -7305,7 +7269,7 @@
   {
    "id": "ink-1253",
    "title": "zoomerdom",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/zoomerdom",
    "date": "2026-04-22",
    "score": 0.12898133539333365,
@@ -7314,7 +7278,7 @@
   {
    "id": "ink-1667",
    "title": "Clown School Chronicles (3/3)",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/30/clown-school-chronicles-3-3/",
    "date": "2026-04-30",
    "score": 0.12851156790112353,
@@ -7332,7 +7296,7 @@
   {
    "id": "ink-1626",
    "title": "Prediction markets obituary",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195958676",
    "date": "2026-04-29",
    "score": 0.1273488254047108,
@@ -7404,7 +7368,7 @@
   {
    "id": "ink-1486",
    "title": "The Best Meditation Advice Ever",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/the-best-meditation-advice-ever",
    "date": "2026-04-26",
    "score": 0.11589752045547659,
@@ -7413,7 +7377,7 @@
   {
    "id": "ink-1455",
    "title": "(unfinished post)",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/unfinished-post",
    "date": "2026-04-25",
    "score": 0.11541906210616958,
@@ -7467,7 +7431,7 @@
   {
    "id": "ink-1277",
    "title": "An Angry Review of Greg Egan's \"Didicosm\"",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/EbqJfCz9qvfptNbCQ/an-angry-review-of-greg-egan-s-didicosm",
    "date": "2026-04-22",
    "score": 0.10164502400525083,
@@ -7494,7 +7458,7 @@
   {
    "id": "ink-1465",
    "title": "Urgent Coordination Problems Require Narrow Mandates",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/urgent-coordination-problems-require",
    "date": "2026-04-26",
    "score": 0.09938001185763087,
@@ -7503,7 +7467,7 @@
   {
    "id": "ink-1399",
    "title": "Labor Markets in a Pause",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-25_cognitiveTools4.html",
    "date": "2026-04-25",
    "score": 0.09856403381633377,
@@ -7539,7 +7503,7 @@
   {
    "id": "ink-1365",
    "title": "2048",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/24/2048.html",
    "date": "2026-04-24",
    "score": 0.0964689924151372,
@@ -7566,7 +7530,7 @@
   {
    "id": "ink-1367",
    "title": "paint paint paint paint paint paint",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/paintx6/",
    "date": "2026-04-24",
    "score": 0.09337170632714016,
@@ -7584,7 +7548,7 @@
   {
    "id": "ink-1505",
    "title": "Nightwalk",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/27/nightwalk/",
    "date": "2026-04-27",
    "score": 0.09135888194420315,
@@ -7683,7 +7647,7 @@
   {
    "id": "ink-1481",
    "title": "Inkhaven Day 26 - Finding",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195424335",
    "date": "2026-04-26",
    "score": 0.0725547881613475,
@@ -7692,7 +7656,7 @@
   {
    "id": "ink-1604",
    "title": "buy food for your friends",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/buy-food-for-friends/",
    "date": "2026-04-29",
    "score": 0.07206952366841371,
@@ -7737,7 +7701,7 @@
   {
    "id": "ink-1514",
    "title": "Bay Area Cultural Victory with Cat Ears",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/bay-area-cultural-victory-with-cat",
    "date": "2026-04-27",
    "score": 0.06947306749818605,
@@ -7782,7 +7746,7 @@
   {
    "id": "ink-1236",
    "title": "what to do with a few billion dollars",
-   "author": "?",
+   "author": "Kyle Hubbard",
    "url": "https://kywire.substack.com/p/what-to-do-with-a-few-billion-dollars",
    "date": "2026-04-21",
    "score": 0.06446834646645212,
@@ -7881,7 +7845,7 @@
   {
    "id": "ink-1195",
    "title": "Slop is good food!",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/slop-is-good-food",
    "date": "2026-04-21",
    "score": 0.046455810040098175,
@@ -7953,7 +7917,7 @@
   {
    "id": "ink-1347",
    "title": "Bryan Caplan is a Population Maximiser",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Caplan.html",
    "date": "2026-04-24",
    "score": 0.03173779872659393,
@@ -7980,7 +7944,7 @@
   {
    "id": "ink-1510",
    "title": "Filmhaven",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/filmhaven",
    "date": "2026-04-27",
    "score": 0.029560778723621433,
@@ -8016,7 +7980,7 @@
   {
    "id": "ink-1436",
    "title": "Thought Experiments Should Do One Thing",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195501950",
    "date": "2026-04-25",
    "score": 0.027141989494093112,
@@ -8025,7 +7989,7 @@
   {
    "id": "ink-1479",
    "title": "Officer Grade Pemmican",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/27/officer-grade-pemmican/",
    "date": "2026-04-26",
    "score": 0.027130127853007936,
@@ -8088,7 +8052,7 @@
   {
    "id": "ink-1305",
    "title": "Puffalo Tofu",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814743223629201408/puffalo-tofu",
    "date": "2026-04-23",
    "score": 0.016506902104801196,
@@ -8106,7 +8070,7 @@
   {
    "id": "ink-1279",
    "title": "Dressing Cate Hall",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://substack.com/home/post/p-195161379",
    "date": "2026-04-22",
    "score": 0.014667631744960979,
@@ -8133,7 +8097,7 @@
   {
    "id": "ink-1551",
    "title": "Speculating About a Merger",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-28_speculatingAboutAMerger.html",
    "date": "2026-04-28",
    "score": 0.01054042905165479,
@@ -8169,7 +8133,7 @@
   {
    "id": "ink-1444",
    "title": "The Dancefloors of Bern",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/the-dancefloors-of-bern",
    "date": "2026-04-22",
    "score": 0.005233862443015626,
@@ -8250,7 +8214,7 @@
   {
    "id": "ink-1262",
    "title": "LLMs Helped Me Discover Creative Bankruptcy",
-   "author": "?",
+   "author": "Aaron Kaufman",
    "url": "https://lifeimprovementschemes.substack.com/p/llms-helped-me-discover-creative",
    "date": "2026-04-22",
    "score": -0.009156639747704353,
@@ -8349,7 +8313,7 @@
   {
    "id": "ink-1247",
    "title": "The Trial",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/22/the-trial/",
    "date": "2026-04-22",
    "score": -0.020517990075242208,
@@ -8376,7 +8340,7 @@
   {
    "id": "ink-1489",
    "title": "AI has taste now, too",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/ai-has-taste-now-too",
    "date": "2026-04-26",
    "score": -0.02274636091221504,
@@ -8394,7 +8358,7 @@
   {
    "id": "ink-1228",
    "title": "Marginal Risk is BS",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/marginal-risk-is-bs",
    "date": "2026-04-21",
    "score": -0.02427596959901716,
@@ -8403,7 +8367,7 @@
   {
    "id": "ink-1313",
    "title": "Story O Story",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.blog/2026/04/23/story-circle-story/",
    "date": "2026-04-23",
    "score": -0.02586257278991571,
@@ -8430,7 +8394,7 @@
   {
    "id": "ink-1622",
    "title": "Let him eat treats",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/let-him-eat-treats",
    "date": "2026-04-29",
    "score": -0.028110741201286215,
@@ -8466,7 +8430,7 @@
   {
    "id": "ink-1418",
    "title": "Manhattan: distance and movement",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/manhattan-distance-and-movement",
    "date": "2026-04-25",
    "score": -0.03285735693879941,
@@ -8502,7 +8466,7 @@
   {
    "id": "ink-1438",
    "title": "Indonesia loses 2,000 lives to Zojirushi every year",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195502682",
    "date": "2026-04-25",
    "score": -0.03919032615730439,
@@ -8538,7 +8502,7 @@
   {
    "id": "ink-1327",
    "title": "Stop telling me I'm busy",
-   "author": "?",
+   "author": "Natalie Cargill",
    "url": "https://nataliercargill.substack.com/p/stop-telling-me-im-busy",
    "date": "2026-04-23",
    "score": -0.051059744243290094,
@@ -8592,7 +8556,7 @@
   {
    "id": "ink-1549",
    "title": "Should I buy land?",
-   "author": "?",
+   "author": "Kyle Scott",
    "url": "https://substack.com/home/post/p-195839166",
    "date": "2026-04-28",
    "score": -0.05338548069908711,
@@ -8610,7 +8574,7 @@
   {
    "id": "ink-1354",
    "title": "Tips and tricks for using Claude Code for non-coding activities",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195420068",
    "date": "2026-04-24",
    "score": -0.05410613664942552,
@@ -8619,7 +8583,7 @@
   {
    "id": "ink-1281",
    "title": "Loud Shadows",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/loud-shadows",
    "date": "2026-04-22",
    "score": -0.05457779350221412,
@@ -8637,7 +8601,7 @@
   {
    "id": "ink-1449",
    "title": "Other People's Money (Part 1)",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/other-peoples-money-part-1",
    "date": "2026-04-23",
    "score": -0.056114255023836164,
@@ -8646,7 +8610,7 @@
   {
    "id": "ink-1201",
    "title": "Curation Is Half Of Art",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814555769404014593/curation-is-half-of-art",
    "date": "2026-04-21",
    "score": -0.06246029536988972,
@@ -8682,7 +8646,7 @@
   {
    "id": "ink-1197",
    "title": "Getting back on the apps",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/getting-back-on-the-apps",
    "date": "2026-04-21",
    "score": -0.06681355550672587,
@@ -8691,7 +8655,7 @@
   {
    "id": "ink-1361",
    "title": "The Namemaker (DRAFT)",
-   "author": "?",
+   "author": "Emma Baker",
    "url": "https://emma00baker.substack.com/p/the-namemaker-draft",
    "date": "2026-04-24",
    "score": -0.06714153887193475,
@@ -8835,7 +8799,7 @@
   {
    "id": "ink-1427",
    "title": "Diary Entry: April 25th",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/diary-entry-april-25th",
    "date": "2026-04-25",
    "score": -0.08794043111539407,
@@ -8880,7 +8844,7 @@
   {
    "id": "ink-1302",
    "title": "On Using Claude as a Therapist",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/on-using-claude-as-a-therapist",
    "date": "2026-04-23",
    "score": -0.09480994272343309,
@@ -8970,7 +8934,7 @@
   {
    "id": "ink-1196",
    "title": "Stop telling me you're busy",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/stop-telling-me-youre-busy",
    "date": "2026-04-21",
    "score": -0.10940780978870294,
@@ -9024,7 +8988,7 @@
   {
    "id": "ink-1242",
    "title": "10 posts I don't have time to write",
-   "author": "?",
+   "author": "Oliver Habryka",
    "url": "https://www.lesswrong.com/posts/MqgwHJ93pJpaeHXs6/10-posts-i-don-t-have-time-to-write",
    "date": "2026-04-21",
    "score": -0.1173681281693305,
@@ -9069,7 +9033,7 @@
   {
    "id": "ink-1370",
    "title": "Prompt and Precedent",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/prompt-and-precedent",
    "date": "2026-04-24",
    "score": -0.1239895330982725,
@@ -9132,7 +9096,7 @@
   {
    "id": "ink-1318",
    "title": "A Note on Moral Progress",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/a-note-on-moral-progress",
    "date": "2026-04-23",
    "score": -0.13778519307473608,
@@ -9150,7 +9114,7 @@
   {
    "id": "ink-1294",
    "title": "Show me you are human",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Captcha.html",
    "date": "2026-04-23",
    "score": -0.1414622755574789,
@@ -9204,25 +9168,16 @@
   {
    "id": "ink-1450",
    "title": "Why I'm Teaching TikTokers About Existential Risk",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-195283842",
    "date": "2026-04-23",
    "score": -0.1436626283392557,
    "se": 0.6176512042909661
   },
   {
-   "id": "ink-1678",
-   "title": "How to Date Gay Girls: Part V of V",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/how-to-date-gay-girls-part-v-of-v",
-   "date": "2026-04-30",
-   "score": -0.14587144450597225,
-   "se": 0.2963438820225539
-  },
-  {
    "id": "ink-1544",
    "title": "What am I still doing here??",
-   "author": "?",
+   "author": "Claire Wang",
    "url": "https://mingyuan.substack.com/p/what-am-i-still-doing-here",
    "date": "2026-04-27",
    "score": -0.14670078193930677,
@@ -9249,7 +9204,7 @@
   {
    "id": "ink-1393",
    "title": "cutting a bunch of internet comments and assembling them into a play",
-   "author": "?",
+   "author": "Emma Baker",
    "url": "https://emma00baker.substack.com/p/cutting-a-bunch-of-internet-comments",
    "date": "2026-04-25",
    "score": -0.14760878814334266,
@@ -9267,7 +9222,7 @@
   {
    "id": "ink-1462",
    "title": "Rice Seeds Listen to the Rain",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/rice-seeds-listen-to-the-rain",
    "date": "2026-04-26",
    "score": -0.15330524481437657,
@@ -9303,7 +9258,7 @@
   {
    "id": "ink-1230",
    "title": "Metadata patterns not accounted for by music apps",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/ihe0bEPXK5ip/metadata-patterns-not-accounted-for-by-music-apps",
    "date": "2026-04-21",
    "score": -0.15682607069666685,
@@ -9339,7 +9294,7 @@
   {
    "id": "ink-1458",
    "title": "Rare and Powerful Social Skills",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/rare-and-powerful-social-skills",
    "date": "2026-04-26",
    "score": -0.1625153943780514,
@@ -9348,7 +9303,7 @@
   {
    "id": "ink-1576",
    "title": "The AI x-risk lawsuit waiting to happen",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/the-ai-x-risk-lawsuit-waiting-to",
    "date": "2026-04-28",
    "score": -0.1626615797490667,
@@ -9366,7 +9321,7 @@
   {
    "id": "ink-1214",
    "title": "Piercing The Delusion",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/piercing-the-delusion",
    "date": "2026-04-21",
    "score": -0.16537700545488454,
@@ -9375,7 +9330,7 @@
   {
    "id": "ink-1227",
    "title": "A Curious Lacuna in the Civil Rights Act",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/a-curious-lacuna-in-the-civil-rights",
    "date": "2026-04-21",
    "score": -0.1663300977911175,
@@ -9447,7 +9402,7 @@
   {
    "id": "ink-1517",
    "title": "Contra *Posthumanism is the Opposite of Fascism*",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/Contra.html",
    "date": "2026-04-27",
    "score": -0.17372866424118305,
@@ -9573,7 +9528,7 @@
   {
    "id": "ink-1243",
    "title": "A \"Lay\" Introduction to \"On the Complexity of Neural Computation in Superposition\"",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/kYkbcEo6YyjQiztpi/a-lay-introduction-to-on-the-complexity-of-neural",
    "date": "2026-04-21",
    "score": -0.19403515744173197,
@@ -9591,7 +9546,7 @@
   {
    "id": "ink-1587",
    "title": "Listen to this Classical Music 2",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/listen-to-this-classical-music-2",
    "date": "2026-04-28",
    "score": -0.19693130710030182,
@@ -9645,7 +9600,7 @@
   {
    "id": "ink-1348",
    "title": "Art Bags",
-   "author": "?",
+   "author": "Alicorn",
    "url": "https://luminousalicorn.tumblr.com/post/814841630200905728/art-bags",
    "date": "2026-04-24",
    "score": -0.2052911833531969,
@@ -9681,7 +9636,7 @@
   {
    "id": "ink-1357",
    "title": "The Other Cost of the Culture War",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/the-other-cost-of-the-culture-war",
    "date": "2026-04-24",
    "score": -0.20884981091779534,
@@ -9798,7 +9753,7 @@
   {
    "id": "ink-1368",
    "title": "Speaking English in Polanco",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/speaking-english-in-polanco",
    "date": "2026-04-24",
    "score": -0.22871250146574834,
@@ -9895,18 +9850,9 @@
    "se": 0.49823258563707457
   },
   {
-   "id": "ink-1430",
-   "title": "I'm Setting a Timer in My Head",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/im-setting-a-timer-in-my-head",
-   "date": "2026-04-25",
-   "score": -0.24966071195669085,
-   "se": 0.423746423131011
-  },
-  {
    "id": "ink-1407",
    "title": "A long hike (Part 9)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195414715",
    "date": "2026-04-24",
    "score": -0.2500270940460258,
@@ -9987,7 +9933,7 @@
   {
    "id": "ink-1710",
    "title": "Should you Found to Give?",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/should-you-found-to-give",
    "date": "2026-04-27",
    "score": -0.2578118737338173,
@@ -10014,7 +9960,7 @@
   {
    "id": "ink-1239",
    "title": "Listen to this Classical Music",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/listen-to-this-classical-music",
    "date": "2026-04-21",
    "score": -0.2605716142352802,
@@ -10023,7 +9969,7 @@
   {
    "id": "ink-1722",
    "title": "I learned honor from an after-school cartoon",
-   "author": "?",
+   "author": "Derek Razo",
    "url": "https://pointingatthings.substack.com/p/i-learned-honor-from-an-after-school",
    "date": "2026-04-30",
    "score": -0.2616600266130085,
@@ -10140,7 +10086,7 @@
   {
    "id": "ink-1615",
    "title": "China Still Trails the US on Existential Risk",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.substack.com/p/china-still-trails-the-us-on-existential",
    "date": "2026-04-29",
    "score": -0.28114496512725423,
@@ -10266,7 +10212,7 @@
   {
    "id": "ink-1709",
    "title": "Somebody should write a book on Epstein and FTX",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/somebody-should-write-a-book-on-epstein",
    "date": "2026-04-27",
    "score": -0.29903950228425624,
@@ -10300,15 +10246,6 @@
    "se": 1.0800369095905014
   },
   {
-   "id": "ink-1211",
-   "title": "How To Be Funny Like Me: PART V (of V)",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/how-to-be-funny-like-me-part-v-of",
-   "date": "2026-04-21",
-   "score": -0.30705503013403057,
-   "se": 0.15334190762435262
-  },
-  {
    "id": "ink-0684",
    "title": "DuckDB evangelism",
    "author": "Bill Jackson",
@@ -10338,7 +10275,7 @@
   {
    "id": "ink-1213",
    "title": "on storytelling blood on the clocktower",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/storytelling-botc/",
    "date": "2026-04-21",
    "score": -0.3172524742176677,
@@ -10383,7 +10320,7 @@
   {
    "id": "ink-1362",
    "title": "Inkhaven Day 24 - Looking",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195385261",
    "date": "2026-04-24",
    "score": -0.3265070362416131,
@@ -10419,7 +10356,7 @@
   {
    "id": "ink-1649",
    "title": "Inkhaven 2",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/815362642729467904/inkhaven-2",
    "date": "2026-04-30",
    "score": -0.33593252592571204,
@@ -10473,7 +10410,7 @@
   {
    "id": "ink-1401",
    "title": "Writing About History (at Inkhaven) is Painful",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/writing-about-history-at-inkhaven",
    "date": "2026-04-25",
    "score": -0.3499542494274579,
@@ -10482,7 +10419,7 @@
   {
    "id": "ink-1464",
    "title": "AI might surprise itself by going rogue",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/ai-might-surprise-itself-by-going",
    "date": "2026-04-26",
    "score": -0.35348828725144493,
@@ -10491,7 +10428,7 @@
   {
    "id": "ink-1606",
    "title": "Why I am a slime on the internet",
-   "author": "?",
+   "author": "Justin Kuiper",
    "url": "https://kuiperblog.tumblr.com/post/815269239826071552/lessons-learned-from-dragon-quest-heroes-rocket",
    "date": "2026-04-29",
    "score": -0.3540378656329848,
@@ -10518,7 +10455,7 @@
   {
    "id": "ink-1395",
    "title": "Useless Advice",
-   "author": "?",
+   "author": "Drew Schorno",
    "url": "https://dschorno.wordpress.com/2026/04/25/useless-advice/",
    "date": "2026-04-25",
    "score": -0.3594259240506764,
@@ -10617,7 +10554,7 @@
   {
    "id": "ink-1469",
    "title": "Some features of a good poet",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/some-features-of-a-good-poet",
    "date": "2026-04-26",
    "score": -0.374058686746142,
@@ -10671,7 +10608,7 @@
   {
    "id": "ink-1343",
    "title": "Meditative bliss states are the opposite of reward hacking",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/meditative-bliss-states-are-the-opposite",
    "date": "2026-04-24",
    "score": -0.38451243359939197,
@@ -10716,7 +10653,7 @@
   {
    "id": "ink-1674",
    "title": "getting a message from my drunk self",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/drunk-self/",
    "date": "2026-04-30",
    "score": -0.38838004316386343,
@@ -10734,7 +10671,7 @@
   {
    "id": "ink-1307",
    "title": "Beats you (my first fiction)",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/24/beats-you/",
    "date": "2026-04-23",
    "score": -0.3904223023501788,
@@ -10779,7 +10716,7 @@
   {
    "id": "ink-1364",
    "title": "Other people's money",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/other-peoples-money",
    "date": "2026-04-24",
    "score": -0.4103438084681057,
@@ -10788,7 +10725,7 @@
   {
    "id": "ink-1447",
    "title": "7 Rules for Accountability Groups",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/7-rules-for-accountability-groups",
    "date": "2026-04-22",
    "score": -0.41063927817126833,
@@ -10806,7 +10743,7 @@
   {
    "id": "ink-1376",
    "title": "Sexual Marketplace Ponzi Schemes",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/sexual-marketplace-ponzi-schemes",
    "date": "2026-04-24",
    "score": -0.4123992343386025,
@@ -10815,7 +10752,7 @@
   {
    "id": "ink-1345",
    "title": "Mundane Risks, Part One",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-24_mundaneRisks.html",
    "date": "2026-04-24",
    "score": -0.41392488828587315,
@@ -10824,7 +10761,7 @@
   {
    "id": "ink-1707",
    "title": "Unused Starfish Facts",
-   "author": "?",
+   "author": "Alexander Wales",
    "url": "https://substack.com/home/post/p-195724311",
    "date": "2026-04-28",
    "score": -0.4163630157006985,
@@ -10869,7 +10806,7 @@
   {
    "id": "ink-1471",
    "title": "SlutCon Is the Best Place on Earth to Practice the Arts of Sleeping With Women",
-   "author": "?",
+   "author": "Ronny Fernandez",
    "url": "https://substack.com/home/post/p-191178535",
    "date": "2026-04-26",
    "score": -0.42392136018544213,
@@ -10878,7 +10815,7 @@
   {
    "id": "ink-1355",
    "title": "stop listening to music so much",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/stop-listening-to-music-so-much",
    "date": "2026-04-24",
    "score": -0.42395191519921993,
@@ -10959,7 +10896,7 @@
   {
    "id": "ink-1328",
    "title": "Re-Programming Your Brain",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/re-programming-your-brain",
    "date": "2026-04-23",
    "score": -0.43976857136970665,
@@ -10968,7 +10905,7 @@
   {
    "id": "ink-1359",
    "title": "I don’t want your skills",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/aFKl86BhaWNX/i-dont-want-your-skills",
    "date": "2026-04-24",
    "score": -0.44021727417795903,
@@ -10977,7 +10914,7 @@
   {
    "id": "ink-1724",
    "title": "Last Day of School",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/last-day-of-school",
    "date": "2026-04-30",
    "score": -0.44104198323177246,
@@ -10986,7 +10923,7 @@
   {
    "id": "ink-1654",
    "title": "No one has the answers",
-   "author": "?",
+   "author": "Benjamin Grayzel",
    "url": "https://benjamingrayzel.substack.com/p/no-one-has-the-answers",
    "date": "2026-04-30",
    "score": -0.4416888723147867,
@@ -11004,7 +10941,7 @@
   {
    "id": "ink-1600",
    "title": "scene report: shanghai noise music",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/scene-report-shanghai-noise-music",
    "date": "2026-04-29",
    "score": -0.45077099237397183,
@@ -11040,7 +10977,7 @@
   {
    "id": "ink-1426",
    "title": "Trapped, COVID-ridden, on the grounds of the Louvre",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/trapped-covid-ridden-on-the-grounds",
    "date": "2026-04-25",
    "score": -0.4598518396405994,
@@ -11049,7 +10986,7 @@
   {
    "id": "ink-1312",
    "title": "Interface-bound agents #3.2: Quick note about bootstrapping",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195296331",
    "date": "2026-04-23",
    "score": -0.4615834824237898,
@@ -11112,7 +11049,7 @@
   {
    "id": "ink-1339",
    "title": "The Zero, One, Many (ZOM) Principle",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/the-zero-one-many-zom-principle",
    "date": "2026-04-24",
    "score": -0.4719905851573815,
@@ -11202,7 +11139,7 @@
   {
    "id": "ink-1226",
    "title": "zoomerdom 2 (still unfinished)",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/zoomerdom-2-still-unfinished",
    "date": "2026-04-21",
    "score": -0.479125417379561,
@@ -11211,7 +11148,7 @@
   {
    "id": "ink-1664",
    "title": "Leonidas Created the West",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/leonidas-created-the-west",
    "date": "2026-04-30",
    "score": -0.48486158994745904,
@@ -11220,7 +11157,7 @@
   {
    "id": "ink-1303",
    "title": "Your Shoulders",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adyexploring.substack.com/p/your-shoulders",
    "date": "2026-04-23",
    "score": -0.48494298643607653,
@@ -11238,7 +11175,7 @@
   {
    "id": "ink-1267",
    "title": "Exploring AI Pause Strategies, Part Two",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-22_cognitiveTools2.html",
    "date": "2026-04-22",
    "score": -0.48709316840036104,
@@ -11301,7 +11238,7 @@
   {
    "id": "ink-1414",
    "title": "Political Boundaries are not Sacred",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/political-boundaries-are-not-sacred",
    "date": "2026-04-25",
    "score": -0.5017212027733532,
@@ -11319,7 +11256,7 @@
   {
    "id": "ink-1644",
    "title": "Don't screw the crew",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/dont-screw-the-crew",
    "date": "2026-04-30",
    "score": -0.5088431970202032,
@@ -11364,7 +11301,7 @@
   {
    "id": "ink-1463",
    "title": "Red Button Blue Button",
-   "author": "?",
+   "author": "capsuletime",
    "url": "https://capsuletime.substack.com/p/red-button-blue-button",
    "date": "2026-04-26",
    "score": -0.5154818067825507,
@@ -11418,7 +11355,7 @@
   {
    "id": "ink-1480",
    "title": "Rob Wiblin Interviews Will MacAskill",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.com/writing/2026-04-26_willMacAskillAndRobWiblin.html",
    "date": "2026-04-26",
    "score": -0.5334592743415958,
@@ -11463,7 +11400,7 @@
   {
    "id": "ink-1419",
    "title": "if you're sick, please rest",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/please-rest/",
    "date": "2026-04-25",
    "score": -0.5464561733219319,
@@ -11508,7 +11445,7 @@
   {
    "id": "ink-1529",
    "title": "The Material World",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/the-material-world",
    "date": "2026-04-27",
    "score": -0.5521853387782732,
@@ -11553,7 +11490,7 @@
   {
    "id": "ink-1555",
    "title": "king of kong review",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://suboptimalism.neocities.org/secret/king",
    "date": "2026-04-28",
    "score": -0.5633503448156246,
@@ -11562,7 +11499,7 @@
   {
    "id": "ink-1341",
    "title": "Second Place Academy",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/second-place-academy/",
    "date": "2026-04-24",
    "score": -0.5646975602503942,
@@ -11571,7 +11508,7 @@
   {
    "id": "ink-1282",
    "title": "The Guy For That",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/the-guy-for-that",
    "date": "2026-04-22",
    "score": -0.5652874582210557,
@@ -11607,7 +11544,7 @@
   {
    "id": "ink-1250",
    "title": "Battlehardening zenith",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/battlehardening-zenith/",
    "date": "2026-04-22",
    "score": -0.5695440871914207,
@@ -11634,7 +11571,7 @@
   {
    "id": "ink-1636",
    "title": "The Illusion of Imminent Culture War Victory",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/the-illusion-of-imminent-culture",
    "date": "2026-04-29",
    "score": -0.573396043567001,
@@ -11652,7 +11589,7 @@
   {
    "id": "ink-1248",
    "title": "iter.ca update #5",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://buttondown.com/z/archive/iterca-update-5/",
    "date": "2026-04-21",
    "score": -0.5774220075957577,
@@ -11670,7 +11607,7 @@
   {
    "id": "ink-1726",
    "title": "Inkhaven 2 Was a Scene",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/inkhaven-2-was-a-scene",
    "date": "2026-04-30",
    "score": -0.5795489298072476,
@@ -11679,7 +11616,7 @@
   {
    "id": "ink-1684",
    "title": "The Case for a Grantmaking Fellowship",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-196077335",
    "date": "2026-04-30",
    "score": -0.5803476423224144,
@@ -11697,7 +11634,7 @@
   {
    "id": "ink-1581",
    "title": "Brief #10: Why AI’s impact depends on organizations and demand",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://windfalltrust.substack.com/p/brief-10-why-ais-impact-depends-on",
    "date": "2026-04-28",
    "score": -0.5814506846655587,
@@ -11715,7 +11652,7 @@
   {
    "id": "ink-1619",
    "title": "No One Knows About Moons",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/no-one-knows-about-moons",
    "date": "2026-04-29",
    "score": -0.5836824157609573,
@@ -11742,7 +11679,7 @@
   {
    "id": "ink-1334",
    "title": "LLMs are pretty good at making slideshows now",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/llm-slideshows/",
    "date": "2026-04-23",
    "score": -0.5873907537640303,
@@ -11787,7 +11724,7 @@
   {
    "id": "ink-1284",
    "title": "A long hike (Part 7)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195189136",
    "date": "2026-04-22",
    "score": -0.591901792217031,
@@ -11814,7 +11751,7 @@
   {
    "id": "ink-1240",
    "title": "The Cohort",
-   "author": "?",
+   "author": "Scott Hoffman",
    "url": "https://substack.com/home/post/p-194976075",
    "date": "2026-04-21",
    "score": -0.595811693802319,
@@ -11850,7 +11787,7 @@
   {
    "id": "ink-1289",
    "title": "Genealogical Anxiety",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195208028",
    "date": "2026-04-22",
    "score": -0.6005332156847547,
@@ -11868,7 +11805,7 @@
   {
    "id": "ink-1198",
    "title": "Inkhaven Day 21 - burnout tryptich",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-194988422",
    "date": "2026-04-21",
    "score": -0.6054598605453716,
@@ -11904,7 +11841,7 @@
   {
    "id": "ink-1655",
    "title": "Goodbye again, Inkhaven",
-   "author": "?",
+   "author": "Claire Wang",
    "url": "https://mingyuan.substack.com/p/goodbye-again-inkhaven",
    "date": "2026-04-30",
    "score": -0.6130717775449336,
@@ -11922,7 +11859,7 @@
   {
    "id": "ink-1377",
    "title": "Thoughts on AI Safety Megagame Design",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://www.lesswrong.com/posts/cvLyxHwEPKLc2wLct/thoughts-on-ai-safety-megagame-design",
    "date": "2026-04-24",
    "score": -0.6162139912048921,
@@ -11949,7 +11886,7 @@
   {
    "id": "ink-1205",
    "title": "The Controlled Demolition of the Scottish Canon",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/AAAA.html",
    "date": "2026-04-21",
    "score": -0.6192041040568541,
@@ -11967,7 +11904,7 @@
   {
    "id": "ink-1642",
    "title": "Dechopping Unc (#1)",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.bearblog.dev/unc-1/",
    "date": "2026-04-29",
    "score": -0.6234234333312838,
@@ -11985,7 +11922,7 @@
   {
    "id": "ink-1256",
    "title": "The War on Terrible Decisions",
-   "author": "?",
+   "author": "Aaron Gertler",
    "url": "https://aarongertler.com/the-war-on-terrible-decisions/",
    "date": "2026-04-22",
    "score": -0.6323230151747177,
@@ -12066,7 +12003,7 @@
   {
    "id": "ink-1388",
    "title": "Inkhaven Day 25 - Showing",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195413653",
    "date": "2026-04-25",
    "score": -0.639260024324868,
@@ -12111,7 +12048,7 @@
   {
    "id": "ink-1297",
    "title": "Most people suck at traveling: 9 principles to travel well",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/most-people-suck-at-traveling-9-principles",
    "date": "2026-04-23",
    "score": -0.649828412766845,
@@ -12120,7 +12057,7 @@
   {
    "id": "ink-1246",
    "title": "Longworld",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.bearblog.dev/longworld/",
    "date": "2026-04-22",
    "score": -0.6535401870208464,
@@ -12129,7 +12066,7 @@
   {
    "id": "ink-1502",
    "title": "Phenomenology of Love",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/phenomenology-of-love",
    "date": "2026-04-26",
    "score": -0.6570761535716367,
@@ -12174,7 +12111,7 @@
   {
    "id": "ink-1324",
    "title": "Did the Southern Poverty Law Center Actually Fund White Supremacist Groups?",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/did-the-southern-poverty-law-center",
    "date": "2026-04-23",
    "score": -0.6682348032489196,
@@ -12183,7 +12120,7 @@
   {
    "id": "ink-1222",
    "title": "Claude Code Investigation - Zoom for Zenith",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/1-day-build-zoom/",
    "date": "2026-04-21",
    "score": -0.6691240343857552,
@@ -12210,7 +12147,7 @@
   {
    "id": "ink-1686",
    "title": "the capabilities curse",
-   "author": "?",
+   "author": "Kyle Scott",
    "url": "https://substack.com/home/post/p-196066175",
    "date": "2026-04-30",
    "score": -0.674777553505351,
@@ -12228,7 +12165,7 @@
   {
    "id": "ink-1578",
    "title": "Infinite Lives, 1990: Super Mario World",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/28/smw.html",
    "date": "2026-04-28",
    "score": -0.6784870539824622,
@@ -12246,7 +12183,7 @@
   {
    "id": "ink-1311",
    "title": "is fake gambling the endgame of video game monetization?",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/is-fake-gambling-the-endgame-of-video",
    "date": "2026-04-23",
    "score": -0.6862335918559884,
@@ -12255,7 +12192,7 @@
   {
    "id": "ink-1200",
    "title": "China is Culturally Similar to America",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://substack.com/home/post/p-195002489",
    "date": "2026-04-21",
    "score": -0.6923671482019019,
@@ -12273,7 +12210,7 @@
   {
    "id": "ink-1331",
    "title": "On the Inkhaven Prestige Pin [LW Shortform]",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://www.lesswrong.com/posts/DrdrpKqfTKuKAZ5b5/philip-harker-s-shortform",
    "date": "2026-04-23",
    "score": -0.693243668704591,
@@ -12282,25 +12219,16 @@
   {
    "id": "ink-1712",
    "title": "Did you ever love her?",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "https://therevaloksingh.substack.com/p/did-you-ever-love-her",
    "date": "2026-04-28",
    "score": -0.6935863880689751,
    "se": 0.4101067128755838
   },
   {
-   "id": "ink-1332",
-   "title": "The Beginning of a Crazy Sci Fi Novel",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/the-beginning-of-a-crazy-sci-fi-novel",
-   "date": "2026-04-23",
-   "score": -0.6936264712776589,
-   "se": 0.5133184492245328
-  },
-  {
    "id": "ink-1632",
    "title": "Negative space",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/negative-space",
    "date": "2026-04-29",
    "score": -0.6952945996829274,
@@ -12318,7 +12246,7 @@
   {
    "id": "ink-1716",
    "title": "Longworld",
-   "author": "?",
+   "author": "Vishal Prasad",
    "url": "https://vishalblog.substack.com/p/longworld",
    "date": "2026-04-30",
    "score": -0.7011854075593471,
@@ -12336,7 +12264,7 @@
   {
    "id": "ink-1459",
    "title": "For and Against Jhana-Seeking",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/for-and-against-jhana-seeking",
    "date": "2026-04-25",
    "score": -0.7058938666597869,
@@ -12372,20 +12300,11 @@
   {
    "id": "ink-1374",
    "title": "you might be a fit",
-   "author": "?",
+   "author": "Lily Blackburn",
    "url": "https://substack.com/home/post/p-195410715",
    "date": "2026-04-24",
    "score": -0.715500086195574,
    "se": 0.6043274888737459
-  },
-  {
-   "id": "ink-1379",
-   "title": "One Shipwreck Across Time",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/what-is-a-shipwreck",
-   "date": "2026-04-24",
-   "score": -0.7167237734582654,
-   "se": 0.5382867967186856
   },
   {
    "id": "ink-1121",
@@ -12408,7 +12327,7 @@
   {
    "id": "ink-1468",
    "title": "World Building with Gravity Slingshots",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/world-building-slingshot/",
    "date": "2026-04-26",
    "score": -0.7213306935226834,
@@ -12417,7 +12336,7 @@
   {
    "id": "ink-1238",
    "title": "Was I conscious when I was younger?",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/was-i-conscious-when-i-was-younger",
    "date": "2026-04-21",
    "score": -0.7221151306100018,
@@ -12435,7 +12354,7 @@
   {
    "id": "ink-1442",
    "title": "What happens after we stop AI?",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/what-happens-after-we-stop-ai",
    "date": "2026-04-22",
    "score": -0.7357231684168061,
@@ -12453,7 +12372,7 @@
   {
    "id": "ink-1300",
    "title": "Who's Got A Month?",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814709107591413760/whos-got-a-month",
    "date": "2026-04-23",
    "score": -0.7363940552242941,
@@ -12462,7 +12381,7 @@
   {
    "id": "ink-1314",
    "title": "Diary of a \"Doomer\": 12+ years arguing about AI risk (part 2)",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/diary-of-a-doomer-12-years-arguing-5d5",
    "date": "2026-04-23",
    "score": -0.7372035428813054,
@@ -12525,7 +12444,7 @@
   {
    "id": "ink-1494",
    "title": "The Best Evidence for UFOs in 5 Minutes",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/the-best-evidence-for-ufos-in-5-minutesbo",
    "date": "2026-04-26",
    "score": -0.748153810650368,
@@ -12543,7 +12462,7 @@
   {
    "id": "ink-1320",
    "title": "a dialogue on ai xrisk, part 4",
-   "author": "?",
+   "author": "Jonathan Gabor",
    "url": "https://jonathanpgabor.substack.com/p/a-dialogue-on-ai-xrisk-part-4",
    "date": "2026-04-23",
    "score": -0.7518408114339223,
@@ -12588,7 +12507,7 @@
   {
    "id": "ink-1625",
    "title": "Draft: Amos and the Alphabet Society part 2",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://itsiweinstock.substack.com/p/draft-amos-and-the-alphabet-society-b46",
    "date": "2026-04-29",
    "score": -0.7644363388964224,
@@ -12651,7 +12570,7 @@
   {
    "id": "ink-1547",
    "title": "Why Some Men Don't Open Up",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/why-some-men-dont-open-up",
    "date": "2026-04-28",
    "score": -0.7851468939627416,
@@ -12665,15 +12584,6 @@
    "date": "2026-04-09",
    "score": -0.7858781509672962,
    "se": 0.4548339673739372
-  },
-  {
-   "id": "ink-1473",
-   "title": "Thoughts Someone Less Mature Than Me Might Have Theoretically Had Today While Watching Xena; Warrior Princess That I Definitely Did Not Have",
-   "author": "?",
-   "url": "https://zoecurzi.substack.com/p/thoughts-someone-less-mature-than",
-   "date": "2026-04-26",
-   "score": -0.7905414643627815,
-   "se": 0.5824866091970873
   },
   {
    "id": "ink-0183",
@@ -12732,7 +12642,7 @@
   {
    "id": "ink-1499",
    "title": "The Fulcrum",
-   "author": "?",
+   "author": "Max Harms",
    "url": "https://raelifin.substack.com/p/the-fulcrum",
    "date": "2026-04-26",
    "score": -0.8089377723007678,
@@ -12741,7 +12651,7 @@
   {
    "id": "ink-1525",
    "title": "First impressions of Lean",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/Ayg9N1mAL7dd/first-impressions-of-lean",
    "date": "2026-04-27",
    "score": -0.8104913326646236,
@@ -12804,7 +12714,7 @@
   {
    "id": "ink-1216",
    "title": "Stop Chasing the Frontier",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adyexploring.substack.com/p/stop-chasing-the-frontier",
    "date": "2026-04-21",
    "score": -0.8384582672874265,
@@ -12822,7 +12732,7 @@
   {
    "id": "ink-1580",
    "title": "i went to the elon musk vs openai trial so you don't have to",
-   "author": "?",
+   "author": "Jonathan Gabor",
    "url": "https://jonathanpgabor.substack.com/p/i-went-to-elon-musk-vs-openai-trial",
    "date": "2026-04-28",
    "score": -0.8502491324822916,
@@ -12831,7 +12741,7 @@
   {
    "id": "ink-1610",
    "title": "work in progress: selling to works in progress",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195965174",
    "date": "2026-04-29",
    "score": -0.8508849142381889,
@@ -12849,7 +12759,7 @@
   {
    "id": "ink-1496",
    "title": "Should I Buy Extra Leg Room For Redeyes?",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814995688557608960/should-i-buy-extra-leg-room-for-redeyes",
    "date": "2026-04-26",
    "score": -0.8535086072581016,
@@ -12858,7 +12768,7 @@
   {
    "id": "ink-1278",
    "title": "Evo: Tree Text Editor",
-   "author": "?",
+   "author": "Markus Strasser",
    "url": "https://github.com/markusstrasser/evo",
    "date": "2026-04-22",
    "score": -0.8535858609451743,
@@ -12876,7 +12786,7 @@
   {
    "id": "ink-1259",
    "title": "Against the News",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/against-the-news",
    "date": "2026-04-22",
    "score": -0.85809965795165,
@@ -12903,7 +12813,7 @@
   {
    "id": "ink-1360",
    "title": "Reasons not to trust AI",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/reasons-not-to-trust-ai",
    "date": "2026-04-24",
    "score": -0.8690461770149306,
@@ -12930,7 +12840,7 @@
   {
    "id": "ink-1224",
    "title": "1% motivation japanese cooking",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/1-motivation-japanese-cooking",
    "date": "2026-04-21",
    "score": -0.8763099304949215,
@@ -12939,7 +12849,7 @@
   {
    "id": "ink-1412",
    "title": "Context on Christiano",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195419591",
    "date": "2026-04-24",
    "score": -0.8805554378455054,
@@ -12948,7 +12858,7 @@
   {
    "id": "ink-1669",
    "title": "The Case for a Grantmaking Fellowship",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://forum.effectivealtruism.org/posts/8dkXFGhcsvpbfwAS4/the-case-for-a-grantmaking-fellowship",
    "date": "2026-04-30",
    "score": -0.8862684350748394,
@@ -12957,7 +12867,7 @@
   {
    "id": "ink-1526",
    "title": "On the political feasibility of stopping AI",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/on-the-political-feasibility-of-stopping",
    "date": "2026-04-27",
    "score": -0.8916696229687083,
@@ -12984,7 +12894,7 @@
   {
    "id": "ink-1223",
    "title": "Giving AI a Childhood",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-21",
    "date": "2026-04-21",
    "score": -0.9076854474896175,
@@ -13029,7 +12939,7 @@
   {
    "id": "ink-1346",
    "title": "The Universe as Numbered Jokes",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195314210",
    "date": "2026-04-23",
    "score": -0.9183440161263897,
@@ -13038,7 +12948,7 @@
   {
    "id": "ink-1290",
    "title": "Neon signs are a perfidious lie",
-   "author": "?",
+   "author": "viv",
    "url": "https://vivianbelenky.substack.com/p/neon-signs-are-a-perfidious-lie",
    "date": "2026-04-22",
    "score": -0.9203226581046167,
@@ -13047,7 +12957,7 @@
   {
    "id": "ink-1252",
    "title": "Whatever I Was Doing in 2020, I Should Do Again",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-22",
    "date": "2026-04-22",
    "score": -0.9269251212449892,
@@ -13056,7 +12966,7 @@
   {
    "id": "ink-1441",
    "title": "A Red Tribe Partisan and Diplomat",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/a-red-tribe-partisan-and-diplomat",
    "date": "2026-04-22",
    "score": -0.9280921510244802,
@@ -13092,7 +13002,7 @@
   {
    "id": "ink-1375",
    "title": "How LDA works and how to measure new tasks with it",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/how-lda-works-and-how-to-measure",
    "date": "2026-04-24",
    "score": -0.944972353707314,
@@ -13101,7 +13011,7 @@
   {
    "id": "ink-1634",
    "title": "Does AI speed up research?",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/does-ai-speed-up-research",
    "date": "2026-04-29",
    "score": -0.9459278615361371,
@@ -13146,7 +13056,7 @@
   {
    "id": "ink-1711",
    "title": "I hated high school",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/i-hated-high-school",
    "date": "2026-04-28",
    "score": -0.9681701066671721,
@@ -13155,7 +13065,7 @@
   {
    "id": "ink-1453",
    "title": "Reading Radical Optionality",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adyexploring.substack.com/p/reading-radical-optionality",
    "date": "2026-04-24",
    "score": -0.9719816164883222,
@@ -13173,7 +13083,7 @@
   {
    "id": "ink-1599",
    "title": "On today's panel with Bernie Sanders",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/on-todays-panel-with-bernie-sanders",
    "date": "2026-04-29",
    "score": -0.9848049286953803,
@@ -13200,7 +13110,7 @@
   {
    "id": "ink-1603",
    "title": "More vibe coding at Inkhaven",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/more-vibe-coding-at-inkhaven",
    "date": "2026-04-29",
    "score": -1.00357233197765,
@@ -13218,7 +13128,7 @@
   {
    "id": "ink-1452",
    "title": "4 Urgent projects you can fund in Animal Welfare",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://frontieranimals.substack.com/p/4-urgent-projects-you-can-fund-in",
    "date": "2026-04-24",
    "score": -1.0097457743351166,
@@ -13236,7 +13146,7 @@
   {
    "id": "ink-1592",
    "title": "The State of the AIxAnimals Field",
-   "author": "?",
+   "author": "Itsi Weinstock",
    "url": "https://frontieranimals.substack.com/p/the-state-of-the-aixanimals-field",
    "date": "2026-04-28",
    "score": -1.0264700207701956,
@@ -13254,7 +13164,7 @@
   {
    "id": "ink-1245",
    "title": "cyber risk redux redux, contra peter wildeford on mythos",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195002361",
    "date": "2026-04-21",
    "score": -1.0304040116673474,
@@ -13263,7 +13173,7 @@
   {
    "id": "ink-1719",
    "title": "I'll Never Write the Same after Inkhaven",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://nhua.substack.com/p/ill-never-write-the-same-after-inkhaven",
    "date": "2026-04-30",
    "score": -1.0373484426266049,
@@ -13272,7 +13182,7 @@
   {
    "id": "ink-1423",
    "title": "Escape the Social Media Hellscape",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/escape-the-social-media-hellscape",
    "date": "2026-04-25",
    "score": -1.0435389837231617,
@@ -13353,7 +13263,7 @@
   {
    "id": "ink-1731",
    "title": "Inkhaven, the 548th metapost",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://www.lesswrong.com/posts/AeaAW4irZDfHZDQ5f/inkhaven-the-548th-metapost",
    "date": "2026-04-30",
    "score": -1.0781768876024778,
@@ -13362,7 +13272,7 @@
   {
    "id": "ink-1543",
    "title": "♡ Jeredino x Bavitz pt 1 ♡ ~ a Costco love story ~",
-   "author": "?",
+   "author": "Alec Thompson",
    "url": "https://alec.freumh.org/jeredino.html",
    "date": "2026-04-28",
    "score": -1.078309711463794,
@@ -13407,7 +13317,7 @@
   {
    "id": "ink-1392",
    "title": "Digital poison",
-   "author": "?",
+   "author": "Henry Stanley",
    "url": "https://henryaj.substack.com/p/digital-poison",
    "date": "2026-04-25",
    "score": -1.0957586424940646,
@@ -13452,7 +13362,7 @@
   {
    "id": "ink-1472",
    "title": "when you're doing your thing",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/doing-your-thing/",
    "date": "2026-04-26",
    "score": -1.1058782269369387,
@@ -13470,7 +13380,7 @@
   {
    "id": "ink-1671",
    "title": "Like eyeglasses for the mind",
-   "author": "?",
+   "author": "Jesse Chen",
    "url": "http://approximateknowledge.net/inkhaven/2026/04/30/lenses.html",
    "date": "2026-04-30",
    "score": -1.1208584422545256,
@@ -13524,7 +13434,7 @@
   {
    "id": "ink-1530",
    "title": "the numerical semigroup tree",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/numerical-semigroup-tree/",
    "date": "2026-04-27",
    "score": -1.149009600257715,
@@ -13533,7 +13443,7 @@
   {
    "id": "ink-1391",
    "title": "500mg Niacin",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/zNOgDl79cBzf/500mg-niacin",
    "date": "2026-04-25",
    "score": -1.1531304695298559,
@@ -13551,7 +13461,7 @@
   {
    "id": "ink-1199",
    "title": "Qualia as Quasiparticles",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/qualia-as-quasiparticles",
    "date": "2026-04-21",
    "score": -1.160656431845496,
@@ -13578,7 +13488,7 @@
   {
    "id": "ink-1270",
    "title": "The Coming Solar Power Revolution in the Developing World",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/the-coming-solar-power-revolution",
    "date": "2026-04-22",
    "score": -1.174963443366539,
@@ -13587,7 +13497,7 @@
   {
    "id": "ink-1638",
    "title": "Communal fridges are broken. Here's the fix.",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/communal-fridges-are-broken-heres",
    "date": "2026-04-29",
    "score": -1.1807101251222876,
@@ -13596,7 +13506,7 @@
   {
    "id": "ink-1257",
    "title": "Advice on advice",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://substack.com/home/post/p-195017328",
    "date": "2026-04-22",
    "score": -1.183208291056154,
@@ -13623,7 +13533,7 @@
   {
    "id": "ink-1308",
    "title": "Ain't Misbehavin in my Connectome",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/aint-misbehavin/",
    "date": "2026-04-23",
    "score": -1.1943821547080964,
@@ -13650,7 +13560,7 @@
   {
    "id": "ink-1309",
    "title": "Whatever I Was Doing in 2020, I Should Do Again (Continued)",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-23",
    "date": "2026-04-23",
    "score": -1.2269534976252234,
@@ -13659,7 +13569,7 @@
   {
    "id": "ink-1440",
    "title": "An open thank-you to 12 people",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/an-open-thank-you-to-12-people",
    "date": "2026-04-25",
    "score": -1.2271465453845478,
@@ -13677,7 +13587,7 @@
   {
    "id": "ink-1385",
    "title": "You should be vegan, and if not, at least offset",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/you-should-be-vegan-and-if-not-at",
    "date": "2026-04-24",
    "score": -1.2333904027495057,
@@ -13695,7 +13605,7 @@
   {
    "id": "ink-1639",
    "title": "Playing temple run irl (Part 3)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195837544",
    "date": "2026-04-29",
    "score": -1.2409161433295495,
@@ -13704,7 +13614,7 @@
   {
    "id": "ink-1516",
    "title": "Monday AI Radar #23",
-   "author": "?",
+   "author": "Against Moloch",
    "url": "https://againstmoloch.substack.com/p/monday-ai-radar-23",
    "date": "2026-04-27",
    "score": -1.2489386988195086,
@@ -13722,7 +13632,7 @@
   {
    "id": "ink-1321",
    "title": "Quick Answers to Common UFO Questions",
-   "author": "?",
+   "author": "Jehan Azad",
    "url": "https://www.jehanazad.com/p/quick-answers-to-common-ufo-questions",
    "date": "2026-04-23",
    "score": -1.2579892187448922,
@@ -13731,7 +13641,7 @@
   {
    "id": "ink-1404",
    "title": "The Great Smoothing Out",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-25/",
    "date": "2026-04-25",
    "score": -1.2599719293095213,
@@ -13758,7 +13668,7 @@
   {
    "id": "ink-1349",
    "title": "On Thomas Christiano's Democracy",
-   "author": "?",
+   "author": "Wim Howson Creutzberg",
    "url": "https://substack.com/home/post/p-195320816",
    "date": "2026-04-23",
    "score": -1.273667019470449,
@@ -13821,7 +13731,7 @@
   {
    "id": "ink-1488",
    "title": "7 Haskell effect systems",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/7FzDAf8VJ7Fo/7-haskell-effect-systems",
    "date": "2026-04-26",
    "score": -1.318485689031702,
@@ -13830,7 +13740,7 @@
   {
    "id": "ink-1265",
    "title": "kairos",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/23/kairos/",
    "date": "2026-04-22",
    "score": -1.3227920499434596,
@@ -13848,7 +13758,7 @@
   {
    "id": "ink-1402",
    "title": "[draft post please ignore] buying a pump cab",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://suboptimalism.neocities.org/secret/cab",
    "date": "2026-04-25",
    "score": -1.3269263621079521,
@@ -13857,7 +13767,7 @@
   {
    "id": "ink-1518",
    "title": "Inkhaven Day 27 - Overindexing Against Redundancy",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195678770",
    "date": "2026-04-27",
    "score": -1.3270747812649257,
@@ -13866,7 +13776,7 @@
   {
    "id": "ink-1582",
    "title": "my favorite korean recipes",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/korean-recipes/",
    "date": "2026-04-28",
    "score": -1.3282544306171238,
@@ -13884,7 +13794,7 @@
   {
    "id": "ink-1333",
    "title": "A long hike (Part 8)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195203617",
    "date": "2026-04-23",
    "score": -1.370707714595943,
@@ -13893,7 +13803,7 @@
   {
    "id": "ink-1336",
    "title": "Will automated businesses outcompete human competitors?",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/will-automated-businesses-outcompete",
    "date": "2026-04-23",
    "score": -1.3711230666472949,
@@ -13929,7 +13839,7 @@
   {
    "id": "ink-1408",
    "title": "Posthumanism is the opposite of fascism",
-   "author": "?",
+   "author": "conq",
    "url": "https://conq.neocities.org/posthumanism.html",
    "date": "2026-04-25",
    "score": -1.3937567065782974,
@@ -13938,7 +13848,7 @@
   {
    "id": "ink-1403",
    "title": "Spiritual and/or Religious: Take Your Pick",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/rituals/",
    "date": "2026-04-25",
    "score": -1.401173178009832,
@@ -13947,7 +13857,7 @@
   {
    "id": "ink-1506",
    "title": "Comfortable Talk about Retiring Uncomfortably",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/retire-uncomfortably/",
    "date": "2026-04-27",
    "score": -1.401378528763787,
@@ -13965,7 +13875,7 @@
   {
    "id": "ink-1276",
    "title": "Agni Halfthorsson Gaiden",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814650208485031936/agni-halfthorsson-gaiden",
    "date": "2026-04-22",
    "score": -1.4259950913604074,
@@ -13983,7 +13893,7 @@
   {
    "id": "ink-1425",
    "title": "Too Smart to Live (Siren of Soulfield, Part 6)",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://substack.com/home/post/p-195420535",
    "date": "2026-04-25",
    "score": -1.437320010227921,
@@ -13992,7 +13902,7 @@
   {
    "id": "ink-1571",
    "title": "Attachment Theory Is Extremely Cool and Useful",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-28",
    "date": "2026-04-28",
    "score": -1.4425110945026725,
@@ -14019,7 +13929,7 @@
   {
    "id": "ink-1718",
    "title": "Learning to love the forcing function",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/learning-to-love-the-forcing-function",
    "date": "2026-04-30",
    "score": -1.4665998347796774,
@@ -14037,7 +13947,7 @@
   {
    "id": "ink-1323",
    "title": "Communicating with people who disagree on \"obvious\" things",
-   "author": "?",
+   "author": "Lawrence Chan",
    "url": "https://www.lesswrong.com/posts/fmLbAPLKJcrz8jvBf/communicating-with-people-who-disagree-on-obvious-things",
    "date": "2026-04-23",
    "score": -1.4779911481149346,
@@ -14046,7 +13956,7 @@
   {
    "id": "ink-1704",
    "title": "Libertarians Should Rebrand as Localists",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/libertarians-should-rebrand-as-localists",
    "date": "2026-04-27",
    "score": -1.4794602854406376,
@@ -14064,7 +13974,7 @@
   {
    "id": "ink-1577",
    "title": "Essays, Continental Philosophy, AI, and Human Cognition",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/essays-continental-philosophy-ai",
    "date": "2026-04-28",
    "score": -1.4873653871855075,
@@ -14082,7 +13992,7 @@
   {
    "id": "ink-1676",
    "title": "In paradisum",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/in-paradisum",
    "date": "2026-04-30",
    "score": -1.4917201643818543,
@@ -14091,7 +14001,7 @@
   {
    "id": "ink-1681",
    "title": "The Bower",
-   "author": "?",
+   "author": "Thessaly Blue",
    "url": "https://substack.com/home/post/p-196056088",
    "date": "2026-04-30",
    "score": -1.494339752342505,
@@ -14100,7 +14010,7 @@
   {
    "id": "ink-1552",
    "title": "Let me live in the pod!",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/let-me-live-in-the-pod",
    "date": "2026-04-28",
    "score": -1.502189543621813,
@@ -14109,7 +14019,7 @@
   {
    "id": "ink-1602",
    "title": "Should I do a Startup",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/should-i-do-a-startup",
    "date": "2026-04-29",
    "score": -1.5075002516963198,
@@ -14118,7 +14028,7 @@
   {
    "id": "ink-1383",
    "title": "Morphing meetups and me",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/tasm/",
    "date": "2026-04-24",
    "score": -1.5093715623708264,
@@ -14127,7 +14037,7 @@
   {
    "id": "ink-1641",
    "title": "Levels of Pain and Enjoyment",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/levels-of-pain-and-enjoyment",
    "date": "2026-04-29",
    "score": -1.5119270861515115,
@@ -14136,7 +14046,7 @@
   {
    "id": "ink-1613",
    "title": "Opera night in the Tenderloin",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "https://gist.github.com/alok/3285ff0b688b53067e05d069e4e7bec0",
    "date": "2026-04-29",
    "score": -1.519330159883179,
@@ -14145,7 +14055,7 @@
   {
    "id": "ink-1490",
    "title": "In Praise of Paradox",
-   "author": "?",
+   "author": "Evelyn McLean",
    "url": "https://makingnothinghappen.substack.com/p/in-praise-of-paradox",
    "date": "2026-04-26",
    "score": -1.534142505370053,
@@ -14181,7 +14091,7 @@
   {
    "id": "ink-1457",
    "title": "[draft] A couple alignment research ideas",
-   "author": "?",
+   "author": "Jonathan Gabor",
    "url": "https://jonathanpgabor.substack.com/p/draft-a-couple-alignment-research",
    "date": "2026-04-25",
    "score": -1.5629979827392484,
@@ -14199,7 +14109,7 @@
   {
    "id": "ink-1443",
    "title": "Two Maps, One Territory",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/two-maps-one-territory",
    "date": "2026-04-22",
    "score": -1.6083022472851054,
@@ -14208,7 +14118,7 @@
   {
    "id": "ink-1413",
    "title": "What Protects Workers from AI?",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/what-protects-workers-from-ai",
    "date": "2026-04-25",
    "score": -1.6100900808511196,
@@ -14235,7 +14145,7 @@
   {
    "id": "ink-1572",
    "title": "Inkhaven Day 28 - 我想念的东西",
-   "author": "?",
+   "author": "Anna Mattinger",
    "url": "https://substack.com/home/post/p-195800220",
    "date": "2026-04-28",
    "score": -1.6250623415115193,
@@ -14253,7 +14163,7 @@
   {
    "id": "ink-1670",
    "title": "ReflectHaven",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-196055804",
    "date": "2026-04-30",
    "score": -1.6601552241360458,
@@ -14262,7 +14172,7 @@
   {
    "id": "ink-1558",
    "title": "For even a bad pause",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/LOtEGaimIxO2/for-even-a-bad-pause",
    "date": "2026-04-28",
    "score": -1.6696208730372368,
@@ -14271,7 +14181,7 @@
   {
    "id": "ink-1708",
    "title": "Scott Alexander’s painful non-criticism",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/scott-alexanders-painful-non-criticism",
    "date": "2026-04-27",
    "score": -1.6883162204437447,
@@ -14280,7 +14190,7 @@
   {
    "id": "ink-1390",
    "title": "Sammy Cottrell",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/26/sammy-cottrell/",
    "date": "2026-04-25",
    "score": -1.703779606708744,
@@ -14289,7 +14199,7 @@
   {
    "id": "ink-1467",
    "title": "What if AI Eats Software and Then Stops",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/what-if-ai-eats-software-and-then",
    "date": "2026-04-26",
    "score": -1.7297175622988277,
@@ -14316,7 +14226,7 @@
   {
    "id": "ink-1372",
    "title": "Prophetic Just Launched a New Brain Stimulation Device",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/prophetic-just-launched-a-new-brain",
    "date": "2026-04-24",
    "score": -1.767096381542926,
@@ -14343,7 +14253,7 @@
   {
    "id": "ink-1533",
    "title": "Go to recipes",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195715777",
    "date": "2026-04-27",
    "score": -1.818231225669467,
@@ -14361,7 +14271,7 @@
   {
    "id": "ink-1410",
    "title": "Two Lives, One Mind",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/two-lives-one-mind",
    "date": "2026-04-25",
    "score": -1.820194160395177,
@@ -14370,7 +14280,7 @@
   {
    "id": "ink-1193",
    "title": "This Line of Work [Fiction]",
-   "author": "?",
+   "author": "viv",
    "url": "https://substack.com/home/post/p-194967725",
    "date": "2026-04-21",
    "score": -1.8268998770074958,
@@ -14379,7 +14289,7 @@
   {
    "id": "ink-1241",
    "title": "A long hike (Part 6)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-194984135",
    "date": "2026-04-21",
    "score": -1.8328227113088191,
@@ -14388,7 +14298,7 @@
   {
    "id": "ink-1503",
    "title": "Three cheap meals",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/three-cheap-meals",
    "date": "2026-04-26",
    "score": -1.8362840921044845,
@@ -14406,7 +14316,7 @@
   {
    "id": "ink-1251",
    "title": "my humble blogging implements",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://zatsuon.substack.com/p/my-humble-blogging-implements",
    "date": "2026-04-22",
    "score": -1.8574269692486052,
@@ -14415,7 +14325,7 @@
   {
    "id": "ink-1219",
    "title": "Mechanistic Interpretability and Lean 4",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "http://alok.github.io/2026/04/21/mechanistic-interpretability-and-lean-4/",
    "date": "2026-04-21",
    "score": -1.8685251796544724,
@@ -14442,7 +14352,7 @@
   {
    "id": "ink-1532",
    "title": "Observations from working at large companies",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/observations-from-working-at-large",
    "date": "2026-04-27",
    "score": -1.8953169036293194,
@@ -14460,7 +14370,7 @@
   {
    "id": "ink-1275",
    "title": "a tour of berkeley through red objects",
-   "author": "?",
+   "author": "Kaylee Kim",
    "url": "https://blog.kayleesk.com/berkeley-red-things/",
    "date": "2026-04-22",
    "score": -1.9145551743565805,
@@ -14469,7 +14379,7 @@
   {
    "id": "ink-1631",
    "title": "The Return of Inkslop",
-   "author": "?",
+   "author": "Leo Zaroff",
    "url": "https://monismos.substack.com/p/the-return-of-inkslop",
    "date": "2026-04-29",
    "score": -1.9623003509535328,
@@ -14478,7 +14388,7 @@
   {
    "id": "ink-1280",
    "title": "thought experiments on continuity of consciousness",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/thought-experiments-on-continuity",
    "date": "2026-04-22",
    "score": -1.9630840461401013,
@@ -14487,7 +14397,7 @@
   {
    "id": "ink-1624",
    "title": "Rewriting a One-Act From Long Ago",
-   "author": "?",
+   "author": "Emma Baker",
    "url": "https://emma00baker.substack.com/p/rewriting-a-one-act-from-long-ago",
    "date": "2026-04-29",
    "score": -1.9640454821461066,
@@ -14496,7 +14406,7 @@
   {
    "id": "ink-1495",
    "title": "Learning Agency",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/learning-agency",
    "date": "2026-04-26",
    "score": -1.985756599981155,
@@ -14514,7 +14424,7 @@
   {
    "id": "ink-1661",
    "title": "Beyond Teleportation, Part 2",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-195955715",
    "date": "2026-04-29",
    "score": -1.996012067360435,
@@ -14523,7 +14433,7 @@
   {
    "id": "ink-1658",
    "title": "Christposting Corner with Emma Baker",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://emma00baker.substack.com/p/christposting-corner-with-phil-harker",
    "date": "2026-04-30",
    "score": -2.059094724039241,
@@ -14532,7 +14442,7 @@
   {
    "id": "ink-1677",
    "title": "One Last Inkslop Meta-Post",
-   "author": "?",
+   "author": "Paola",
    "url": "https://phenoatypical.substack.com/p/one-last-inkslop-meta-post",
    "date": "2026-04-30",
    "score": -2.0632174687449263,
@@ -14541,7 +14451,7 @@
   {
    "id": "ink-1679",
    "title": "I Went To A Writing Retreat And All I Got Are These 30 Blogposts",
-   "author": "?",
+   "author": "Sammy Cottrell",
    "url": "https://theguyforthis.substack.com/p/i-went-to-a-writing-retreat-and-all",
    "date": "2026-04-30",
    "score": -2.108541213417993,
@@ -14550,7 +14460,7 @@
   {
    "id": "ink-1446",
    "title": "Siren's Lure (Siren of Soulfield, Part 9)",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://substack.com/home/post/p-195059858",
    "date": "2026-04-22",
    "score": -2.1194171941605116,
@@ -14559,7 +14469,7 @@
   {
    "id": "ink-1456",
    "title": "With a pen and a camera",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/with-a-pen-and-a-camera",
    "date": "2026-04-25",
    "score": -2.179925051167988,
@@ -14577,7 +14487,7 @@
   {
    "id": "ink-1233",
    "title": "Alex from Kensington",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/alex-from-kensington",
    "date": "2026-04-21",
    "score": -2.206111716384321,
@@ -14586,7 +14496,7 @@
   {
    "id": "ink-1601",
    "title": "My Phases of Inkhaven",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/phases-on-inkhaven",
    "date": "2026-04-28",
    "score": -2.207300269249229,
@@ -14595,7 +14505,7 @@
   {
    "id": "ink-1286",
    "title": "Things I use",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/p/uses/",
    "date": "2026-04-22",
    "score": -2.2134223774199877,
@@ -14604,7 +14514,7 @@
   {
    "id": "ink-1640",
    "title": "I went to Stripe Sessions",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/stripe-sessions/",
    "date": "2026-04-29",
    "score": -2.2260572151409557,
@@ -14613,7 +14523,7 @@
   {
    "id": "ink-1271",
    "title": "My Neovim configuration",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/LylN8Ju8BGfr/my-neovim-configuration",
    "date": "2026-04-22",
    "score": -2.226371358564002,
@@ -14640,7 +14550,7 @@
   {
    "id": "ink-1554",
    "title": "The Infinite Sea (WIP)",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/the-infinite-sea/",
    "date": "2026-04-28",
    "score": -2.3019581511882676,
@@ -14649,7 +14559,7 @@
   {
    "id": "ink-1433",
    "title": "I used to make a lot of bad decisions",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/bad-decisions/",
    "date": "2026-04-25",
    "score": -2.3038689614759678,
@@ -14658,7 +14568,7 @@
   {
    "id": "ink-1492",
    "title": "My motivation to research the economics of AI",
-   "author": "?",
+   "author": "Jacob Schaal",
    "url": "https://futureecon.substack.com/p/my-motivation-to-research-the-economics",
    "date": "2026-04-26",
    "score": -2.316002640975328,
@@ -14685,7 +14595,7 @@
   {
    "id": "ink-1720",
    "title": "A Month of Kicking",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adyexploring.substack.com/p/a-month-of-kicking",
    "date": "2026-04-30",
    "score": -2.3967228915260135,
@@ -14694,7 +14604,7 @@
   {
    "id": "ink-1329",
    "title": "Guilt is Free, Pride is Impossible",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/guilt-is-free-pride-is-impossible",
    "date": "2026-04-23",
    "score": -2.415444387871926,
@@ -14712,7 +14622,7 @@
   {
    "id": "ink-1729",
    "title": "Beyond Teleportation, Part 3",
-   "author": "?",
+   "author": "Steven K",
    "url": "https://substack.com/home/post/p-196078152",
    "date": "2026-04-30",
    "score": -2.4341544254893828,
@@ -14721,7 +14631,7 @@
   {
    "id": "ink-1574",
    "title": "HillCitizenship: a New Ethical Framework",
-   "author": "?",
+   "author": "Daniel Burfoot",
    "url": "https://unifixion.substack.com/p/hillcitizenship-a-new-ethical-framework",
    "date": "2026-04-28",
    "score": -2.44315732309993,
@@ -14730,7 +14640,7 @@
   {
    "id": "ink-1579",
    "title": "Lentil Soup Recipe",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/lentil-soup-recipe",
    "date": "2026-04-28",
    "score": -2.513197294123194,
@@ -14739,7 +14649,7 @@
   {
    "id": "ink-1521",
    "title": "From Output to Connection",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-27",
    "date": "2026-04-27",
    "score": -2.520783820384969,
@@ -14748,7 +14658,7 @@
   {
    "id": "ink-1330",
    "title": "Library Magic (Siren of Soulfield, Part 10)",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://substack.com/home/post/p-195310358",
    "date": "2026-04-23",
    "score": -2.5756454617056725,
@@ -14757,7 +14667,7 @@
   {
    "id": "ink-1237",
    "title": "PSA: Substack Pratfalls To Avoid",
-   "author": "?",
+   "author": "Justis Mills",
    "url": "https://justisdevan.tumblr.com/post/814565263148253184/psa-substack-pratfalls-to-avoid",
    "date": "2026-04-21",
    "score": -2.597379296606446,
@@ -14775,7 +14685,7 @@
   {
    "id": "ink-1501",
    "title": "8000 hours of ineffective youtube viewing",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/8000-hours-of-ineffective-youtube",
    "date": "2026-04-26",
    "score": -2.6317334306763285,
@@ -14784,7 +14694,7 @@
   {
    "id": "ink-1643",
    "title": "A Tale of The Celery",
-   "author": "?",
+   "author": "Jasmine Ren",
    "url": "https://jasintonation.substack.com/p/a-tale-of-the-celery",
    "date": "2026-04-29",
    "score": -2.6546821563227523,
@@ -14820,7 +14730,7 @@
   {
    "id": "ink-1588",
    "title": "Soul Magic Practice Partner (Siren of Soulfield, Part 13)",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://neyhaliu.substack.com/p/soul-magic-practice-partner-siren",
    "date": "2026-04-28",
    "score": -2.716383178428788,
@@ -14829,7 +14739,7 @@
   {
    "id": "ink-1647",
    "title": "64 Ideas For a Final Post",
-   "author": "?",
+   "author": "Avi",
    "url": "https://smorgasb.org/final/",
    "date": "2026-04-30",
    "score": -2.759541895038441,
@@ -14838,7 +14748,7 @@
   {
    "id": "ink-1316",
    "title": "programming language features (and optimizations)",
-   "author": "?",
+   "author": "Devin Lehmacher",
    "url": "https://unformeddelta.wiki/dCtl1IFIC8VF/programming-language-features-and-optimizations",
    "date": "2026-04-23",
    "score": -2.760305684605449,
@@ -14847,7 +14757,7 @@
   {
    "id": "ink-1666",
    "title": "Farewell Inkhaven",
-   "author": "?",
+   "author": "Austen",
    "url": "https://lostfutures.substack.com/p/farewell-inkhaven",
    "date": "2026-04-30",
    "score": -2.863851255426681,
@@ -14856,7 +14766,7 @@
   {
    "id": "ink-1570",
    "title": "Go to recipes (part 2)",
-   "author": "?",
+   "author": "Bill Jackson",
    "url": "https://substack.com/home/post/p-195836549",
    "date": "2026-04-28",
    "score": -2.925452917098462,
@@ -14865,7 +14775,7 @@
   {
    "id": "ink-1562",
    "title": "Heat, Contradiction, More Verbs!, and Actively Boring Your Reader",
-   "author": "?",
+   "author": "Lily Blackburn",
    "url": "https://lilyblackburn.com/2026/04/28/heat-contradiction-more-verbs-and-actively-boring-your-reader/",
    "date": "2026-04-28",
    "score": -2.9684967956466726,
@@ -14874,7 +14784,7 @@
   {
    "id": "ink-1528",
    "title": "Vibe Coding a House",
-   "author": "?",
+   "author": "Charles Pye",
    "url": "https://charlespye.substack.com/p/vibe-coding-a-house",
    "date": "2026-04-27",
    "score": -3.026885726205667,
@@ -14883,7 +14793,7 @@
   {
    "id": "ink-1548",
    "title": "San Francisco: self driving!",
-   "author": "?",
+   "author": "Katja Grace",
    "url": "https://worldspiritsockpuppet.substack.com/p/self-driving",
    "date": "2026-04-27",
    "score": -3.150572174726726,
@@ -14901,7 +14811,7 @@
   {
    "id": "ink-1539",
    "title": "What do I want from a job?",
-   "author": "?",
+   "author": "Kyle Scott",
    "url": "https://substack.com/home/post/p-195716967",
    "date": "2026-04-27",
    "score": -3.1942191407330878,
@@ -14910,7 +14820,7 @@
   {
    "id": "ink-1373",
    "title": "Sisters (Siren of Soulfield, Part -1)",
-   "author": "?",
+   "author": "Nancy Hua",
    "url": "https://substack.com/home/post/p-195419909",
    "date": "2026-04-24",
    "score": -3.228041519621722,
@@ -14928,7 +14838,7 @@
   {
    "id": "ink-1617",
    "title": "Q&A",
-   "author": "?",
+   "author": "Benjamin Sturgeon",
    "url": "https://www.benjaminsturgeon.com/inkhaven-day-29",
    "date": "2026-04-29",
    "score": -3.3061594541551567,
@@ -14937,7 +14847,7 @@
   {
    "id": "ink-1326",
    "title": "Don’t give advice, before you accept this",
-   "author": "?",
+   "author": "MLL",
    "url": "https://www.robustenough.com/p/dont-give-advice-before-you-accept",
    "date": "2026-04-23",
    "score": -3.338066826144511,
@@ -14946,7 +14856,7 @@
   {
    "id": "ink-1482",
    "title": "[draft post please ignore] pump cab delivery and inspection",
-   "author": "?",
+   "author": "bananaslug",
    "url": "https://suboptimalism.neocities.org/secret/delivery",
    "date": "2026-04-26",
    "score": -3.3670460161130227,
@@ -14964,7 +14874,7 @@
   {
    "id": "ink-1683",
    "title": "Share Your Claude Code Outputs",
-   "author": "?",
+   "author": "Nicky",
    "url": "https://blog.sus.cat/p/share-your-claude-code-outputs",
    "date": "2026-04-30",
    "score": -3.3834474669445287,
@@ -14991,7 +14901,7 @@
   {
    "id": "ink-1567",
    "title": "Gems from Inkhaven Pt 1",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adymehta.substack.com/p/gems-from-inkhaven-pt-1",
    "date": "2026-04-28",
    "score": -3.461929050424518,
@@ -15000,7 +14910,7 @@
   {
    "id": "ink-1537",
    "title": "My 8 best Tweets, as voted by you",
-   "author": "?",
+   "author": "Philip Harker",
    "url": "https://pharker.substack.com/p/my-8-best-tweets-as-voted-by-you",
    "date": "2026-04-27",
    "score": -3.470446065866267,
@@ -15009,7 +14919,7 @@
   {
    "id": "ink-1717",
    "title": "Music <> Words",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adymehta.substack.com/p/music-words",
    "date": "2026-04-29",
    "score": -3.491746918148824,
@@ -15018,7 +14928,7 @@
   {
    "id": "ink-1725",
    "title": "transverse vs parallel crossings.md",
-   "author": "?",
+   "author": "Alok Singh",
    "url": "https://gist.github.com/alok/58886e675c0413e73f035872ab442ced",
    "date": "2026-04-30",
    "score": -3.5031592313015056,
@@ -15027,7 +14937,7 @@
   {
    "id": "ink-1723",
    "title": "Reflections on InkHaven",
-   "author": "?",
+   "author": "David Krueger",
    "url": "https://therealartificialintelligence.substack.com/p/reflections-on-inkhaven",
    "date": "2026-04-30",
    "score": -3.527276856215125,
@@ -15045,7 +14955,7 @@
   {
    "id": "ink-1589",
    "title": "Playing temple run irl (Part 2)",
-   "author": "?",
+   "author": "Sean Herrington",
    "url": "https://substack.com/home/post/p-195831848",
    "date": "2026-04-28",
    "score": -3.776741962980808,
@@ -15054,7 +14964,7 @@
   {
    "id": "ink-1680",
    "title": "Inkhaven 2 retrospective",
-   "author": "?",
+   "author": "Smitty",
    "url": "https://iter.ca/post/ink2/",
    "date": "2026-04-30",
    "score": -3.9380954744801167,
@@ -15072,7 +14982,7 @@
   {
    "id": "ink-1607",
    "title": "AI in federal environmental review",
-   "author": "?",
+   "author": "Layla Hughes",
    "url": "https://laylahughes.substack.com/p/ai-in-federal-environmental-review",
    "date": "2026-04-29",
    "score": -4.266639234593311,
@@ -15090,7 +15000,7 @@
   {
    "id": "ink-1263",
    "title": "Visualizing Agent IDs",
-   "author": "?",
+   "author": "Aditya Mehta",
    "url": "https://adymehta.substack.com/p/visualizing-agent-ids",
    "date": "2026-04-22",
    "score": -4.619540964892174,
@@ -15100,264 +15010,453 @@
  "authors": [
   {
    "author": "Natalie Cargill",
-   "n": 20,
-   "score": 1.9114932777270237,
-   "best_score": 2.6846753935130536,
-   "title": "How to invent a disease",
-   "url": "https://nataliercargill.substack.com/p/how-to-invent-a-disease",
-   "date": "2026-04-08"
-  },
-  {
-   "author": "capsuletime",
-   "n": 20,
-   "score": 1.5282852802847215,
-   "best_score": 1.5036534286636525,
-   "title": "On The Inner Critic",
-   "url": "https://capsuletime.substack.com/p/on-the-inner-critic",
-   "date": "2026-04-08"
+   "n": 29,
+   "score": 1.915033339681344,
+   "best_score": 3.298084767736634,
+   "title": "It is the end of the world and I am here to take you home",
+   "url": "https://substack.com/home/post/p-195824969",
+   "date": "2026-04-28"
   },
   {
    "author": "viv",
-   "n": 20,
-   "score": 1.3914908294118753,
-   "best_score": 1.6545735161435258,
-   "title": "The phenomenology of being hungry while pregnant",
-   "url": "https://substack.com/home/post/p-193224553",
-   "date": "2026-04-05"
+   "n": 30,
+   "score": 1.6871033961791715,
+   "best_score": 2.788638618586127,
+   "title": "Nobody wants to read your shit",
+   "url": "https://viverricious.substack.com/p/nobody-wants-to-read-your-shit",
+   "date": "2026-04-27"
   },
   {
    "author": "Kevin Z Wu",
-   "n": 20,
-   "score": 1.2708597418767105,
-   "best_score": 1.4672369590130858,
-   "title": "(box|bag) in (box|bag) in (box|bag)",
-   "url": "https://blog.kevinzwu.com/box-bag/",
-   "date": "2026-04-04"
+   "n": 30,
+   "score": 1.5894861135131122,
+   "best_score": 2.0828565564078723,
+   "title": "Logs From the Entropy Farms III",
+   "url": "https://blog.kevinzwu.com/entropy-farms-iii/",
+   "date": "2026-04-26"
   },
   {
-   "author": "Drew Schorno",
-   "n": 20,
-   "score": 0.9700624495115142,
-   "best_score": 1.3118880300256957,
-   "title": "2035",
-   "url": "https://arcove.substack.com/p/2035",
-   "date": "2026-04-03"
+   "author": "capsuletime",
+   "n": 30,
+   "score": 1.464604030327764,
+   "best_score": 3.592679416410063,
+   "title": "Question 24: Is Eliezer Yudkowsky a Respectable Man?",
+   "url": "https://capsuletime.substack.com/p/question-24-is-eliezer-yudkowsky",
+   "date": "2026-04-24"
   },
   {
-   "author": "Austen",
-   "n": 20,
-   "score": 0.8840856854209151,
-   "best_score": 1.5726222805826362,
-   "title": "Why It’s Hard for Me to Find My Favorite Fruit",
-   "url": "https://lostfutures.substack.com/p/why-its-hard-for-me-to-find-my-favorite",
-   "date": "2026-04-12"
-  },
-  {
-   "author": "Alicorn",
-   "n": 20,
-   "score": 0.7890692585798349,
-   "best_score": 1.6360858821655513,
-   "title": "Post by @luminousalicorn",
-   "url": "https://www.tumblr.com/luminousalicorn/812902917238603776/dogs-are-rude",
-   "date": "2026-04-03"
-  },
-  {
-   "author": "Derek Razo",
-   "n": 20,
-   "score": 0.6612399198164368,
-   "best_score": 1.2187813162465955,
-   "title": "Feedback Received in the Last 72 Hours",
-   "url": "https://pointingatthings.substack.com/p/feedback-received-in-the-last-72",
-   "date": "2026-04-12"
-  },
-  {
-   "author": "Justis Mills",
-   "n": 20,
-   "score": 0.5228661645240684,
-   "best_score": 1.0189969184663548,
-   "title": "Be Impressed",
-   "url": "https://justismills.substack.com/p/be-impressed",
-   "date": "2026-04-13"
-  },
-  {
-   "author": "conq",
-   "n": 20,
-   "score": 0.4541165904959846,
-   "best_score": 0.9630975792050143,
-   "title": "Paean to the machine-translator",
-   "url": "https://conq.blog/2026/04/10/paean-to-the-machine-translator/",
-   "date": "2026-04-10"
-  },
-  {
-   "author": "Alec Thompson",
-   "n": 20,
-   "score": 0.3945355819319116,
-   "best_score": 1.5489223926646767,
-   "title": "More Legal Systems Very Different From Ours 1",
-   "url": "https://alec.freumh.org/More%20Legal.html",
-   "date": "2026-04-08"
-  },
-  {
-   "author": "Aaron Kaufman",
-   "n": 20,
-   "score": 0.3654655791544361,
-   "best_score": 1.2785827628475364,
-   "title": "Just Flirting Things",
-   "url": "https://lifeimprovementschemes.substack.com/p/just-flirting-things",
-   "date": "2026-04-19"
-  },
-  {
-   "author": "Aaron Gertler",
-   "n": 20,
-   "score": 0.3272732887960375,
-   "best_score": 1.4501682051764355,
-   "title": "Posts I Will Not Be Writing",
-   "url": "https://aarongertler.com/posts-i-will-not-be-writing/",
-   "date": "2026-04-05"
-  },
-  {
-   "author": "Jesse Chen",
-   "n": 20,
-   "score": 0.2812161822236314,
-   "best_score": 1.1860584468695174,
-   "title": "Infinite Lives, 2010: Super Meat Boy",
-   "url": "http://approximateknowledge.net/inkhaven/2026/04/11/smb.html",
-   "date": "2026-04-11"
-  },
-  {
-   "author": "Bill Jackson",
-   "n": 20,
-   "score": 0.18328656877194338,
-   "best_score": 0.9350772857026225,
-   "title": "Online >> real life for spreading ideas",
-   "url": "https://substack.com/home/post/p-193646465",
-   "date": "2026-04-08"
-  },
-  {
-   "author": "Nancy Hua",
-   "n": 20,
-   "score": -0.12886664014629004,
-   "best_score": 1.0930704362969987,
-   "title": "1 Month to Marry a King (Siren of Soulfield, Part 3)",
-   "url": "https://substack.com/home/post/p-194376106",
-   "date": "2026-04-15"
-  },
-  {
-   "author": "Sean Herrington",
-   "n": 20,
-   "score": -0.468980514227642,
-   "best_score": 1.3391276116485962,
-   "title": "The quest for general intelligence is hitting a wall [April Fool's]",
-   "url": "https://www.lesswrong.com/posts/xZsuBaQFGEb743RiM/the-quest-for-general-intelligence-is-hitting-a-wall",
-   "date": "2026-04-01"
-  },
-  {
-   "author": "Kaylee Kim",
-   "n": 20,
-   "score": -0.47847868951032835,
-   "best_score": 0.8802324596150882,
-   "title": "is microwave tea actually bad?",
-   "url": "https://blog.kayleesk.com/microwave-tea/",
-   "date": "2026-04-04"
-  },
-  {
-   "author": "Anna Mattinger",
-   "n": 20,
-   "score": -0.4829289087846962,
-   "best_score": 2.2486442182732893,
-   "title": "Three Stones are Enough: The Case Against Leaves, in Particular",
-   "url": "https://docs.google.com/document/d/1Xg5oMzlopYX9pDxwdAyCI_eaADdLhtg11qLf15JDG1I/edit?usp=sharing&usp=embed_facebook",
-   "date": "2026-04-04"
-  },
-  {
-   "author": "Philip Harker",
-   "n": 22,
-   "score": -0.5063435384956472,
-   "best_score": 1.275977078943415,
-   "title": "SLEEPING PILLS",
-   "url": "https://pharker.substack.com/p/sleeping-pills",
-   "date": "2026-04-06"
-  },
-  {
-   "author": "Sammy Cottrell",
-   "n": 20,
-   "score": -0.5272352945202208,
-   "best_score": 2.2764249169079225,
-   "title": "high school anecdotes",
-   "url": "https://theguyforthis.substack.com/p/high-school-anecdotes",
-   "date": "2026-04-16"
-  },
-  {
-   "author": "Smitty",
-   "n": 22,
-   "score": -0.6118130362641161,
-   "best_score": 1.6142821507171776,
-   "title": "How the Claude Mythos leak happened",
-   "url": "https://iter.ca/post/claude-cms/",
-   "date": "2026-04-03"
-  },
-  {
-   "author": "Paola",
-   "n": 20,
-   "score": -0.7563858063237535,
-   "best_score": 1.3025517340598536,
-   "title": "12 controversial scientific findings",
-   "url": "https://phenoatypical.substack.com/p/12-controversial-scientific-findings",
-   "date": "2026-04-07"
-  },
-  {
-   "author": "Daniel Burfoot",
-   "n": 20,
-   "score": -0.7981830551302395,
-   "best_score": 0.582812115783149,
-   "title": "America Must Return to its Federalist Principles",
-   "url": "https://unifixion.substack.com/p/america-must-return-to-its-federalist",
-   "date": "2026-04-17"
-  },
-  {
-   "author": "Benjamin Sturgeon",
-   "n": 20,
-   "score": -0.8011927930300594,
-   "best_score": 1.1767561083055347,
-   "title": "Do Models Know They're Lying When Claiming Fake Identities?",
-   "url": "https://www.benjaminsturgeon.com/inkhaven-day-17",
-   "date": "2026-04-17"
-  },
-  {
-   "author": "?",
-   "n": 514,
-   "score": -0.98346109135491,
+   "author": "Lawrence Chan",
+   "n": 28,
+   "score": 1.344545587655549,
    "best_score": 4.44212323587765,
    "title": "Not a Paper: \"Frontier Lab CEOs are Capable of In-Context Scheming\"",
    "url": "https://www.lesswrong.com/posts/FuauQjjbTCS5QFLk8/not-a-paper-frontier-lab-ceos-are-capable-of-in-context",
    "date": "2026-04-28"
   },
   {
+   "author": "Katja Grace",
+   "n": 29,
+   "score": 1.3180389470628153,
+   "best_score": 1.8184995445826972,
+   "title": "AI unemployment and AI extinction are often the same",
+   "url": "https://worldspiritsockpuppet.substack.com/p/ai-unemployment-and-ai-extinction",
+   "date": "2026-04-26"
+  },
+  {
+   "author": "Drew Schorno",
+   "n": 30,
+   "score": 1.235081331712544,
+   "best_score": 2.8959811263144233,
+   "title": "My Trip to Russia",
+   "url": "https://dschorno.wordpress.com/2026/04/21/my-trip-to-russia/",
+   "date": "2026-04-21"
+  },
+  {
+   "author": "Alicorn",
+   "n": 30,
+   "score": 1.0460238071590546,
+   "best_score": 1.7841098583814459,
+   "title": "Green",
+   "url": "https://luminousalicorn.tumblr.com/post/814913934205288448/green",
+   "date": "2026-04-25"
+  },
+  {
+   "author": "Aaron Kaufman",
+   "n": 30,
+   "score": 1.015266264806733,
+   "best_score": 1.8883611671129237,
+   "title": "The Smart Kid Must Die",
+   "url": "https://lifeimprovementschemes.substack.com/p/the-smart-kid-must-die",
+   "date": "2026-04-29"
+  },
+  {
+   "author": "Steven K",
+   "n": 29,
+   "score": 0.9324872212053602,
+   "best_score": 1.845363344894164,
+   "title": "No, the Fermi Paradox Hasn't Been Solved",
+   "url": "https://substack.com/home/post/p-195596693",
+   "date": "2026-04-26"
+  },
+  {
+   "author": "Derek Razo",
+   "n": 29,
+   "score": 0.9012105141724982,
+   "best_score": 1.8014957443558066,
+   "title": "Torture-bliss",
+   "url": "https://pointingatthings.substack.com/p/torture-bliss",
+   "date": "2026-04-27"
+  },
+  {
+   "author": "conq",
+   "n": 27,
+   "score": 0.8942173668769478,
+   "best_score": 3.7087775365106217,
+   "title": "Psychoanalyzing Asian Webnovels",
+   "url": "https://conq.blog/2026/04/28/psychoanalyzing-asian-webnovels/",
+   "date": "2026-04-28"
+  },
+  {
+   "author": "Thessaly Blue",
+   "n": 23,
+   "score": 0.847293069223723,
+   "best_score": 1.901873516763658,
+   "title": "The Armored & the Burned: Two Approaches to Sexual Transgression",
+   "url": "https://substack.com/home/post/p-195195694",
+   "date": "2026-04-22"
+  },
+  {
+   "author": "Austen",
+   "n": 30,
+   "score": 0.7410502338952238,
+   "best_score": 1.5726222805826362,
+   "title": "Why It’s Hard for Me to Find My Favorite Fruit",
+   "url": "https://lostfutures.substack.com/p/why-its-hard-for-me-to-find-my-favorite",
+   "date": "2026-04-12"
+  },
+  {
+   "author": "Aaron Gertler",
+   "n": 30,
+   "score": 0.6919718216533743,
+   "best_score": 1.563388406770678,
+   "title": "A Reader's Guide to Alicorn",
+   "url": "https://aarongertler.com/a-readers-guide-to-alicorn/",
+   "date": "2026-04-23"
+  },
+  {
+   "author": "Henry Stanley",
+   "n": 29,
+   "score": 0.613195387027397,
+   "best_score": 2.008458696317624,
+   "title": "You can just take less Mounjaro",
+   "url": "https://henryaj.substack.com/p/you-can-just-take-less-mounjaro",
+   "date": "2026-04-12"
+  },
+  {
+   "author": "Alec Thompson",
+   "n": 29,
+   "score": 0.595558673828205,
+   "best_score": 1.5489223926646767,
+   "title": "More Legal Systems Very Different From Ours 1",
+   "url": "https://alec.freumh.org/More%20Legal.html",
+   "date": "2026-04-08"
+  },
+  {
+   "author": "Jesse Chen",
+   "n": 30,
+   "score": 0.5740637853353147,
+   "best_score": 1.3998125853514143,
+   "title": "A brief history of time units: Tenths",
+   "url": "http://approximateknowledge.net/inkhaven/2026/04/29/tenths.html",
+   "date": "2026-04-29"
+  },
+  {
+   "author": "Itsi Weinstock",
+   "n": 27,
+   "score": 0.4839131991743391,
+   "best_score": 1.5312231416222948,
+   "title": "Sin as a physical particle",
+   "url": "https://itsiweinstock.substack.com/p/sin-as-a-physical-particle",
+   "date": "2026-04-08"
+  },
+  {
+   "author": "Justis Mills",
+   "n": 30,
+   "score": 0.3183327095968181,
+   "best_score": 1.2442711213959552,
+   "title": "Seeking Doorman",
+   "url": "https://justisdevan.tumblr.com/post/815272576945438720/seeking-doorman",
+   "date": "2026-04-29"
+  },
+  {
+   "author": "Jehan Azad",
+   "n": 26,
+   "score": 0.14029378980082297,
+   "best_score": 1.2068440235066027,
+   "title": "Can Passive Radar Detect Stealth Aircraft?",
+   "url": "https://www.passiveradar.com/can-passive-radar-detect-stealth-aircraft/",
+   "date": "2026-04-10"
+  },
+  {
+   "author": "Bill Jackson",
+   "n": 30,
+   "score": 0.044705973435860025,
+   "best_score": 1.1792466781275686,
+   "title": "Fixed-bankroll prediction markets could generate better predictions",
+   "url": "https://substack.com/home/post/p-194981247",
+   "date": "2026-04-21"
+  },
+  {
+   "author": "Anna Mattinger",
+   "n": 30,
+   "score": -0.047754588301206095,
+   "best_score": 2.2486442182732893,
+   "title": "Three Stones are Enough: The Case Against Leaves, in Particular",
+   "url": "https://docs.google.com/document/d/1Xg5oMzlopYX9pDxwdAyCI_eaADdLhtg11qLf15JDG1I/edit?usp=sharing&usp=embed_facebook",
+   "date": "2026-04-04"
+  },
+  {
+   "author": "Emma Baker",
+   "n": 22,
+   "score": -0.10530721602969426,
+   "best_score": 1.5704343028517282,
+   "title": "Canon Goes Boom: Part 2",
+   "url": "https://emma00baker.substack.com/p/canon-goes-boom-part-2",
+   "date": "2026-04-03"
+  },
+  {
+   "author": "Evelyn McLean",
+   "n": 28,
+   "score": -0.18374905283326154,
+   "best_score": 1.7148322840951407,
+   "title": "What's Up with Silexan? A Pilot Study on a Promising Anti-Anxiety Drug",
+   "url": "https://makingnothinghappen.substack.com/p/whats-up-with-silexan-a-pilot-study",
+   "date": "2026-04-28"
+  },
+  {
+   "author": "Wim Howson Creutzberg",
+   "n": 29,
+   "score": -0.18489425950325492,
+   "best_score": 1.3540103599055429,
+   "title": "Diffusion is all you need",
+   "url": "https://substack.com/home/post/p-195718870",
+   "date": "2026-04-27"
+  },
+  {
+   "author": "Sammy Cottrell",
+   "n": 29,
+   "score": -0.19372052328667444,
+   "best_score": 2.2764249169079225,
+   "title": "high school anecdotes",
+   "url": "https://theguyforthis.substack.com/p/high-school-anecdotes",
+   "date": "2026-04-16"
+  },
+  {
+   "author": "Avi",
+   "n": 26,
+   "score": -0.24894632778742615,
+   "best_score": 1.8670281920231884,
+   "title": "The Smell",
+   "url": "https://smorgasb.org/the-smell/",
+   "date": "2026-04-04"
+  },
+  {
+   "author": "Paola",
+   "n": 28,
+   "score": -0.2623600030531516,
+   "best_score": 1.3025517340598536,
+   "title": "12 controversial scientific findings",
+   "url": "https://phenoatypical.substack.com/p/12-controversial-scientific-findings",
+   "date": "2026-04-07"
+  },
+  {
+   "author": "Jonathan Gabor",
+   "n": 21,
+   "score": -0.30071923949104384,
+   "best_score": 0.8960681429281836,
+   "title": "Scott Alexander's Writing Advice",
+   "url": "https://jonathanpgabor.substack.com/p/scott-alexanders-writing-advice",
+   "date": "2026-04-16"
+  },
+  {
+   "author": "Against Moloch",
+   "n": 29,
+   "score": -0.3174863555080163,
+   "best_score": 1.6468084020304055,
+   "title": "Can AI do Math? Part One",
+   "url": "https://againstmoloch.com/writing/2026-04-11_aiAndMath1.html",
+   "date": "2026-04-11"
+  },
+  {
+   "author": "bananaslug",
+   "n": 29,
+   "score": -0.32303977317209903,
+   "best_score": 1.40251027528983,
+   "title": "inkhaven advice from a one-week veteran",
+   "url": "https://zatsuon.substack.com/p/inkhaven-advice-from-a-one-week-veteran",
+   "date": "2026-04-08"
+  },
+  {
+   "author": "Kaylee Kim",
+   "n": 30,
+   "score": -0.43442283415168925,
+   "best_score": 0.8802324596150882,
+   "title": "is microwave tea actually bad?",
+   "url": "https://blog.kayleesk.com/microwave-tea/",
+   "date": "2026-04-04"
+  },
+  {
+   "author": "MLL",
+   "n": 28,
+   "score": -0.43852085539776015,
+   "best_score": 0.9486984952823754,
+   "title": "The Blueberries of Wrath",
+   "url": "https://www.robustenough.com/p/the-blueberries-of-wrath",
+   "date": "2026-04-04"
+  },
+  {
+   "author": "Nancy Hua",
+   "n": 28,
+   "score": -0.56134009780103,
+   "best_score": 3.0280071142879703,
+   "title": "I Hope I Die First",
+   "url": "https://nhua.substack.com/p/i-hope-i-die-first",
+   "date": "2026-04-29"
+  },
+  {
+   "author": "Benjamin Sturgeon",
+   "n": 30,
+   "score": -0.5693230892470734,
+   "best_score": 4.266172551601913,
+   "title": "Sanity-checking “Incompressible Knowledge Probes”",
+   "url": "https://www.lesswrong.com/posts/veFMEzDDyWaer2Sms/sanity-checking-incompressible-knowledge-probes",
+   "date": "2026-04-30"
+  },
+  {
+   "author": "Alok Singh",
+   "n": 28,
+   "score": -0.5702984918170103,
+   "best_score": 1.9543653670368666,
+   "title": "what's the ideal analogy",
+   "url": "http://alok.github.io/2026/04/28/whats-the-ideal-analogy/",
+   "date": "2026-04-27"
+  },
+  {
+   "author": "Daniel Burfoot",
+   "n": 30,
+   "score": -0.6197738498041699,
+   "best_score": 0.6550636999032129,
+   "title": "Talking to the Wrong Doctor",
+   "url": "https://unifixion.substack.com/p/talking-to-the-wrong-doctor",
+   "date": "2026-04-23"
+  },
+  {
+   "author": "Sean Herrington",
+   "n": 29,
+   "score": -0.6718507242317464,
+   "best_score": 1.3391276116485962,
+   "title": "The quest for general intelligence is hitting a wall [April Fool's]",
+   "url": "https://www.lesswrong.com/posts/xZsuBaQFGEb743RiM/the-quest-for-general-intelligence-is-hitting-a-wall",
+   "date": "2026-04-01"
+  },
+  {
+   "author": "Leo Zaroff",
+   "n": 30,
+   "score": -0.6804953195342011,
+   "best_score": 2.948164896741336,
+   "title": "Can You Actually Boil Frogs Alive?",
+   "url": "https://monismos.substack.com/p/can-you-actually-boil-frogs-alive",
+   "date": "2026-04-27"
+  },
+  {
+   "author": "Smitty",
+   "n": 32,
+   "score": -0.776013252414408,
+   "best_score": 1.633900840181631,
+   "title": "Loans are bets on doom",
+   "url": "https://iter.ca/post/doom-loans/",
+   "date": "2026-04-28"
+  },
+  {
+   "author": "David Krueger",
+   "n": 29,
+   "score": -0.8585839306789126,
+   "best_score": 1.0419075041854748,
+   "title": "Stop AI Now",
+   "url": "https://therealartificialintelligence.substack.com/p/stop-ai-now",
+   "date": "2026-04-19"
+  },
+  {
+   "author": "Philip Harker",
+   "n": 32,
+   "score": -0.8587050195091753,
+   "best_score": 1.275977078943415,
+   "title": "SLEEPING PILLS",
+   "url": "https://pharker.substack.com/p/sleeping-pills",
+   "date": "2026-04-06"
+  },
+  {
+   "author": "Kyle Scott",
+   "n": 22,
+   "score": -0.9256978502806829,
+   "best_score": 0.935467296093729,
+   "title": "The blight that grows on good ideas",
+   "url": "https://substack.com/home/post/p-193120571",
+   "date": "2026-04-05"
+  },
+  {
+   "author": "Charles Pye",
+   "n": 29,
+   "score": -1.079830360578481,
+   "best_score": 0.794199453404829,
+   "title": "Crazy Ideas to Get Rich Quick on Prediction Markets",
+   "url": "https://charlespye.substack.com/p/crazy-ideas-to-get-rich-quick-on",
+   "date": "2026-04-02"
+  },
+  {
+   "author": "Jasmine Ren",
+   "n": 27,
+   "score": -1.1434207114814698,
+   "best_score": 0.7671344981263437,
+   "title": "The Best Apple Cultivar",
+   "url": "https://substack.com/home/post/p-193400935",
+   "date": "2026-04-06"
+  },
+  {
    "author": "Devin Lehmacher",
-   "n": 20,
-   "score": -1.2148735089368214,
+   "n": 28,
+   "score": -1.2353897945702097,
    "best_score": 1.412954437333177,
    "title": "What makes a good spaced repetition system? (WaniKani)",
    "url": "https://unformeddelta.wiki/v8mH7WGj5fNz/what-makes-a-good-spaced-repetition-system-wanikani",
    "date": "2026-04-14"
   },
   {
-   "author": "Leo Zaroff",
-   "n": 20,
-   "score": -1.3587623308682422,
-   "best_score": 1.1074744522399633,
-   "title": "The US Needs Less Democracy, Not More",
-   "url": "https://monismos.substack.com/p/the-us-needs-less-democracy-not-more",
-   "date": "2026-04-20"
+   "author": "Nicky",
+   "n": 29,
+   "score": -1.9286129179017026,
+   "best_score": 0.6380835984315977,
+   "title": "My Janky wall-mounted eGPU Build Log",
+   "url": "https://blog.sus.cat/p/my-janky-wall-mounted-egpu-build",
+   "date": "2026-04-10"
   },
   {
    "author": "Jacob Schaal",
-   "n": 20,
-   "score": -2.81784119093408,
+   "n": 30,
+   "score": -2.077118053573452,
    "best_score": 0.6503102386475914,
    "title": "Does AI policy need partisans?",
    "url": "https://futureecon.substack.com/p/does-ai-policy-need-partisans",
    "date": "2026-04-18"
+  },
+  {
+   "author": "Aditya Mehta",
+   "n": 25,
+   "score": -2.7961020713849702,
+   "best_score": 0.733484374593391,
+   "title": "The First Stable Tyranny",
+   "url": "https://adyexploring.substack.com/p/the-first-stable-tyranny",
+   "date": "2026-04-25"
   }
  ]
 }
