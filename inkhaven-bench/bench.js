@@ -96,7 +96,7 @@
     if (filter) {
       rows = rows.filter((r) =>
         (r.title || '').toLowerCase().includes(filter) ||
-        (r.author || '').toLowerCase().includes(filter)
+        ((r.authors && r.authors.length ? r.authors.join(' ') : (r.author || ''))).toLowerCase().includes(filter)
       );
     }
     const cur = state.sort.posts;
@@ -109,7 +109,7 @@
         <tr>
           <td class="num muted">${i + 1}</td>
           <td class="${scoreClass(r.score)}">${fmtMeanSE(r.score, r.se)}</td>
-          <td>${escapeHTML(r.author)}</td>
+          <td>${escapeHTML((r.authors && r.authors.length > 1) ? r.authors.join(' + ') : r.author)}</td>
           <td>${linkCell(r.title, r.url)}</td>
           <td class="num muted">${escapeHTML(r.date)}</td>
         </tr>`).join('');
@@ -138,7 +138,7 @@
           <td class="num muted">${i + 1}</td>
           <td class="${scoreClass(r.score)}">${fmtScore(r.score)}</td>
           <td class="num">${r.n}</td>
-          <td>${escapeHTML(r.author)}</td>
+          <td>${escapeHTML((r.authors && r.authors.length > 1) ? r.authors.join(' + ') : r.author)}</td>
           <td>${linkCell(r.title, r.url)}</td>
         </tr>`).join('');
       tbody.innerHTML = html;
