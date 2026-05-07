@@ -164,7 +164,7 @@
       <tr>
         <td class="num muted">${i + 1}</td>
         <td class="${scoreClass(r.score)}">${fmtMeanSE(r.score, r.se)}</td>
-        <td>${escapeHTML(r.author)}</td>
+        <td>${escapeHTML((r.authors && r.authors.length > 1) ? r.authors.join(' + ') : r.author)}</td>
         <td>${linkCell(r.title, r.url)}</td>
       </tr>`).join('');
   }
