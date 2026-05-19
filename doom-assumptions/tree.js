@@ -32,7 +32,7 @@
   const rangeModeGroup = document.getElementById("range-mode-group");
   const rangeModeToggle = document.getElementById("range-mode-toggle");
   const saveWorldviewBtn = document.getElementById("save-worldview-btn");
-  const exportBtn = document.getElementById("export-btn");
+  const deleteWorldviewBtn = document.getElementById("delete-worldview-btn");
   const importBtn = document.getElementById("import-btn");
   const importFile = document.getElementById("import-file");
   const shareBtn = document.getElementById("share-btn");
@@ -97,6 +97,58 @@
       }
     }
     return pairs;
+  }
+
+  // --- Unconditional / "mass" probability ---
+  //
+  // The headline value on every card is conditional on the chain of ancestor
+  // assumptions. The "unconditional" value is what fraction of all worlds
+  // actually flow through this branch — i.e. multiplied by the marginal
+  // probability of the conditioning events upstream.
+  //
+  // Within an AND, one child supplies the marginal conditioning event and the
+  // other supplies the conditional event. Heuristic for picking which is which:
+  //   - mixed AND (leaf + branch): the leaf is the marginal, the branch is
+  //     conditional on it.
+  //   - joint AND (two leaves): per Sean's reorder, child 0 is the marginal
+  //     ("X happens") and child 1 is the conditional ("D | X").
+  function isMarginalSibling(child, parent, idx) {
+    if (!parent || parent.type !== "and") return false;
+    var allLeaves = parent.children.every(function (c) { return c.type === "leaf"; });
+    if (allLeaves && parent.children.length === 2) {
+      return idx === 0;
+    }
+    return child.type === "leaf";
+  }
+
+  function annotateUnconditional(node, contextP, store) {
+    store[node.id] = computeProb(node) * contextP;
+    if (!node.children || node.children.length === 0) return;
+    if (node.type === "or") {
+      for (var i = 0; i < node.children.length; i++) {
+        annotateUnconditional(node.children[i], contextP, store);
+      }
+    } else if (node.type === "and") {
+      var marginalProduct = 1;
+      for (var i = 0; i < node.children.length; i++) {
+        if (isMarginalSibling(node.children[i], node, i)) {
+          marginalProduct *= computeProb(node.children[i]);
+        }
+      }
+      for (var i = 0; i < node.children.length; i++) {
+        if (isMarginalSibling(node.children[i], node, i)) {
+          annotateUnconditional(node.children[i], contextP, store);
+        } else {
+          annotateUnconditional(node.children[i], contextP * marginalProduct, store);
+        }
+      }
+    }
+  }
+
+  function computeUnconditional(node) {
+    var store = {};
+    annotateUnconditional(getTree().tree, 1, store);
+    return store[node.id] != null ? store[node.id] : computeProb(node);
   }
 
   function computeProb(node) {
@@ -326,50 +378,51 @@
   // from the same sampled value at each corner).
   var WC_EXACT_THRESHOLD = 15; // up to 2^15 = 32768 corners enumerated exactly
   var WC_SAMPLE_COUNT = 32768; // random corner samples when N exceeds threshold
-  var _wcCache = null;       // { nodeId -> { lo, hi } }
+  var _wcCache = null;       // { nodeId -> { lo, hi } } conditional
+  var _wcCacheU = null;      // { nodeId -> { lo, hi } } unconditional / mass
 
   function invalidateWCCache() {
     _wcCache = null;
+    _wcCacheU = null;
   }
 
   function ensureWCCache() {
     if (_wcCache) return;
     _wcCache = {};
+    _wcCacheU = {};
 
     var tree = getTree();
     var root = tree.tree;
 
-    // Collect free parameters (non-complement leaves + pinned branch nodes)
-    // with their ranges. Reuses collectLeafParams to match MC semantics.
     var rawParams = [];
     collectLeafParams(root, rawParams);
 
-    // Map raw params to their ranges (lo, hi, original value)
     var params = rawParams.map(function (p) {
       var r = probRanges[p.id];
       return { id: p.id, lo: r.lo, hi: r.hi, original: probabilities[p.id] };
     });
 
-    // Collect all node IDs to track (same traversal as MC)
     var allNodes = [];
     collectAllNodes(root, allNodes);
 
-    // Initialize min/max trackers
-    var mins = {}, maxs = {};
+    var mins = {}, maxs = {}, minsU = {}, maxsU = {};
     allNodes.forEach(function (n) {
-      mins[n.id] = Infinity;
-      maxs[n.id] = -Infinity;
+      mins[n.id] = Infinity;  maxs[n.id] = -Infinity;
+      minsU[n.id] = Infinity; maxsU[n.id] = -Infinity;
     });
 
-    // If no free parameters, just evaluate once
     if (params.length === 0) {
+      var uncondStore0 = {};
+      annotateUnconditional(root, 1, uncondStore0);
       allNodes.forEach(function (n) {
         var v = computeProb(n);
-        mins[n.id] = v;
-        maxs[n.id] = v;
+        mins[n.id] = v; maxs[n.id] = v;
+        var u = uncondStore0[n.id] != null ? uncondStore0[n.id] : v;
+        minsU[n.id] = u; maxsU[n.id] = u;
       });
       allNodes.forEach(function (n) {
         _wcCache[n.id] = { lo: mins[n.id], hi: maxs[n.id] };
+        _wcCacheU[n.id] = { lo: minsU[n.id], hi: maxsU[n.id] };
       });
       return;
     }
@@ -379,7 +432,6 @@
     var numCorners = useExact ? (1 << N) : WC_SAMPLE_COUNT;
 
     for (var c = 0; c < numCorners; c++) {
-      // Assign each parameter to its lo or hi for this corner
       for (var i = 0; i < N; i++) {
         var useHi;
         if (useExact) {
@@ -390,22 +442,28 @@
         var p = params[i];
         probabilities[p.id] = useHi ? p.hi : p.lo;
       }
-      // Evaluate every node at this corner and update min/max
+      var uncondStore = {};
+      annotateUnconditional(root, 1, uncondStore);
       for (var j = 0; j < allNodes.length; j++) {
         var node = allNodes[j];
         var v = computeProb(node);
         if (v < mins[node.id]) mins[node.id] = v;
         if (v > maxs[node.id]) maxs[node.id] = v;
+        var u = uncondStore[node.id];
+        if (u != null) {
+          if (u < minsU[node.id]) minsU[node.id] = u;
+          if (u > maxsU[node.id]) maxsU[node.id] = u;
+        }
       }
     }
 
-    // Restore original probabilities
     for (var i = 0; i < N; i++) {
       probabilities[params[i].id] = params[i].original;
     }
 
     allNodes.forEach(function (n) {
       _wcCache[n.id] = { lo: mins[n.id], hi: maxs[n.id] };
+      _wcCacheU[n.id] = { lo: minsU[n.id], hi: maxsU[n.id] };
     });
   }
 
@@ -414,19 +472,20 @@
     if (_wcCache && _wcCache[node.id]) {
       return _wcCache[node.id];
     }
-    // Shouldn't happen, but fall back to point estimate
     var p = computeProb(node);
     return { lo: p, hi: p };
   }
 
   // --- Monte Carlo range propagation ---
   var MC_SAMPLES = 20000;
-  var _mcCache = null;       // { nodeId -> { lo, hi } }
+  var _mcCache = null;       // { nodeId -> { lo, hi } } conditional
+  var _mcCacheU = null;      // { nodeId -> { lo, hi } } unconditional / mass
   var _mcLeafSamples = null; // { leafId -> [sample0, sample1, ...] }
   var _mcLeafParams = null;  // cached leaf params for replay
 
   function invalidateMCCache() {
     _mcCache = null;
+    _mcCacheU = null;
     _mcLeafSamples = null;
     _mcLeafParams = null;
   }
@@ -434,11 +493,11 @@
   function ensureMCCache() {
     if (_mcCache) return;
     _mcCache = {};
+    _mcCacheU = {};
 
     var tree = getTree();
     var root = tree.tree;
 
-    // Collect all leaf/pinned params to sample
     var leafParams = [];
     collectLeafParams(root, leafParams);
     _mcLeafParams = leafParams;
@@ -448,46 +507,56 @@
       return;
     }
 
-    // Collect all node IDs to track
     var allNodes = [];
     collectAllNodes(root, allNodes);
 
-    // Initialize sample arrays
     var nodeSamples = {};
-    allNodes.forEach(function (n) { nodeSamples[n.id] = []; });
+    var nodeSamplesU = {};
+    allNodes.forEach(function (n) {
+      nodeSamples[n.id] = [];
+      nodeSamplesU[n.id] = [];
+    });
 
-    // Store per-sample leaf values for replay
     _mcLeafSamples = {};
     for (var i = 0; i < leafParams.length; i++) {
       _mcLeafSamples[leafParams[i].id] = [];
     }
 
-    // Run Monte Carlo once for entire tree
     for (var s = 0; s < MC_SAMPLES; s++) {
-      // Sample each leaf from its beta distribution
       for (var i = 0; i < leafParams.length; i++) {
         var lp = leafParams[i];
         var val = sampleBeta(lp.a, lp.b);
         probabilities[lp.id] = val;
         _mcLeafSamples[lp.id].push(val);
       }
-      // Compute all node values for this sample
       collectNodeValues(root, nodeSamples);
+      var uncondStoreMC = {};
+      annotateUnconditional(root, 1, uncondStoreMC);
+      for (var k = 0; k < allNodes.length; k++) {
+        var nid = allNodes[k].id;
+        if (uncondStoreMC[nid] != null) nodeSamplesU[nid].push(uncondStoreMC[nid]);
+      }
     }
 
-    // Restore original probabilities
     for (var i = 0; i < leafParams.length; i++) {
       probabilities[leafParams[i].id] = leafParams[i].original;
     }
 
-    // Compute 10th/90th percentile for each node
     allNodes.forEach(function (n) {
       var arr = nodeSamples[n.id];
-      if (arr.length === 0) return;
-      arr.sort(function (a, b) { return a - b; });
-      var idx10 = Math.floor(arr.length * 0.1);
-      var idx90 = Math.floor(arr.length * 0.9);
-      _mcCache[n.id] = { lo: arr[idx10], hi: arr[idx90] };
+      if (arr.length > 0) {
+        arr.sort(function (a, b) { return a - b; });
+        var idx10 = Math.floor(arr.length * 0.1);
+        var idx90 = Math.floor(arr.length * 0.9);
+        _mcCache[n.id] = { lo: arr[idx10], hi: arr[idx90] };
+      }
+      var arrU = nodeSamplesU[n.id];
+      if (arrU.length > 0) {
+        arrU.sort(function (a, b) { return a - b; });
+        var idx10U = Math.floor(arrU.length * 0.1);
+        var idx90U = Math.floor(arrU.length * 0.9);
+        _mcCacheU[n.id] = { lo: arrU[idx10U], hi: arrU[idx90U] };
+      }
     });
   }
 
@@ -521,6 +590,22 @@
     return { lo: p, hi: p };
   }
 
+  function computeUnconditionalRange(node) {
+    if (!rangeMode) {
+      var u = computeUnconditional(node);
+      return { lo: u, hi: u };
+    }
+    if (rangeIndependent) {
+      ensureMCCache();
+      if (_mcCacheU && _mcCacheU[node.id]) return _mcCacheU[node.id];
+    } else {
+      ensureWCCache();
+      if (_wcCacheU && _wcCacheU[node.id]) return _wcCacheU[node.id];
+    }
+    var u2 = computeUnconditional(node);
+    return { lo: u2, hi: u2 };
+  }
+
   function collectLeafParams(node, params) {
     if (pinnedNodes[node.id] && probabilities[node.id] != null) {
       // Pinned node with a range — treat as a leaf for MC
@@ -551,6 +636,94 @@
     return formatProb(range.lo) + " – " + formatProb(range.hi);
   }
 
+  // --- Parent map for ancestor lookup (used for conditioning labels) ---
+  var _parentMapByTreeId = {};
+  function getParentMap() {
+    var t = getTree();
+    if (_parentMapByTreeId[t.id]) return _parentMapByTreeId[t.id];
+    var map = {};
+    var walk = function (n, p) {
+      if (p) map[n.id] = p;
+      if (n.children) {
+        for (var i = 0; i < n.children.length; i++) walk(n.children[i], n);
+      }
+    };
+    walk(t.tree, null);
+    _parentMapByTreeId[t.id] = map;
+    return map;
+  }
+
+  // Conditioning label = the title of the AND-branch this node sits within.
+  // Rules:
+  //   - For an AND node: walk past parent OR to the next AND up.
+  //   - For an OR node: use its parent AND (which represents the joint
+  //     context the OR is conditional on).
+  //   - For a leaf: depends on its role in its AND parent.
+  //       Marginal leaf (e.g. "X happens") — skip the parent AND, use the
+  //         AND above that, because the leaf itself defines this branch.
+  //       Conditional leaf (e.g. "D | X") — use the parent AND, since the
+  //         AND represents the joint X-context the leaf is conditional on.
+  function findAncestorAnd(node) {
+    var map = getParentMap();
+    var current = map[node.id];
+    while (current) {
+      if (current.type === "and") return current;
+      current = map[current.id];
+    }
+    return null;
+  }
+
+  function getConditioningLabel(node) {
+    var map = getParentMap();
+    var ancestorAnd = null;
+    if (node.type === "and" || node.type === "or") {
+      ancestorAnd = findAncestorAnd(node);
+    } else if (node.type === "leaf") {
+      var parent = map[node.id];
+      if (parent && parent.type === "and") {
+        var idx = parent.children.indexOf(node);
+        if (isMarginalSibling(node, parent, idx)) {
+          ancestorAnd = findAncestorAnd(parent);
+        } else {
+          ancestorAnd = parent;
+        }
+      }
+    }
+    if (!ancestorAnd) return null;
+    var name = ancestorAnd.name || ancestorAnd.label || ancestorAnd.id;
+    return (getTree().substituteNames === false) ? name : subVars(name, false);
+  }
+
+  function formatHeadlineText(node) {
+    // Headline is the unconditional probability mass.
+    if (rangeMode) {
+      var ur = computeUnconditionalRange(node);
+      return (ur.lo === ur.hi) ? formatProb(ur.lo) : formatRange(ur);
+    }
+    return formatProb(computeUnconditional(node));
+  }
+
+  function formatConditionalCaption(node) {
+    // Secondary line shows the local conditional value. Skip when it equals
+    // the unconditional (e.g. the root and top-level branches) — no info.
+    var condText, uncondText;
+    if (rangeMode) {
+      var cr = computeProbRange(node);
+      var ur = computeUnconditionalRange(node);
+      condText = (cr.lo === cr.hi) ? formatProb(cr.lo) : formatRange(cr);
+      uncondText = (ur.lo === ur.hi) ? formatProb(ur.lo) : formatRange(ur);
+    } else {
+      condText = formatProb(computeProb(node));
+      uncondText = formatProb(computeUnconditional(node));
+    }
+    if (condText === uncondText) return "";
+    var conditioning = getConditioningLabel(node);
+    if (conditioning) {
+      return condText + " given " + conditioning;
+    }
+    return condText + " in branch";
+  }
+
   function formatProb(p) {
     if (p < 0.001 && p > 0) return "<0.1%";
     if (p < 0.01 && p > 0) return (p * 100).toFixed(2) + "%";
@@ -576,8 +749,8 @@
       var regex = new RegExp("\\b" + escapeRegex(key) + "\\b", "g");
       result = result.replace(regex, val);
     });
-    // Capitalise first letter (#2 fix)
-    if (result.length > 0) {
+    // Capitalise first letter unless caller opted out (mid-sentence use).
+    if (capitalize !== false && result.length > 0) {
       result = result.charAt(0).toUpperCase() + result.slice(1);
     }
     return result;
@@ -601,13 +774,16 @@
   function updateWorldviewTitle() {
     var text = "";
     if (worldviewAuthor) {
-      var possessive = worldviewAuthor + "\u2019s";
-      if (worldviewPerspective === "inside") {
-        text = possessive + " inside view";
-      } else if (worldviewPerspective === "outside") {
-        text = possessive + " outside view";
+      // For "X-like" labels we don't actually know whether the underlying
+      // estimate is the person's inside or outside view, so drop the
+      // perspective qualifier and call it a "worldview".
+      if (/-like$/i.test(worldviewAuthor)) {
+        text = worldviewAuthor + " worldview";
       } else {
-        text = possessive + " worldview";
+        var perspText = worldviewPerspective
+          ? (worldviewPerspective + " view")
+          : "worldview";
+        text = worldviewAuthor + "\u2019s " + perspText;
       }
     } else if (currentWorldview && currentWorldview !== "custom") {
       // Built-in preset: show its display name
@@ -620,6 +796,12 @@
       }
     }
     if (worldviewTitle) worldviewTitle.textContent = text;
+
+    // Delete button only makes sense for user-saved worldviews.
+    if (deleteWorldviewBtn) {
+      var isSaved = !!(currentWorldview && currentWorldview.indexOf("saved:") === 0);
+      deleteWorldviewBtn.style.display = isSaved ? "" : "none";
+    }
   }
 
   // Sync sidebar author/perspective inputs to current state. Safe to call
@@ -660,6 +842,18 @@
 
         input.addEventListener("input", function () {
           variableValues[key] = input.value;
+          // Changing a variable (Danger, Timeframe, etc.) breaks the
+          // assumption that the probs reflect the named worldview, so drop
+          // back to Custom — we shouldn't claim e.g. Yudkowsky thinks 95%
+          // about a different danger than the one his estimate was for.
+          if (currentWorldview) {
+            currentWorldview = null;
+            worldviewSelect.value = "custom";
+            worldviewAuthor = "";
+            worldviewPerspective = "";
+            syncWorldviewMetaInputs();
+            updateWorldviewTitle();
+          }
           renderTree();
           updateInfoPanel();
         });
@@ -878,12 +1072,18 @@
 
   function populateTreeSelect() {
     treeSelect.innerHTML = "";
+    var visibleCount = 0;
     TREES.forEach(function (tree, i) {
+      if (tree.hidden) return; // kept in code but not exposed in the UI
       var opt = document.createElement("option");
       opt.value = i;
       opt.textContent = tree.title;
       treeSelect.appendChild(opt);
+      visibleCount++;
     });
+    // Hide the Tree picker when there's only one tree to choose from.
+    var group = treeSelect.closest(".control-group");
+    if (group) group.style.display = visibleCount > 1 ? "" : "none";
   }
 
   function populateWorldviewSelect() {
@@ -947,15 +1147,23 @@
     pinnedNodes = {};
 
     overrideValues = {};
+    // Reset ranges; worldview may supply new ones below.
+    probRanges = {};
     var leaves = getLeaves(tree.tree);
     leaves.forEach(function (leaf) {
       if (!leaf.complement_of && wv.probabilities[leaf.id] != null) {
         probabilities[leaf.id] = wv.probabilities[leaf.id];
       }
+      if (wv.ranges && wv.ranges[leaf.id] && !leaf.complement_of) {
+        probRanges[leaf.id] = {
+          lo: wv.ranges[leaf.id].lo,
+          hi: wv.ranges[leaf.id].hi
+        };
+      }
     });
     // Built-in presets don't carry author/perspective
-    worldviewAuthor = "";
-    worldviewPerspective = "";
+    worldviewAuthor = wv.author || "";
+    worldviewPerspective = wv.perspective || "";
   }
 
   // --- Render tree as visual graph ---
@@ -1033,15 +1241,24 @@
     typeBadge.textContent = node.type;
     header.appendChild(typeBadge);
 
+    var probColumn = document.createElement("span");
+    probColumn.className = "tg-prob-column";
+
+    // Headline = unconditional probability ("mass" — fraction of all worlds
+    // that flow through this branch). The conditional ("local") value sits
+    // below in smaller text since it's the more contextual reading.
     var probEl = document.createElement("span");
     probEl.className = "tg-prob";
-    if (rangeMode) {
-      var range = computeProbRange(node);
-      probEl.textContent = (range.lo === range.hi) ? formatProb(prob) : formatRange(range);
-    } else {
-      probEl.textContent = formatProb(prob);
-    }
-    header.appendChild(probEl);
+    probEl.textContent = formatHeadlineText(node);
+    probColumn.appendChild(probEl);
+
+    var probMassEl = document.createElement("span");
+    probMassEl.className = "tg-prob-mass";
+    probMassEl.textContent = formatConditionalCaption(node);
+    if (!probMassEl.textContent) probMassEl.style.display = "none";
+    probColumn.appendChild(probMassEl);
+
+    header.appendChild(probColumn);
 
     // For "subtree" joints, the collapse toggle drives the absorbed subtree's
     // collapse state — that's what controls the visual children below the card.
@@ -1090,8 +1307,11 @@
     }
     card.appendChild(bar);
 
-    // Click to select
-    card.addEventListener("click", function () {
+    // Click to select. Stop propagation so a click on an absorbed leaf
+    // inside a joint AND selects the leaf rather than bubbling up and
+    // selecting the joint AND parent.
+    card.addEventListener("click", function (e) {
+      e.stopPropagation();
       selectNode(node);
     });
 
@@ -1102,13 +1322,14 @@
     var showSlider = ((node.type === "leaf") || hasChildren) && !isJoint;
     var isComplement = !!node.complement_of;
 
-    var showDualRange = showSlider && rangeMode &&
-      (node.type === "leaf" || (hasChildren && isPinned));
+    var showDualRange = showSlider && rangeMode;
 
     if (showDualRange) {
-      // Dual range slider for leaves and pinned branch nodes in range mode
+      // Dual range slider for all sliderable nodes in range mode.
+      // Unpinned branches initialise from the propagated computed range so
+      // the slider style stays consistent with leaves.
       var rng;
-      if (isComplement) {
+      if (isComplement || (hasChildren && !isPinned)) {
         rng = computeProbRange(node);
       } else {
         rng = probRanges[node.id] || { lo: prob, hi: prob };
@@ -1162,9 +1383,18 @@
             return;
           }
         } else {
+          var wasUnpinnedBranch = hasChildren && !pinnedNodes[node.id];
           probRanges[node.id] = { lo: lo, hi: hi };
           probabilities[node.id] = (lo + hi) / 2;
           if (hasChildren) overrideValues[node.id] = (lo + hi) / 2;
+          if (wasUnpinnedBranch) {
+            pinnedNodes[node.id] = true;
+            currentWorldview = null;
+            worldviewSelect.value = "custom";
+            renderTree();
+            updateInfoPanel();
+            return;
+          }
         }
         currentWorldview = null;
         worldviewSelect.value = "custom";
@@ -1287,7 +1517,13 @@
 
       var sliderVal = document.createElement("span");
       sliderVal.className = "tg-slider-val";
-      sliderVal.textContent = formatProb(prob);
+      if (rangeMode && hasChildren) {
+        var sliderRng = computeProbRange(node);
+        sliderVal.textContent = (sliderRng.lo === sliderRng.hi)
+          ? formatProb(prob) : formatRange(sliderRng);
+      } else {
+        sliderVal.textContent = formatProb(prob);
+      }
 
       // Two-state pin toggle: appears once a branch node has an override.
       // Active = user's override drives this node (top-down).
@@ -1495,8 +1731,13 @@
         " " + px + "," + midY +
         " " + px + "," + py
       );
+      // Stroke width scales with P(child | parent context) — the local
+      // conditional that "connects" the two nodes (sqrt so tiny links stay
+      // visible).
+      var flowP = computeProb(child);
+      var strokeW = 0.5 + Math.sqrt(Math.max(0, Math.min(1, flowP))) * 3.5;
       path.setAttribute("stroke", "rgba(255,255,255,0.18)");
-      path.setAttribute("stroke-width", "2");
+      path.setAttribute("stroke-width", strokeW.toFixed(2));
       path.setAttribute("fill", "none");
       treeSvg.appendChild(path);
 
@@ -1587,12 +1828,14 @@
 
     var probEl = wrapper.querySelector(":scope > .tg-card .tg-prob");
     if (probEl) {
-      if (rangeMode) {
-        var rng = computeProbRange(node);
-        probEl.textContent = (rng.lo === rng.hi) ? formatProb(prob) : formatRange(rng);
-      } else {
-        probEl.textContent = formatProb(prob);
-      }
+      probEl.textContent = formatHeadlineText(node);
+    }
+
+    var probMassEl = wrapper.querySelector(":scope > .tg-card .tg-prob-mass");
+    if (probMassEl) {
+      var caption = formatConditionalCaption(node);
+      probMassEl.textContent = caption;
+      probMassEl.style.display = caption ? "" : "none";
     }
 
     var barFill = wrapper.querySelector(":scope > .tg-card .tg-bar-fill");
@@ -1617,7 +1860,16 @@
       var slider = sliderWrap.querySelector(".tg-slider");
       var sliderVal = sliderWrap.querySelector(".tg-slider-val");
       if (slider) slider.value = Math.round(prob * 100);
-      if (sliderVal) sliderVal.textContent = formatProb(prob);
+      if (sliderVal) {
+        var nodeHasChildren = !!(node.children && node.children.length > 0);
+        if (rangeMode && nodeHasChildren) {
+          var rngUpd = computeProbRange(node);
+          sliderVal.textContent = (rngUpd.lo === rngUpd.hi)
+            ? formatProb(prob) : formatRange(rngUpd);
+        } else {
+          sliderVal.textContent = formatProb(prob);
+        }
+      }
     }
 
     // Update range sliders (for complement nodes whose source changed)
@@ -2229,6 +2481,28 @@
     } else {
       complementEl.style.display = "none";
     }
+
+    // If a named worldview with per-leaf reasoning is active, show its
+    // rationale for this node (or for the complement source if this is a
+    // complement leaf).
+    var reasoningEl = document.getElementById("info-worldview-reasoning");
+    var reasoningText = "";
+    var reasoningLeafId = node.complement_of || node.id;
+    if (currentWorldview) {
+      var tree = getTree();
+      var wv = tree.worldviews && tree.worldviews[currentWorldview];
+      if (wv && wv.reasoning && wv.reasoning[reasoningLeafId]) {
+        reasoningText = wv.reasoning[reasoningLeafId];
+        document.getElementById("info-reasoning-label").textContent =
+          (wv.name || currentWorldview) + (node.complement_of ? " rationale (for source leaf)" : " rationale");
+      }
+    }
+    if (reasoningText) {
+      reasoningEl.style.display = "block";
+      document.getElementById("info-reasoning-text").textContent = reasoningText;
+    } else {
+      reasoningEl.style.display = "none";
+    }
   }
 
   // --- Init ---
@@ -2257,20 +2531,31 @@
     })(getTree().tree);
   }
 
+  // Keep --sticky-offset in sync with the actual site-header + tree-controls
+  // height so sticky sidebars don't overlap them (the controls bar wraps to
+  // multiple lines at narrower widths, changing its height).
+  function updateStickyOffset() {
+    var header = document.querySelector(".site-header");
+    var controls = document.querySelector(".tree-controls");
+    var total = (header ? header.offsetHeight : 80)
+              + (controls ? controls.offsetHeight : 50)
+              + 8; // small breathing space
+    document.documentElement.style.setProperty("--sticky-offset", total + "px");
+  }
+  window.addEventListener("resize", updateStickyOffset);
+
   function init() {
     populateTreeSelect();
+    updateStickyOffset();
 
     // Try loading state from URL hash first
     if (!loadStateFromHash()) {
       initProbabilities();
       initVariables();
       populateWorldviewSelect();
-
-      var firstKey = Object.keys(getTree().worldviews)[0];
-      if (firstKey) {
-        worldviewSelect.value = firstKey;
-        applyWorldview(firstKey);
-      }
+      // Default to neutral 50% priors (Custom) instead of any preset.
+      worldviewSelect.value = "custom";
+      currentWorldview = null;
       renderVariables();
     }
 
@@ -2288,12 +2573,9 @@
     initProbabilities();
     initVariables();
     populateWorldviewSelect();
-
-    var firstKey = Object.keys(getTree().worldviews)[0];
-    if (firstKey) {
-      worldviewSelect.value = firstKey;
-      applyWorldview(firstKey);
-    }
+    // Switching trees lands you at neutral 50% priors.
+    worldviewSelect.value = "custom";
+    currentWorldview = null;
     renderVariables();
 
     populateCruxSelectors();
@@ -2350,15 +2632,12 @@
   resetBtn.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
-    var firstKey = Object.keys(getTree().worldviews)[0];
-    if (firstKey) {
-      worldviewSelect.value = firstKey;
-      applyWorldview(firstKey);
-    } else {
-      initProbabilities();
-      worldviewAuthor = "";
-      worldviewPerspective = "";
-    }
+    // Reset to neutral 50% priors (Custom), regardless of which presets exist.
+    initProbabilities();
+    worldviewAuthor = "";
+    worldviewPerspective = "";
+    currentWorldview = null;
+    worldviewSelect.value = "custom";
     syncWorldviewMetaInputs();
     updateWorldviewTitle();
     seedDefaultCollapsed();
@@ -2371,19 +2650,17 @@
     var name = prompt("Name for this worldview:");
     if (!name || !name.trim()) return;
     name = name.trim();
+
+    // 1) Save to localStorage so it shows up in the Worldview dropdown later.
     saveWorldview(name);
     populateWorldviewSelect();
     populateCruxSelectors();
     worldviewSelect.value = "saved:" + name;
     currentWorldview = "saved:" + name;
     updateWorldviewTitle();
-  });
 
-  exportBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    var name = prompt("Name for this worldview file:", "My worldview");
-    if (!name || !name.trim()) return;
-    name = name.trim();
+    // 2) Download a JSON copy so the user has a portable backup / can share
+    //    by file. (Merges the old "Export" button into Save.)
     var tree = getTree();
     var data = {
       name: name,
@@ -2415,6 +2692,27 @@
     a.download = name.replace(/[^a-zA-Z0-9_-]/g, "_") + ".json";
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  deleteWorldviewBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (!currentWorldview || currentWorldview.indexOf("saved:") !== 0) return;
+    var name = currentWorldview.slice(6);
+    if (!confirm("Delete saved worldview \"" + name + "\"? This cannot be undone.")) return;
+    deleteSavedWorldview(name);
+    populateWorldviewSelect();
+    populateCruxSelectors();
+    // Drop back to neutral 50% / Custom after deletion.
+    initProbabilities();
+    worldviewAuthor = "";
+    worldviewPerspective = "";
+    currentWorldview = null;
+    worldviewSelect.value = "custom";
+    syncWorldviewMetaInputs();
+    updateWorldviewTitle();
+    seedDefaultCollapsed();
+    renderTree();
+    updateInfoPanel();
   });
 
   importBtn.addEventListener("click", function (e) {
@@ -2533,11 +2831,47 @@
   // Generate a PNG blob of the tree-main area with a site footer appended.
   function generateShareImage() {
     var svgImg = null;
+
+    // On narrow viewports applyAutoFit shrinks the tree via CSS `zoom`, and
+    // tg-scroll clips overflow. html2canvas 1.4.1 mishandles `zoom` and
+    // captures the visible (clipped) bounding rect, so the output ends up
+    // cramped or truncated. Temporarily un-zoom and force containers to the
+    // natural tree width so capture happens at 100% scale, then restore.
+    var treeMainEl = document.querySelector(".tree-main");
+    var saved = {
+      zoom: treeGraph.style.zoom,
+      scrollOverflow: tgScroll.style.overflow,
+      scrollWidth: tgScroll.style.width,
+      mainWidth: treeMainEl ? treeMainEl.style.width : null
+    };
+    treeGraph.style.zoom = "";
+    var naturalW = treeGraph.scrollWidth;
+    tgScroll.style.overflow = "visible";
+    tgScroll.style.width = naturalW + "px";
+    if (treeMainEl) treeMainEl.style.width = naturalW + "px";
+
+    // Card positions may have shifted under the overridden widths (centered
+    // flex, etc.), so redraw connectors so they line up with where the cards
+    // actually are now. drawConnectors() calls applyAutoFit() at the end,
+    // which can sneak a tiny fractional zoom back on; clear it once more.
+    void treeGraph.offsetWidth;
+    drawConnectors();
+    treeGraph.style.zoom = "";
+
+    function restoreLayout() {
+      treeGraph.style.zoom = saved.zoom;
+      tgScroll.style.overflow = saved.scrollOverflow;
+      tgScroll.style.width = saved.scrollWidth;
+      if (treeMainEl) treeMainEl.style.width = saved.mainWidth;
+      // Redraw against the restored layout so the live page is correct again.
+      drawConnectors();
+    }
+
     return svgToImageDataUrl(treeSvg).then(function (result) {
       svgImg = result;
       return loadHtml2Canvas();
     }).then(function (h2c) {
-      var target = document.querySelector(".tree-main");
+      var target = treeMainEl || document.querySelector(".tree-main");
       var bg = getComputedStyle(document.body).backgroundColor;
       return h2c(target, {
         backgroundColor: bg,
@@ -2570,9 +2904,13 @@
         }
       });
     }).then(function (canvas) {
+      restoreLayout();
       return new Promise(function (resolve) {
         canvas.toBlob(function (blob) { resolve(blob); }, "image/png");
       });
+    }).catch(function (err) {
+      restoreLayout();
+      throw err;
     });
   }
 

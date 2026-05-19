@@ -14,7 +14,7 @@
 
   <!-- Main site styles + local overrides -->
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="tree.css?v=30">
+  <link rel="stylesheet" href="tree.css?v=66">
 </head>
 <body>
   <!-- Header (matches main site) -->
@@ -74,14 +74,17 @@
         <div class="control-group">
           <label class="control-label" for="worldview-select">Worldview</label>
           <select id="worldview-select" class="control-select"></select>
+          <span class="control-help" tabindex="0" data-tip="Named worldviews (e.g. 'Yudkowsky-like') are AI-generated estimates inspired by each person's public statements. They are NOT the actual views of these individuals — any inaccuracies are ours, not theirs.">?</span>
         </div>
         <div class="control-group">
           <label class="control-label" for="range-toggle">Ranges</label>
           <button type="button" id="range-toggle" class="btn btn-secondary btn-sm btn-toggle">Off</button>
+          <span class="control-help" tabindex="0" data-tip="Add an uncertainty range (±10pp by default) to each leaf, and see how the uncertainty propagates up through the tree.">?</span>
         </div>
         <div class="control-group" id="range-mode-group" style="display:none">
           <label class="control-label" for="range-mode-toggle">Propagation</label>
           <button type="button" id="range-mode-toggle" class="btn btn-secondary btn-sm btn-toggle">Worst case</button>
+          <span class="control-help" tabindex="0" data-tip="How leaf ranges combine upward. Worst case takes the extremes (all lows together, all highs together). Independent treats each leaf as a Beta distribution and samples them independently, giving 10th–90th percentile bounds.">?</span>
         </div>
       </div>
     </div>
@@ -106,10 +109,10 @@
       </div>
       <!-- Action buttons sidebar -->
       <aside class="actions-sidebar">
-        <button type="button" id="reset-btn" class="action-btn" title="Reset to default worldview">Reset</button>
-        <button type="button" id="save-worldview-btn" class="action-btn" title="Save current probabilities">Save</button>
-        <button type="button" id="export-btn" class="action-btn" title="Export worldview to file">Export</button>
-        <button type="button" id="import-btn" class="action-btn" title="Import worldview from file">Import</button>
+        <button type="button" id="reset-btn" class="action-btn" title="Reset all probabilities to 50%">Reset</button>
+        <button type="button" id="save-worldview-btn" class="action-btn" title="Save current probabilities locally and download a JSON copy">Save</button>
+        <button type="button" id="delete-worldview-btn" class="action-btn action-btn-danger" title="Delete the currently-selected saved worldview" style="display:none">Delete</button>
+        <button type="button" id="import-btn" class="action-btn" title="Import worldview from file (also saves it locally)">Import</button>
         <input type="file" id="import-file" accept=".json" style="display:none">
         <button type="button" id="share-btn" class="action-btn" title="Share this worldview">Share</button>
       </aside>
@@ -132,6 +135,10 @@
           <div id="info-complement" class="info-complement" style="display: none;">
             <span class="info-complement-label">Complement of:</span>
             <span id="info-complement-target"></span>
+          </div>
+          <div id="info-worldview-reasoning" class="info-worldview-reasoning" style="display: none;">
+            <span class="info-section-label" id="info-reasoning-label">Reasoning</span>
+            <p id="info-reasoning-text"></p>
           </div>
         </div>
       </aside>
@@ -200,8 +207,8 @@
     </div>
   </footer>
 
-  <script src="data.js?v=30"></script>
-  <script src="tree.js?v=30"></script>
+  <script src="data.js?v=66"></script>
+  <script src="tree.js?v=66"></script>
   <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="../js/main.js"></script>
 </body>

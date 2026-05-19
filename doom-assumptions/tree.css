@@ -45,6 +45,69 @@
   gap: var(--space-sm);
 }
 
+/* Small "?" help icon next to control toggles. Shows a CSS tooltip on hover/focus. */
+.control-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: help;
+  position: relative;
+  user-select: none;
+  outline: none;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+
+.control-help:hover,
+.control-help:focus {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+.control-help:hover::after,
+.control-help:focus::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  text-align: left;
+  white-space: normal;
+  width: 260px;
+  max-width: calc(100vw - 32px);
+  line-height: 1.45;
+  z-index: 200;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.control-help:hover::before,
+.control-help:focus::before {
+  content: "";
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--border-subtle);
+  z-index: 201;
+}
+
 .control-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -84,7 +147,7 @@
   padding: var(--space-md) var(--space-xs);
   flex-shrink: 0;
   position: sticky;
-  top: 120px;
+  top: var(--sticky-offset, 200px);
   align-self: flex-start;
   width: 60px;
 }
@@ -110,6 +173,16 @@
   background: var(--bg-secondary);
   border-color: var(--accent-safety);
   color: var(--text-primary);
+}
+
+.action-btn-danger {
+  color: #e76e7a;
+  border-color: rgba(231, 110, 122, 0.35);
+}
+.action-btn-danger:hover {
+  background: rgba(231, 110, 122, 0.12);
+  border-color: #e76e7a;
+  color: #ff8189;
 }
 
 /* Tree layout with sidebars */
@@ -140,7 +213,7 @@
   gap: var(--space-md);
   border-right: 1px solid var(--border-subtle);
   position: sticky;
-  top: 120px;
+  top: var(--sticky-offset, 200px);
   align-self: flex-start;
 }
 
@@ -405,29 +478,13 @@
   padding: var(--space-lg) var(--space-lg) var(--space-xl);
   display: flex;
   justify-content: center;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(245, 158, 11, 0.3) transparent;
+  /* Hide scrollbars visually — auto-fit keeps the tree fitting; if it ever
+     overflows (very narrow viewport), wheel/touch scroll still works. */
+  scrollbar-width: none;
 }
 
 .tg-scroll::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-.tg-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.tg-scroll::-webkit-scrollbar-thumb {
-  background: rgba(245, 158, 11, 0.25);
-  border-radius: 4px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-}
-.tg-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 158, 11, 0.45);
-  background-clip: padding-box;
-}
-.tg-scroll::-webkit-scrollbar-corner {
-  background: transparent;
+  display: none;
 }
 
 /* ---------- Tree Graph ---------- */
@@ -651,6 +708,27 @@
   color: var(--text-secondary);
 }
 
+/* Stacked column for the conditional + unconditional probabilities. */
+.tg-prob-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
+.tg-prob-mass {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+  opacity: 0.75;
+  line-height: 1.25;
+  text-align: right;
+  word-break: break-word;
+}
+
 /* Collapse toggle */
 .tg-collapse {
   width: 18px;
@@ -846,9 +924,29 @@
 /* ---------- Dual Range Slider ---------- */
 .tg-range-wrap {
   margin-top: 0.5rem;
+  margin-bottom: 1rem;
   width: 190px;
   position: relative;
   height: 20px;
+}
+
+/* Pin toggle button in range mode: sit at the left edge of the wrap with
+   the slider area pushed right so the toggle doesn't overlap the thumbs. */
+.tg-range-toggle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.tg-range-wrap:has(.tg-range-toggle) .tg-range-track {
+  left: 24px;
+}
+
+.tg-range-wrap:has(.tg-range-toggle) input[type="range"] {
+  left: 24px;
+  width: calc(100% - 24px);
 }
 
 .tg-tree.formal .tg-range-wrap {
@@ -1074,6 +1172,32 @@
   margin-top: 2px;
 }
 
+.info-worldview-reasoning {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-universe);
+}
+
+.info-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+#info-reasoning-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  white-space: pre-line;
+}
+
 /* ---------- Analysis Panel ---------- */
 .analysis-panel {
   max-width: var(--content-width);
@@ -1296,6 +1420,10 @@
     width: 150px;
   }
 
+  .tg-range-wrap {
+    width: 150px;
+  }
+
   .tg-label {
     font-size: 0.75rem;
   }
@@ -1337,6 +1465,7 @@
     flex-wrap: wrap;
     border-bottom: 1px solid var(--border-subtle);
     border-right: none;
+    position: static;
   }
 
   .sensitivity-name {
