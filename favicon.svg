@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#0a0a0f"/>
+  <!-- L, U, S in a triangle reflecting Life / Universe / Safety -->
+  <text x="9"  y="14" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif"
+        font-size="11" font-weight="600" fill="#4ecdc4">L</text>
+  <text x="23" y="14" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif"
+        font-size="11" font-weight="600" fill="#a855f7">U</text>
+  <text x="16" y="27" text-anchor="middle"
+        font-family="Playfair Display, Georgia, serif"
+        font-size="11" font-weight="600" fill="#f59e0b">S</text>
+</svg>

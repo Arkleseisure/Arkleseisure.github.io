@@ -151,6 +151,49 @@
     return store[node.id] != null ? store[node.id] : computeProb(node);
   }
 
+  // --- World-only flow (for connector thickness) ---
+  //
+  // P(reaching this node's world configuration), ignoring all P(D|...) factors.
+  // OR-children inherit the parent's world; their AND siblings split the
+  // parent's world by the marginal world-defining leaf inside each AND.
+  // AND-children share their parent AND's world (no refinement at this step).
+  function computeWorldFlowMap() {
+    var map = {};
+    function walk(node, parentFlow, parent) {
+      var flow;
+      if (parent == null) {
+        flow = 1;
+      } else if (parent.type === "or") {
+        // Each OR child is a sub-world refinement. For an AND child, the
+        // world marginal is the AND's marginal (world-defining) leaf value.
+        if (node.type === "and") {
+          var marginal = null;
+          for (var i = 0; i < node.children.length; i++) {
+            if (isMarginalSibling(node.children[i], node, i)) {
+              marginal = node.children[i];
+              break;
+            }
+          }
+          flow = parentFlow * (marginal ? computeProb(marginal) : 1);
+        } else {
+          // OR → leaf (rare in our trees): treat leaf value as the world refinement.
+          flow = parentFlow * computeProb(node);
+        }
+      } else {
+        // parent.type === "and" — no world refinement, child stays in same world.
+        flow = parentFlow;
+      }
+      map[node.id] = flow;
+      if (node.children) {
+        for (var k = 0; k < node.children.length; k++) {
+          walk(node.children[k], flow, node);
+        }
+      }
+    }
+    walk(getTree().tree, 1, null);
+    return map;
+  }
+
   function computeProb(node) {
     // If this node is pinned by the user, return the pinned value
     if (pinnedNodes[node.id] && probabilities[node.id] != null) {
@@ -992,17 +1035,36 @@
     pinnedNodes = {};
 
     overrideValues = {};
+    // Always reset probRanges — otherwise stale ranges from the previously
+    // active worldview leak in when this saved worldview has none.
+    probRanges = {};
     Object.keys(entry.probabilities).forEach(function (id) {
       probabilities[id] = entry.probabilities[id];
     });
     if (entry.ranges) {
-      probRanges = {};
       Object.keys(entry.ranges).forEach(function (id) {
         probRanges[id] = entry.ranges[id];
       });
     }
     worldviewAuthor = entry.author || "";
     worldviewPerspective = entry.perspective || "";
+  }
+
+  // After loading any worldview, fill in default ±10pp ranges for any leaf
+  // that doesn't have an explicit range supplied (only matters if range
+  // mode is currently on).
+  function ensureLeafRanges() {
+    if (!rangeMode) return;
+    var leaves = getLeaves(getTree().tree);
+    leaves.forEach(function (leaf) {
+      if (leaf.complement_of) return;
+      if (probRanges[leaf.id]) return;
+      var p = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
+      probRanges[leaf.id] = {
+        lo: Math.max(0, p - 0.1),
+        hi: Math.min(1, p + 0.1)
+      };
+    });
   }
 
   function encodeStateToHash() {
@@ -1195,6 +1257,63 @@
   //   - "double": both children are leaves, both shown inline in one card
   //   - "subtree": one leaf (inline) + one subtree (absorbed; its children
   //     surface as the joint's visual children below the card)
+  // Build the ▲/▼ pin-toggle button bound to `node`. Reused by both the
+  // initial render in buildNodeEl and the in-place auto-pin path so a slider
+  // drag doesn't require a full DOM rebuild to surface the toggle.
+  function createPinToggle(node, isRangeContext) {
+    var isPinned = !!pinnedNodes[node.id];
+    var override = overrideValues[node.id];
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tg-pin-toggle" + (isRangeContext ? " tg-range-toggle" : "") + (isPinned ? " active" : "");
+    btn.textContent = isPinned ? "▲" : "▼";
+    if (isRangeContext) {
+      btn.title = isPinned
+        ? "Your override is driving this node. Click to use children's computed value."
+        : "Children's computed value is driving this node. Click to restore your override.";
+    } else {
+      btn.title = isPinned
+        ? "Your override (" + formatProb(override) + ") is driving this node. Click to switch to children's computed value."
+        : "Children's computed value is driving this node. Click to restore your override (" + formatProb(override) + ").";
+    }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var nowPinned;
+      if (pinnedNodes[node.id]) {
+        delete pinnedNodes[node.id];
+        delete probRanges[node.id];
+        nowPinned = false;
+      } else {
+        pinnedNodes[node.id] = true;
+        probabilities[node.id] = overrideValues[node.id];
+        if (rangeMode) {
+          probRanges[node.id] = { lo: overrideValues[node.id], hi: overrideValues[node.id] };
+        }
+        nowPinned = true;
+      }
+      currentWorldview = null;
+      worldviewSelect.value = "custom";
+      // In-place update — toggle visual state on this button and its card
+      // without rebuilding the DOM.
+      btn.classList.toggle("active", nowPinned);
+      btn.textContent = nowPinned ? "▲" : "▼";
+      btn.title = isRangeContext
+        ? (nowPinned
+            ? "Your override is driving this node. Click to use children's computed value."
+            : "Children's computed value is driving this node. Click to restore your override.")
+        : (nowPinned
+            ? "Your override (" + formatProb(overrideValues[node.id]) + ") is driving this node. Click to switch to children's computed value."
+            : "Children's computed value is driving this node. Click to restore your override (" + formatProb(overrideValues[node.id]) + ").");
+      var card = document.querySelector('[data-id="' + node.id + '"] > .tg-card');
+      if (card) card.classList.toggle("pinned", nowPinned);
+      updateAllProbabilities();
+      updateInfoPanel();
+      renderSensitivity();
+      renderUncertaintyReduction();
+    });
+    return btn;
+  }
+
   function isJointAnd(node) {
     if (node.type !== "and") return null;
     if (!node.children || node.children.length !== 2) return null;
@@ -1232,14 +1351,10 @@
     if (node.id === selectedNodeId) card.classList.add("selected");
     if (isPinned) card.classList.add("pinned");
 
-    // Card header: type + prob + collapse toggle
+    // Card header: prob + collapse toggle. (OR/AND/leaf type badge removed
+    // — structure is clear from layout and node names.)
     var header = document.createElement("div");
     header.className = "tg-card-header";
-
-    var typeBadge = document.createElement("span");
-    typeBadge.className = "tg-type " + node.type;
-    typeBadge.textContent = node.type;
-    header.appendChild(typeBadge);
 
     var probColumn = document.createElement("span");
     probColumn.className = "tg-prob-column";
@@ -1268,7 +1383,11 @@
 
     var collapseBtn = document.createElement("span");
     collapseBtn.className = "tg-collapse";
-    if (!hasChildren) collapseBtn.classList.add("hidden-toggle");
+    // Hide collapse for leaves (no children) and for double-joint ANDs
+    // (children are baked into the card; nothing below to collapse).
+    var nothingToCollapse = !hasChildren ||
+      (jointInfo && jointInfo.kind === "double");
+    if (nothingToCollapse) collapseBtn.classList.add("hidden-toggle");
     collapseBtn.textContent = collapseTargetCollapsed ? "+" : "\u2212";
     collapseBtn.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -1319,7 +1438,10 @@
 
     // Slider — available on ALL nodes (#1), not just leaves.
     // Joint AND nodes don't get an external slider; their leaves' sliders sit inside the card.
-    var showSlider = ((node.type === "leaf") || hasChildren) && !isJoint;
+    // No slider on the root — overriding the root is conceptually meaningless
+    // (just discards the whole tree below).
+    var isRoot = node.id === getTree().tree.id;
+    var showSlider = ((node.type === "leaf") || hasChildren) && !isJoint && !isRoot;
     var isComplement = !!node.complement_of;
 
     var showDualRange = showSlider && rangeMode;
@@ -1388,19 +1510,21 @@
           probabilities[node.id] = (lo + hi) / 2;
           if (hasChildren) overrideValues[node.id] = (lo + hi) / 2;
           if (wasUnpinnedBranch) {
+            // In-place pin — attach the ▲ toggle and .pinned class without
+            // tearing down the slider, so the drag continues smoothly.
             pinnedNodes[node.id] = true;
-            currentWorldview = null;
-            worldviewSelect.value = "custom";
-            renderTree();
-            updateInfoPanel();
-            return;
+            card.classList.add("pinned");
+            if (rangeWrap && !rangeWrap.querySelector(".tg-pin-toggle")) {
+              rangeWrap.appendChild(createPinToggle(node, true));
+            }
           }
         }
         currentWorldview = null;
         worldviewSelect.value = "custom";
         fill.style.left = (lo * 100) + "%";
         fill.style.width = ((hi - lo) * 100) + "%";
-        rangeVal.textContent = formatProb(lo) + " – " + formatProb(hi);
+        if (rvLo && document.activeElement !== rvLo) rvLo.value = (lo * 100).toFixed(1);
+        if (rvHi && document.activeElement !== rvHi) rvHi.value = (hi * 100).toFixed(1);
         updateAllProbabilities();
         updateInfoPanel();
         renderSensitivity();
@@ -1444,9 +1568,35 @@
       rangeWrap.appendChild(loInput);
       rangeWrap.appendChild(hiInput);
 
+      // Editable lo/hi number inputs (with an em-dash separator) — same
+      // visual position as the old "X% – Y%" text, but typeable.
       var rangeVal = document.createElement("span");
       rangeVal.className = "tg-range-val";
-      rangeVal.textContent = formatProb(rng.lo) + " – " + formatProb(rng.hi);
+      var rvLo = document.createElement("input");
+      rvLo.type = "number"; rvLo.min = "0"; rvLo.max = "100"; rvLo.step = "0.1";
+      rvLo.className = "tg-range-val-input";
+      rvLo.value = (rng.lo * 100).toFixed(1);
+      var rvDash = document.createElement("span");
+      rvDash.textContent = " – ";
+      var rvHi = document.createElement("input");
+      rvHi.type = "number"; rvHi.min = "0"; rvHi.max = "100"; rvHi.step = "0.1";
+      rvHi.className = "tg-range-val-input";
+      rvHi.value = (rng.hi * 100).toFixed(1);
+      rangeVal.appendChild(rvLo);
+      rangeVal.appendChild(rvDash);
+      rangeVal.appendChild(rvHi);
+      function syncFromRangeVal() {
+        var loV = parseFloat(rvLo.value);
+        var hiV = parseFloat(rvHi.value);
+        if (isNaN(loV) || isNaN(hiV)) return;
+        loV = Math.max(0, Math.min(100, loV));
+        hiV = Math.max(0, Math.min(100, hiV));
+        loInput.value = Math.round(loV);
+        hiInput.value = Math.round(hiV);
+        onRangeInput();
+      }
+      rvLo.addEventListener("input", syncFromRangeVal);
+      rvHi.addEventListener("input", syncFromRangeVal);
       rangeWrap.appendChild(rangeVal);
 
       wrapper.appendChild(rangeWrap);
@@ -1499,31 +1649,72 @@
         worldviewSelect.value = "custom";
 
         if (hasChildren && !pinnedNodes[node.id]) {
-          // First move on a branch node — pin it and re-render to show toggle
+          // First move on a branch node — pin in-place so the drag isn't
+          // interrupted by a full DOM rebuild. Attach the ▲ toggle button
+          // and mark the card pinned; updateAllProbabilities() handles
+          // the propagated value updates.
           pinnedNodes[node.id] = true;
           if (rangeMode) {
             probRanges[node.id] = { lo: newVal, hi: newVal };
           }
-          renderTree();
-          updateInfoPanel();
-          return;
+          card.classList.add("pinned");
+          if (sliderWrap && !sliderWrap.querySelector(".tg-pin-toggle")) {
+            sliderWrap.appendChild(createPinToggle(node, false));
+          }
         }
 
         updateAllProbabilities();
         updateInfoPanel();
         renderSensitivity();
-    renderUncertaintyReduction();
+        renderUncertaintyReduction();
       });
 
-      var sliderVal = document.createElement("span");
-      sliderVal.className = "tg-slider-val";
-      if (rangeMode && hasChildren) {
-        var sliderRng = computeProbRange(node);
-        sliderVal.textContent = (sliderRng.lo === sliderRng.hi)
-          ? formatProb(prob) : formatRange(sliderRng);
-      } else {
-        sliderVal.textContent = formatProb(prob);
-      }
+      // Editable number input — lets users type a precise probability
+      // instead of fiddling with the slider. Two-way bound: typing updates
+      // the slider, dragging updates the input.
+      var sliderVal = document.createElement("input");
+      sliderVal.type = "number";
+      sliderVal.min = "0";
+      sliderVal.max = "100";
+      sliderVal.step = "0.1";
+      sliderVal.className = "tg-slider-val tg-slider-input";
+      sliderVal.value = (prob * 100).toFixed(1);
+      sliderVal.addEventListener("input", function () {
+        var raw = parseFloat(sliderVal.value);
+        if (isNaN(raw)) return;
+        var clamped = Math.max(0, Math.min(100, raw));
+        var v = clamped / 100;
+        slider.value = Math.round(clamped);
+        if (isComplement) {
+          var sourceId = node.complement_of;
+          probabilities[sourceId] = 1 - v;
+          currentWorldview = null;
+          worldviewSelect.value = "custom";
+          updateAllProbabilities();
+          updateInfoPanel();
+          renderSensitivity();
+          renderUncertaintyReduction();
+          return;
+        }
+        probabilities[node.id] = v;
+        if (hasChildren) overrideValues[node.id] = v;
+        currentWorldview = null;
+        worldviewSelect.value = "custom";
+        if (hasChildren && !pinnedNodes[node.id]) {
+          pinnedNodes[node.id] = true;
+          if (rangeMode) {
+            probRanges[node.id] = { lo: v, hi: v };
+          }
+          card.classList.add("pinned");
+          if (sliderWrap && !sliderWrap.querySelector(".tg-pin-toggle")) {
+            sliderWrap.appendChild(createPinToggle(node, false));
+          }
+        }
+        updateAllProbabilities();
+        updateInfoPanel();
+        renderSensitivity();
+        renderUncertaintyReduction();
+      });
 
       // Two-state pin toggle: appears once a branch node has an override.
       // Active = user's override drives this node (top-down).
@@ -1643,11 +1834,15 @@
     treeSvg.setAttribute("height", h);
     treeSvg.innerHTML = "";
 
+    // World-flow map drives connector thickness.
+    _currentWorldFlow = computeWorldFlowMap();
+
     drawNodeConnectors(getTree().tree);
     drawComplementLinks();
 
     applyAutoFit(w);
   }
+  var _currentWorldFlow = {};
 
   function equalizeRowHeights() {
     // Within each .tg-children row, force sibling cards to the max card height
@@ -1731,14 +1926,26 @@
         " " + px + "," + midY +
         " " + px + "," + py
       );
-      // Stroke width scales with P(child | parent context) — the local
-      // conditional that "connects" the two nodes (sqrt so tiny links stay
-      // visible).
-      var flowP = computeProb(child);
+      // Stroke width scales with world-only flow — the unconditional
+      // probability of being in this child's world configuration, ignoring
+      // all P(D|...) factors (sqrt so tiny flows stay visible).
+      var flowP = _currentWorldFlow[child.id];
+      if (flowP == null) flowP = computeProb(child);
       var strokeW = 0.5 + Math.sqrt(Math.max(0, Math.min(1, flowP))) * 3.5;
       path.setAttribute("stroke", "rgba(255,255,255,0.18)");
       path.setAttribute("stroke-width", strokeW.toFixed(2));
       path.setAttribute("fill", "none");
+      // If the effective parent is pinned, the children's contributions
+      // get discarded in favour of the override — dash just the connectors
+      // going into the pinned node. For joint-subtree ANDs, the absorbed
+      // subtree (an OR) is the structural parent of these lifted children,
+      // so we check its pin state rather than the joint AND card's.
+      var effectivePinnedId = (jointInfo && jointInfo.kind === "subtree")
+        ? jointInfo.subtree.id : node.id;
+      if (pinnedNodes[effectivePinnedId]) {
+        path.setAttribute("stroke-dasharray", "6,4");
+        path.setAttribute("stroke", "rgba(255,255,255,0.12)");
+      }
       treeSvg.appendChild(path);
 
       // Small arrow halfway along the curve, oriented along the tangent,
@@ -1861,13 +2068,10 @@
       var sliderVal = sliderWrap.querySelector(".tg-slider-val");
       if (slider) slider.value = Math.round(prob * 100);
       if (sliderVal) {
-        var nodeHasChildren = !!(node.children && node.children.length > 0);
-        if (rangeMode && nodeHasChildren) {
-          var rngUpd = computeProbRange(node);
-          sliderVal.textContent = (rngUpd.lo === rngUpd.hi)
-            ? formatProb(prob) : formatRange(rngUpd);
-        } else {
-          sliderVal.textContent = formatProb(prob);
+        // sliderVal is now an <input type="number"> so we update .value
+        // (and only when not focused so we don't fight a user mid-typing).
+        if (document.activeElement !== sliderVal) {
+          sliderVal.value = (prob * 100).toFixed(1);
         }
       }
     }
@@ -1886,7 +2090,23 @@
         rangeFill.style.left = (rng.lo * 100) + "%";
         rangeFill.style.width = ((rng.hi - rng.lo) * 100) + "%";
       }
-      if (rangeVal) rangeVal.textContent = formatProb(rng.lo) + " – " + formatProb(rng.hi);
+      // Range-val now contains two number inputs flanking an em-dash —
+      // update each input's .value unless it's currently focused (don't
+      // fight a typing user).
+      if (rangeVal) {
+        var rvInputs = rangeVal.querySelectorAll("input.tg-range-val-input");
+        if (rvInputs.length === 2) {
+          if (document.activeElement !== rvInputs[0]) {
+            rvInputs[0].value = (rng.lo * 100).toFixed(1);
+          }
+          if (document.activeElement !== rvInputs[1]) {
+            rvInputs[1].value = (rng.hi * 100).toFixed(1);
+          }
+        } else {
+          // Fallback for any legacy span-based range-val (shouldn't happen).
+          rangeVal.textContent = formatProb(rng.lo) + " – " + formatProb(rng.hi);
+        }
+      }
     }
 
     if (node.children) {
@@ -1924,10 +2144,17 @@
       probabilities[leaf.id] = original;
 
       var derivative = (rootHi - rootLo) / delta;
-      results.push({ id: leaf.id, name: leaf.name, derivative: derivative, absDerivative: Math.abs(derivative) });
+      results.push({
+        id: leaf.id,
+        name: leaf.name,
+        derivative: derivative,
+        absDerivative: Math.abs(derivative)
+      });
     });
 
-    results.sort(function (a, b) { return b.absDerivative - a.absDerivative; });
+    // Signed sort: biggest doom-increasing leaves at top, biggest
+    // doom-decreasing at bottom.
+    results.sort(function (a, b) { return b.derivative - a.derivative; });
     return results;
   }
 
@@ -1939,7 +2166,11 @@
     var results = computeSensitivity();
     if (results.length === 0) return;
 
-    var maxDeriv = results[0].absDerivative || 1;
+    var maxDeriv = 0;
+    results.forEach(function (r) {
+      if (r.absDerivative > maxDeriv) maxDeriv = r.absDerivative;
+    });
+    if (maxDeriv === 0) maxDeriv = 1;
 
     results.forEach(function (item) {
       var row = document.createElement("div");
@@ -1954,20 +2185,29 @@
       name.title = name.textContent;
       row.appendChild(name);
 
+      // Centre-anchored signed bar (same treatment as crux). Positive →
+      // right (raising leaf raises P(D)); negative → left (raising leaf
+      // lowers P(D)).
       var track = document.createElement("div");
-      track.className = "sensitivity-bar-track";
+      track.className = "sensitivity-bar-track crux-bar-track-signed";
       var fill = document.createElement("div");
       fill.className = "sensitivity-bar-fill";
-      var pct = maxDeriv > 0 ? (item.absDerivative / maxDeriv) * 100 : 0;
-      fill.style.width = pct + "%";
-      fill.style.backgroundColor = sensitivityColor(item.absDerivative, maxDeriv);
+      var halfPct = (Math.abs(item.derivative) / maxDeriv) * 50;
+      fill.style.width = halfPct + "%";
+      if (item.derivative >= 0) {
+        fill.style.left = "50%";
+        fill.style.backgroundColor = sensitivityColor(item.absDerivative, maxDeriv);
+      } else {
+        fill.style.left = (50 - halfPct) + "%";
+        fill.style.backgroundColor = "#e76e7a"; // same anti-direction red used by crux
+      }
       track.appendChild(fill);
       row.appendChild(track);
 
       var val = document.createElement("span");
       val.className = "sensitivity-value";
-      val.textContent = item.absDerivative.toFixed(2);
-      val.title = "dP(root)/dP(leaf): 1pp change in this leaf changes the root by " + (item.absDerivative * 1).toFixed(2) + "pp";
+      val.textContent = (item.derivative >= 0 ? "+" : "") + item.derivative.toFixed(2);
+      val.title = "dP(root)/dP(leaf): 1pp change in this leaf changes the root by " + item.derivative.toFixed(2) + "pp";
       row.appendChild(val);
 
       row.addEventListener("click", function () {
@@ -2064,6 +2304,13 @@
         });
       });
     }
+
+    // Structurally uncertainty reduction is non-negative — pinning a leaf
+    // can only narrow (or leave unchanged) the root's range. Tiny negatives
+    // are Monte Carlo noise; clamp them to 0.
+    results.forEach(function (r) {
+      if (r.reduction < 0) r.reduction = 0;
+    });
 
     results.sort(function (a, b) { return b.reduction - a.reduction; });
     return results;
@@ -2608,6 +2855,7 @@
 
   worldviewSelect.addEventListener("change", function () {
     applyWorldview(worldviewSelect.value);
+    ensureLeafRanges();
     syncWorldviewMetaInputs();
     updateWorldviewTitle();
     renderTree();
@@ -2652,6 +2900,7 @@
   resetBtn.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
+    if (!confirm("Reset all probabilities to 50% and clear the current worldview? This cannot be undone.")) return;
     // Reset to neutral 50% priors (Custom), regardless of which presets exist.
     initProbabilities();
     worldviewAuthor = "";

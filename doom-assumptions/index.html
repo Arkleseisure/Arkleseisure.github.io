@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta property="og:title" content="Doom Assumptions — Interactive Map of AI Risk Arguments">
+  <meta property="og:description" content="An interactive assumption tree for AI x-risk. Set your own probabilities, compare named worldviews (Yudkowsky-like, LeCun-like, etc.), and find cruxes automatically.">
+  <meta property="og:url" content="https://lifeuniversesafety.com/doom-assumptions/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Life, The Universe & That Safety Thing">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Doom Assumptions — Interactive Map of AI Risk Arguments">
+  <meta name="twitter:description" content="An interactive assumption tree for AI x-risk. Set your own probabilities, compare named worldviews (Yudkowsky-like, LeCun-like, etc.), and find cruxes automatically.">
   <meta name="description" content="Interactive assumption tree viewer for AI risk arguments. Explore how different worldviews assign probabilities to AI doom scenarios.">
 
   <title>Doom Assumptions — Life, The Universe & That Safety Thing</title>
@@ -14,7 +23,7 @@
 
   <!-- Main site styles + local overrides -->
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="tree.css?v=70">
+  <link rel="stylesheet" href="tree.css?v=81">
 </head>
 <body>
   <!-- Header (matches main site) -->
@@ -75,6 +84,7 @@
           <label class="control-label" for="worldview-select">Worldview</label>
           <select id="worldview-select" class="control-select"></select>
           <span class="control-help" tabindex="0" data-tip="Named worldviews (e.g. 'Yudkowsky-like') are AI-generated estimates inspired by each person's public statements. They are NOT the actual views of these individuals — any inaccuracies are ours, not theirs.">?</span>
+          <button type="button" id="save-worldview-btn" class="btn btn-secondary btn-sm" title="Save current probabilities locally and download a JSON copy">Save</button>
         </div>
         <div class="control-group">
           <label class="control-label" for="range-toggle">Ranges</label>
@@ -107,20 +117,8 @@
           </div>
         </div>
       </div>
-      <!-- Action buttons sidebar -->
-      <aside class="actions-sidebar">
-        <button type="button" id="reset-btn" class="action-btn" title="Reset all probabilities to 50%">Reset</button>
-        <button type="button" id="save-worldview-btn" class="action-btn" title="Save current probabilities locally and download a JSON copy">Save</button>
-        <button type="button" id="delete-worldview-btn" class="action-btn action-btn-danger" title="Delete the currently-selected saved worldview" style="display:none">Delete</button>
-        <button type="button" id="import-btn" class="action-btn" title="Import worldview from file (also saves it locally)">Import</button>
-        <input type="file" id="import-file" accept=".json" style="display:none">
-        <button type="button" id="share-btn" class="action-btn" title="Share this worldview">Share</button>
-      </aside>
-    </div>
-
-    <!-- Info Panel (appears below tree when a node is selected) -->
-    <div class="container">
-      <aside class="info-panel" id="info-panel">
+      <!-- Info / Description sidebar (right) — selected node's details -->
+      <aside class="info-panel info-sidebar" id="info-panel">
         <div class="info-panel-empty">
           <p>Click a node to see its details.</p>
         </div>
@@ -142,7 +140,19 @@
           </div>
         </div>
       </aside>
+      <!-- Action buttons sidebar -->
+      <aside class="actions-sidebar">
+        <button type="button" id="import-btn" class="action-btn" title="Import worldview from file (also saves it locally)">Import</button>
+        <input type="file" id="import-file" accept=".json" style="display:none">
+        <button type="button" id="share-btn" class="action-btn" title="Share this worldview">Share</button>
+        <button type="button" id="reset-btn" class="action-btn action-btn-danger" title="Reset all probabilities to 50%">Reset</button>
+        <button type="button" id="delete-worldview-btn" class="action-btn action-btn-danger" title="Delete the currently-selected saved worldview" style="display:none">Delete</button>
+      </aside>
+    </div>
 
+    <!-- Analysis panels — info/description has moved into the right
+         sidebar above; sensitivity / uncertainty / crux remain below. -->
+    <div class="container">
       <aside class="analysis-panel" id="analysis-panel">
         <h3 class="analysis-title">Sensitivity Analysis</h3>
         <p class="analysis-subtitle">How much the final probability changes per 1pp change in each assumption (derivative)</p>
@@ -171,6 +181,18 @@
         </div>
         <div class="crux-summary" id="crux-summary"></div>
         <div id="crux-chart" class="sensitivity-chart"></div>
+      </aside>
+
+      <aside class="project-acknowledgements">
+        <h3>About this project</h3>
+        <p>
+          Doom Assumptions was built as part of the
+          <a href="https://www.aisafety.camp" target="_blank" rel="noopener">AI Safety Camp</a>
+          2026 cohort. Sean Herrington led the project; the rest of the team
+          contributed equally and are listed in no particular order:
+          Paul Hindoian, Mikaela Cankosyan, David Bravo, Kevin Caldwell,
+          Josh Tuffy, Christopher Davis, Khai Tran, and Maryam Hampaei.
+        </p>
       </aside>
     </div>
   </main>
@@ -202,13 +224,13 @@
           <a href="../about.html">About</a>
           <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <p>&copy; 2024 Sean Herrington. All rights reserved.</p>
+        <p>&copy; 2024-2026 Sean Herrington. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <script src="data.js?v=70"></script>
-  <script src="tree.js?v=70"></script>
+  <script src="data.js?v=81"></script>
+  <script src="tree.js?v=81"></script>
   <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="../js/main.js"></script>
 </body>

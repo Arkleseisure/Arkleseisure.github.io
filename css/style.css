@@ -498,8 +498,11 @@ a {
 /* ---------- Card Grid ---------- */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* auto-fill (not auto-fit) so a lone card on its own row keeps the column
+     width of its siblings instead of stretching to fill the row. */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-lg);
+  align-items: stretch;
 }
 
 .card {
@@ -510,6 +513,11 @@ a {
   transition: all var(--transition-medium);
   position: relative;
   overflow: hidden;
+  /* Stretch to the full height of the grid row so sibling cards in the
+     same row line up visually even when their text wraps differently. */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .card::before {
@@ -608,6 +616,61 @@ a {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+/* Featured project block (homepage + safety landing) */
+.featured-project {
+  display: block;
+  background: linear-gradient(135deg,
+    rgba(245, 158, 11, 0.08) 0%,
+    rgba(168, 85, 247, 0.05) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 12px;
+  padding: var(--space-xl) var(--space-xl);
+  margin-bottom: var(--space-xl);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 200ms ease, border-color 200ms ease,
+              box-shadow 200ms ease;
+}
+
+.featured-project:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-safety);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+}
+
+.featured-project-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-safety);
+  margin-bottom: var(--space-sm);
+}
+
+.featured-project h2 {
+  margin: 0 0 var(--space-sm);
+  color: var(--text-primary);
+}
+
+.featured-project p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  max-width: 60ch;
+}
+
+.featured-project-cta {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent-safety);
+  font-weight: 500;
+}
+
+.featured-project:hover .featured-project-cta {
+  color: var(--text-primary);
 }
 
 /* Course sequence indicator */

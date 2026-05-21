@@ -86,7 +86,6 @@ const TREES = [
                               name: "D | AI has internal model of D",
                               description: "Among worlds with a single dominant AI that has an internal model of D, your credence that D occurs within T. Split below by whether the AI expects D.",
                               type: "or",
-                              defaultCollapsed: true,
                               children: [
                                 {
                                   id: "t-expects-path",
@@ -399,15 +398,15 @@ const TREES = [
         perspective: "inside",
         description: "Distributes risk across both single-agent misalignment and structural/multipolar failure modes, with total P(doom) ~43% driven by many worlds rather than one dominant scenario.",
         probabilities: {
-          "t-ai-inc": 0.88,
+          "t-ai-inc": 0.75,
           "t-d-no-inc": 0.03,
           "t-single": 0.4,
-          "t-d-multi": 0.35,
+          "t-d-multi": 0.25,
           "t-has-rep": 0.55,
-          "t-d-no-rep": 0.65,
+          "t-d-no-rep": 0.45,
           "t-expects": 0.6,
-          "t-d-expects": 0.9,
-          "t-d-no-expects": 0.45
+          "t-d-expects": 0.7,
+          "t-d-no-expects": 0.3
         },
         ranges: {
           "t-ai-inc":       { lo: 0.72, hi: 0.97 },
@@ -519,7 +518,7 @@ const TREES = [
           "t-ai-inc": 0.85,
           "t-d-no-inc": 0.02,
           "t-single": 0.45,
-          "t-d-multi": 0.12,
+          "t-d-multi": 0.25,
           "t-has-rep": 0.55,
           "t-d-no-rep": 0.35,
           "t-expects": 0.35,
@@ -675,8 +674,8 @@ const TREES = [
           "t-ai-inc": 0.62,
           "t-d-no-inc": 0.03,
           "t-single": 0.3,
-          "t-d-multi": 0.2,
-          "t-has-rep": 0.3,
+          "t-d-multi": 0.3,
+          "t-has-rep": 0.75,
           "t-d-no-rep": 0.25,
           "t-expects": 0.28,
           "t-d-expects": 0.58,
@@ -686,8 +685,8 @@ const TREES = [
           "t-ai-inc":       { lo: 0.4, hi: 0.82 },
           "t-d-no-inc":       { lo: 0.01, hi: 0.07 },
           "t-single":       { lo: 0.13, hi: 0.52 },
-          "t-d-multi":       { lo: 0.08, hi: 0.38 },
-          "t-has-rep":       { lo: 0.12, hi: 0.55 },
+          "t-d-multi":       { lo: 0.15, hi: 0.5 },
+          "t-has-rep":       { lo: 0.55, hi: 0.9 },
           "t-d-no-rep":       { lo: 0.08, hi: 0.45 },
           "t-expects":       { lo: 0.1, hi: 0.52 },
           "t-d-expects":       { lo: 0.35, hi: 0.78 },
@@ -874,8 +873,8 @@ const TREES = [
           "t-has-rep": 0.1,
           "t-d-no-rep": 0.05,
           "t-expects": 0.07,
-          "t-d-expects": 0.25,
-          "t-d-no-expects": 0.1
+          "t-d-expects": 0.02,
+          "t-d-no-expects": 0.01
         },
         ranges: {
           "t-ai-inc":       { lo: 0.0005, hi: 0.02 },
@@ -885,8 +884,8 @@ const TREES = [
           "t-has-rep":       { lo: 0.03, hi: 0.25 },
           "t-d-no-rep":       { lo: 0.01, hi: 0.15 },
           "t-expects":       { lo: 0.02, hi: 0.2 },
-          "t-d-expects":       { lo: 0.08, hi: 0.5 },
-          "t-d-no-expects":       { lo: 0.03, hi: 0.3 }
+          "t-d-expects":       { lo: 0.005, hi: 0.1 },
+          "t-d-no-expects":       { lo: 0.002, hi: 0.05 }
         },
         reasoning: {
           "t-ai-inc": "LeCun has repeatedly called AI doom fears 'preposterously ridiculous' and publicly states P(doom) below 0.01%. He argues AI is overwhelmingly net-beneficial — curing diseases, expanding scientific capability, solving climate problems — and that even deliberate misuse, while non-zero, falls far short of existential scale; the residual here reflects that floor rather than any concession to autonomous-AI risk.",

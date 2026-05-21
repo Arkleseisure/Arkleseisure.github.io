@@ -208,6 +208,7 @@
   width: 180px;
   flex-shrink: 0;
   padding: var(--space-md);
+  z-index: 50; /* keep ? tooltips above the tree cards */
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -296,7 +297,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s;
-  z-index: 100;
+  z-index: 300;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -899,8 +900,33 @@
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--text-muted);
-  min-width: 32px;
+  min-width: 38px;
   text-align: right;
+}
+
+/* Editable number-input variant of .tg-slider-val: same look, no chrome. */
+input.tg-slider-input {
+  width: 46px;
+  padding: 1px 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  cursor: text;
+}
+input.tg-slider-input:hover {
+  border-color: var(--border-subtle);
+}
+input.tg-slider-input:focus {
+  outline: none;
+  border-color: var(--accent-safety);
+  background: rgba(245, 158, 11, 0.05);
+}
+input.tg-slider-input::-webkit-outer-spin-button,
+input.tg-slider-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* ---------- Toggle & Action Buttons ---------- */
@@ -1060,6 +1086,35 @@
   white-space: nowrap;
 }
 
+input.tg-range-val-input {
+  width: 38px;
+  padding: 1px 2px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  cursor: text;
+}
+input.tg-range-val-input:hover {
+  border-color: var(--border-subtle);
+}
+input.tg-range-val-input:focus {
+  outline: none;
+  border-color: var(--accent-safety);
+  background: rgba(245, 158, 11, 0.05);
+  color: var(--text-primary);
+}
+input.tg-range-val-input::-webkit-outer-spin-button,
+input.tg-range-val-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Range bar on cards */
 .tg-bar-range {
   position: absolute;
@@ -1077,6 +1132,26 @@
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   padding: var(--space-lg);
+}
+
+/* Variant of .info-panel when used as a right sidebar inside .tree-with-labels.
+   Sticks alongside the tree so the selected node's description is always
+   visible without scrolling. */
+.info-sidebar {
+  flex-shrink: 0;
+  width: 280px;
+  margin: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: var(--sticky-offset, 200px);
+  max-height: calc(100vh - var(--sticky-offset, 200px) - 24px);
+  overflow-y: auto;
+}
+
+.info-sidebar .info-panel-empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: var(--space-md) 0;
 }
 
 .info-panel-empty {
@@ -1206,6 +1281,29 @@
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   padding: var(--space-lg);
+}
+
+.project-acknowledgements {
+  max-width: var(--content-width);
+  margin: var(--space-xl) auto var(--space-lg);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.project-acknowledgements h3 {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-sm);
+}
+
+.project-acknowledgements p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
 }
 
 .analysis-title {
@@ -1490,6 +1588,15 @@
     border-bottom: 1px solid var(--border-subtle);
     border-right: none;
     position: static;
+  }
+
+  /* Info sidebar drops to full-width block at narrow viewports. */
+  .info-sidebar {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    position: static;
+    margin: var(--space-md) 0;
   }
 
   .sensitivity-name {
