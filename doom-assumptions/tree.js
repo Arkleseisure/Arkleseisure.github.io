@@ -2208,22 +2208,28 @@
     var leaves = getFreeParams(getTree().tree);
     var results = [];
 
+    var oldGap = Math.abs(rootA - rootB);
+
     leaves.forEach(function (leaf) {
       var id = leaf.id;
       var valA = probsA[id] != null ? probsA[id] : 0.5;
       var valB = probsB[id] != null ? probsB[id] : 0.5;
 
-      // Impact on A: if A adopts B's value for this leaf
+      // Impact on A: A adopts B's value for this leaf. Positive = gap closes
+      // (real crux); negative = gap widens (anti-crux — convincing A here
+      // actually pulls them further from B at the root level).
       var swappedA = {};
       Object.keys(probsA).forEach(function (k) { swappedA[k] = probsA[k]; });
       swappedA[id] = valB;
-      var impactA = Math.abs(computeRootWithProbs(swappedA) - rootA) * 100;
+      var newRootA = computeRootWithProbs(swappedA);
+      var impactA = (oldGap - Math.abs(newRootA - rootB)) * 100;
 
-      // Impact on B: if B adopts A's value for this leaf
+      // Impact on B: same logic in the other direction.
       var swappedB = {};
       Object.keys(probsB).forEach(function (k) { swappedB[k] = probsB[k]; });
       swappedB[id] = valA;
-      var impactB = Math.abs(computeRootWithProbs(swappedB) - rootB) * 100;
+      var newRootB = computeRootWithProbs(swappedB);
+      var impactB = (oldGap - Math.abs(rootA - newRootB)) * 100;
 
       results.push({
         id: id,
@@ -2232,11 +2238,17 @@
         valB: valB,
         impactA: impactA,
         impactB: impactB,
-        maxImpact: Math.max(impactA, impactB)
+        maxImpact: Math.max(Math.abs(impactA), Math.abs(impactB))
       });
     });
 
-    results.sort(function (a, b) { return b.maxImpact - a.maxImpact; });
+    // Signed sort: biggest real cruxes at the top, anti-cruxes at the bottom.
+    // (maxImpact is still |impact|, used for bar scaling.)
+    results.sort(function (a, b) {
+      var sa = (a.impactA + a.impactB) / 2;
+      var sb = (b.impactA + b.impactB) / 2;
+      return sb - sa;
+    });
     return { results: results, rootA: rootA, rootB: rootB };
   }
 
@@ -2338,7 +2350,32 @@
       '</span>';
     chart.appendChild(headerRow);
 
-    var maxImpact = data.results.length > 0 ? data.results[0].maxImpact || 1 : 1;
+    var maxImpact = 0;
+    data.results.forEach(function (r) {
+      if (r.maxImpact > maxImpact) maxImpact = r.maxImpact;
+    });
+    if (maxImpact === 0) maxImpact = 1;
+
+    function makeBar(impact, accentVar) {
+      // Center-anchored bar. Positive → right half (closes gap, real crux).
+      // Negative → left half (widens gap, anti-crux). Width relative to the
+      // largest |impact| in the chart so the scale is shared across rows.
+      var track = document.createElement("div");
+      track.className = "sensitivity-bar-track crux-bar-track-signed";
+      var fill = document.createElement("div");
+      fill.className = "sensitivity-bar-fill";
+      var halfPct = maxImpact > 0 ? (Math.abs(impact) / maxImpact) * 50 : 0;
+      fill.style.width = halfPct + "%";
+      if (impact >= 0) {
+        fill.style.left = "50%";
+        fill.style.backgroundColor = "var(" + accentVar + ")";
+      } else {
+        fill.style.left = (50 - halfPct) + "%";
+        fill.style.backgroundColor = "#e76e7a"; // shared "anti-crux" red
+      }
+      track.appendChild(fill);
+      return track;
+    }
 
     data.results.forEach(function (item) {
       var row = document.createElement("div");
@@ -2352,41 +2389,24 @@
       name.title = name.textContent;
       row.appendChild(name);
 
-      // Two bars: impact on A and impact on B
       var barPair = document.createElement("div");
       barPair.className = "crux-bar-pair";
 
       var rowA = document.createElement("div");
       rowA.className = "crux-bar-row";
-      var trackA = document.createElement("div");
-      trackA.className = "sensitivity-bar-track";
-      var fillA = document.createElement("div");
-      fillA.className = "sensitivity-bar-fill";
-      var pctA = maxImpact > 0 ? (item.impactA / maxImpact) * 100 : 0;
-      fillA.style.width = pctA + "%";
-      fillA.style.backgroundColor = "var(--accent-life)";
-      trackA.appendChild(fillA);
-      rowA.appendChild(trackA);
+      rowA.appendChild(makeBar(item.impactA, "--accent-life"));
       var ppA = document.createElement("span");
       ppA.className = "crux-bar-pp crux-val-a";
-      ppA.textContent = item.impactA.toFixed(1) + "pp";
+      ppA.textContent = (item.impactA >= 0 ? "+" : "") + item.impactA.toFixed(1) + "pp";
       rowA.appendChild(ppA);
       barPair.appendChild(rowA);
 
       var rowB = document.createElement("div");
       rowB.className = "crux-bar-row";
-      var trackB = document.createElement("div");
-      trackB.className = "sensitivity-bar-track";
-      var fillB = document.createElement("div");
-      fillB.className = "sensitivity-bar-fill";
-      var pctB = maxImpact > 0 ? (item.impactB / maxImpact) * 100 : 0;
-      fillB.style.width = pctB + "%";
-      fillB.style.backgroundColor = "var(--accent-safety)";
-      trackB.appendChild(fillB);
-      rowB.appendChild(trackB);
+      rowB.appendChild(makeBar(item.impactB, "--accent-safety"));
       var ppB = document.createElement("span");
       ppB.className = "crux-bar-pp crux-val-b";
-      ppB.textContent = item.impactB.toFixed(1) + "pp";
+      ppB.textContent = (item.impactB >= 0 ? "+" : "") + item.impactB.toFixed(1) + "pp";
       rowB.appendChild(ppB);
       barPair.appendChild(rowB);
 

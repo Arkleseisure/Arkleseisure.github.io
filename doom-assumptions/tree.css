@@ -1376,6 +1376,30 @@
   width: auto;
 }
 
+/* Signed (bidirectional) crux bar: centre line at 50%, fill goes left for
+   negative impacts (anti-crux) and right for positive (real crux). */
+.crux-bar-track-signed {
+  position: relative;
+  overflow: visible;
+}
+
+.crux-bar-track-signed::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+
+.crux-bar-track-signed .sensitivity-bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
 .crux-bar-pp {
   font-family: var(--font-mono);
   font-size: 0.65rem;

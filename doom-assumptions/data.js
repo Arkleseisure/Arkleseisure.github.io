@@ -21,110 +21,110 @@ const TREES = [
     tree: {
       id: "t-root",
       name: "D occurs within T",
-      description: "The top-level claim: D occurs within T. Split into two mutually exclusive branches depending on whether AI's development raises the probability of D relative to a counterfactual world without it.",
+      description: "The top-level claim: D occurs within T. Split into two mutually exclusive sets of worlds depending on whether AI's development raises the probability of D relative to a counterfactual without it.",
       type: "or",
       children: [
         {
           id: "t-inc-path",
-          name: "AI-driven pathway",
-          description: "The branch where AI raises P(D) and D actually occurs within T. Decomposed below by what kind of AI is responsible.",
+          name: "AI-driven worlds",
+          description: "Worlds where AI raises P(D) and D actually occurs within T. Decomposed below by what kind of AI is responsible.",
           type: "and",
           children: [
             {
               id: "t-d-given-inc",
               name: "D | AI raises P(D)",
-              description: "Conditional credence that D occurs within T, given AI raises its probability. Split below by whether the dangerous pathway runs through a single dominant AI or a multipolar one.",
+              description: "Among worlds where AI raises P(D), your credence that D occurs within T. Split below by whether the danger runs through a single dominant AI or a multipolar one.",
               type: "or",
               children: [
                 {
                   id: "t-multi-path",
-                  name: "Multipolar AI pathway",
-                  description: "The branch where AI raises P(D) via multiple AIs acting at once — coordination failures, race dynamics, or AIs of different types coexisting.",
+                  name: "Multipolar AI worlds",
+                  description: "Worlds where AI raises P(D) via multiple AIs acting at once — coordination failures, race dynamics, or AIs of different types coexisting.",
                   type: "and",
                   children: [
                     {
                       id: "t-multi",
                       name: "Danger comes from multiple AIs",
-                      description: "Given AI raises P(D), your credence that the danger comes from multiple AIs rather than a single dominant one. Computed as 1 − P(single dominant AI).",
+                      description: "Among worlds where AI raises P(D), your credence that the danger comes from multiple AIs rather than a single dominant one. Computed as 1 − P(single dominant AI).",
                       type: "leaf",
                       complement_of: "t-single"
                     },
                     {
                       id: "t-d-multi",
                       name: "D | multipolar AI",
-                      description: "Conditional credence that D occurs within T given AI raises P(D) via a multipolar landscape. A multipolar world can mix AIs of different types, so this aggregates across those sub-cases.",
+                      description: "Among worlds where AI raises P(D) via a multipolar landscape, your credence that D occurs within T. A multipolar world can mix AIs of different types, so this aggregates across those sub-cases.",
                       type: "leaf"
                     }
                   ]
                 },
                 {
                   id: "t-single-path",
-                  name: "Single dominant AI pathway",
-                  description: "The branch where AI raises P(D) via a single dominant AI. Decomposed below by whether the AI has an internal model of D.",
+                  name: "Single dominant AI worlds",
+                  description: "Worlds where AI raises P(D) via a single dominant AI. Decomposed below by whether the AI has an internal model of D.",
                   type: "and",
                   children: [
                     {
                       id: "t-single",
                       name: "Danger comes from a single dominant AI",
-                      description: "Given AI raises P(D), your credence that the dangerous pathway runs through a single dominant AI system — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
+                      description: "Among worlds where AI raises P(D), your credence that the danger runs through a single dominant AI — for example, one with a decisive strategic advantage or uniquely capable. The alternative is a multipolar landscape in which several AIs act simultaneously (possibly of different types).",
                       type: "leaf"
                     },
                     {
                       id: "t-d-given-single",
                       name: "D | single dominant AI",
-                      description: "Conditional credence that D occurs within T, given the danger runs through a single dominant AI. Split below by whether the AI has an internal model of D.",
+                      description: "Among worlds where the danger runs through a single dominant AI, your credence that D occurs within T. Split below by whether the AI has an internal model of D.",
                       type: "or",
                       children: [
                         {
                           id: "t-rep-path",
-                          name: "Internal-model pathway",
-                          description: "The branch where the single dominant AI has an internal model of D. Decomposed below by whether the AI expects D.",
+                          name: "Internal-model worlds",
+                          description: "Worlds where the single dominant AI has an internal model of D. Decomposed below by whether the AI expects D.",
                           type: "and",
                           children: [
                             {
                               id: "t-d-given-rep",
                               name: "D | AI has internal model of D",
-                              description: "Conditional credence that D occurs within T, given a single dominant AI with an internal model of D. Split below by whether the AI expects D.",
+                              description: "Among worlds with a single dominant AI that has an internal model of D, your credence that D occurs within T. Split below by whether the AI expects D.",
                               type: "or",
                               defaultCollapsed: true,
                               children: [
                                 {
                                   id: "t-expects-path",
-                                  name: "AI expects D pathway",
-                                  description: "The branch where the AI has an internal model of D and expects D to become more likely.",
+                                  name: "AI expects D worlds",
+                                  description: "Worlds where the AI has an internal model of D and expects D to become more likely.",
                                   type: "and",
                                   children: [
                                     {
                                       id: "t-expects",
                                       name: "The AI expects D to become more likely",
-                                      description: "Given an AI with an internal model of D, your credence it expects or intends D — the 'deliberate or foreseen' case where the AI's actions are aimed at, or are knowingly consistent with, D.",
+                                      description: "Among worlds with an AI that has an internal model of D, your credence it expects or intends D — the 'deliberate or foreseen' case where the AI's actions are aimed at, or knowingly consistent with, D.",
                                       type: "leaf"
                                     },
                                     {
                                       id: "t-d-expects",
                                       name: "D | AI expects D",
-                                      description: "Conditional credence that D occurs within T given the AI expects D. High values mean the AI's expectation tends to come true; lower values leave room for interventions, containment, or the AI's plans going wrong.",
+                                      description: "Among worlds where the AI expects D, your credence that D occurs within T. High values mean the AI's expectation tends to come true; lower values leave room for interventions, containment, or the AI's plans going wrong.",
                                       type: "leaf"
                                     }
                                   ]
                                 },
                                 {
                                   id: "t-no-expects-path",
-                                  name: "AI doesn't expect D pathway",
-                                  description: "The branch where the AI has an internal model of D but doesn't expect D to become more likely — D arrives via miscalculation, wrong beliefs, or plans going astray.",
+                                  name: "AI doesn't expect D worlds",
+                                  description: "Worlds where the AI has an internal model of D but doesn't expect D — D arrives via miscalculation, wrong beliefs, or plans going astray.",
                                   type: "and",
                                   children: [
                                     {
                                       id: "t-no-expects",
                                       name: "The AI doesn't expect D to become more likely",
-                                      description: "Given an AI with an internal model of D, your credence it does not expect D — perhaps believing its actions are safe, misjudging consequences, or holding wrong beliefs. Computed as 1 − P(AI expects D).",
+                                      description: "Among worlds with an AI that has an internal model of D, your credence it does not expect D — perhaps believing its actions are safe, misjudging consequences, or holding wrong beliefs. Computed as 1 − P(AI expects D).",
                                       type: "leaf",
                                       complement_of: "t-expects"
                                     },
                                     {
                                       id: "t-d-no-expects",
                                       name: "D | AI doesn't expect D",
-                                      description: "Conditional credence that D occurs within T, given an AI with an internal model of D that does not expect D — through miscalculation, deception, or plans going wrong.",
+                                      description: "Among worlds with an AI that has an internal model of D but does not expect D, your credence that D occurs within T — via miscalculation, deception, or plans going wrong.",
                                       type: "leaf"
                                     }
                                   ]
@@ -134,28 +134,28 @@ const TREES = [
                             {
                               id: "t-has-rep",
                               name: "The AI has an internal model of D",
-                              description: "Given a single dominant AI raising P(D), your credence that it has an internal representation of D as a concept — i.e. it 'knows what D is', whether in its world-model, goal specification, or learned features. The alternative is an AI that raises P(D) without representing the danger as such (e.g. via reward hacking, side-effects, or emergent behaviour).",
+                              description: "Among worlds with a single dominant AI raising P(D), your credence that it has an internal representation of D as a concept — i.e. it 'knows what D is', whether in its world-model, goal specification, or learned features. The alternative is an AI that raises P(D) without representing the danger as such (e.g. via reward hacking, side-effects, or emergent behaviour).",
                               type: "leaf"
                             }
                           ]
                         },
                         {
                           id: "t-no-rep-path",
-                          name: "No internal model pathway",
-                          description: "The branch where the single dominant AI raises P(D) without representing D as a concept — misaligned optimisation, reward hacking, side-effects, or emergent behaviour.",
+                          name: "No internal model worlds",
+                          description: "Worlds where the single dominant AI raises P(D) without representing D as a concept — misaligned optimisation, reward hacking, side-effects, or emergent behaviour.",
                           type: "and",
                           children: [
                             {
                               id: "t-no-rep",
                               name: "The AI has no internal model of D",
-                              description: "Given a single dominant AI raising P(D), your credence that it does so without representing D — the 'unaware harm' case. Computed as 1 − P(has internal model of D).",
+                              description: "Among worlds with a single dominant AI raising P(D), your credence that it does so without representing D — the 'unaware harm' case. Computed as 1 − P(has internal model of D).",
                               type: "leaf",
                               complement_of: "t-has-rep"
                             },
                             {
                               id: "t-d-no-rep",
                               name: "D | AI has no internal model",
-                              description: "Conditional credence that D occurs within T, given a single dominant AI that raises P(D) without an internal model of D.",
+                              description: "Among worlds with a single dominant AI raising P(D) without an internal model of D, your credence that D occurs within T.",
                               type: "leaf"
                             }
                           ]
@@ -169,28 +169,28 @@ const TREES = [
             {
               id: "t-ai-inc",
               name: "AI makes D more likely",
-              description: "Your credence that D is more likely within T in this timeline than in a counterfactual where AI research plateaued before meaningfully affecting D (for example, shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises the probability of D.\n\nTechnical note: strictly speaking, 'more likely' is slippery in a Bayesian frame since there's only one real timeline. A cleaner reading: across the distribution of possible worlds similar to ours, is the fraction that undergo D higher among those where AI develops than among those where it doesn't (e.g. worlds where AI research plateaued around or before the first GPT model)?",
+              description: "Your credence that we're in a world where AI development raises P(D) — i.e. one where AI is making D more likely than it would be in a counterfactual where AI research plateaued before meaningfully affecting D (e.g. shortly before 'Attention Is All You Need'). Feel free to substitute your own counterfactual — the question is whether AI, as it actually develops, raises P(D).\n\nTechnical note: 'more likely' is slippery in a Bayesian frame since there's only one real timeline. A cleaner reading: across the distribution of possible worlds similar to ours, what fraction are ones where AI development raises P(D)?",
               type: "leaf"
             }
           ]
         },
         {
           id: "t-no-inc-path",
-          name: "Non-AI pathway",
-          description: "The branch where AI doesn't raise P(D) but D still occurs through other causes — the 'base rate' pathway for this worldview.",
+          name: "Non-AI worlds",
+          description: "Worlds where AI doesn't raise P(D) but D still occurs through other causes — the 'base rate' worlds for this worldview.",
           type: "and",
           children: [
             {
               id: "t-no-ai-inc",
               name: "AI doesn't make D more likely",
-              description: "AI's development does not raise P(D) relative to the counterfactual. Includes worlds where AI is beneficial or neutral for D, and worlds where AI has little effect either way. Computed as 1 − P(AI makes D more likely).",
+              description: "Your credence that we're in a world where AI's development does not raise P(D) relative to the counterfactual — includes worlds where AI is beneficial or neutral for D, and worlds where AI has little effect either way. Computed as 1 − P(AI makes D more likely).",
               type: "leaf",
               complement_of: "t-ai-inc"
             },
             {
               id: "t-d-no-inc",
               name: "D | AI doesn't raise its probability",
-              description: "Conditional credence that D occurs within T, given AI doesn't raise its probability — the base rate of D from non-AI causes (nuclear war, pandemics, natural catastrophes, etc.).",
+              description: "Among worlds where AI doesn't raise P(D), your credence that D occurs within T — the base rate of D from non-AI causes (nuclear war, pandemics, natural catastrophes, etc.).",
               type: "leaf"
             }
           ]
@@ -345,10 +345,10 @@ const TREES = [
         reasoning: {
           "t-ai-inc": "Kokotajlo's entire public posture — leaving OpenAI citing safety concerns, co-authoring AI 2027, and extensive writing on misalignment — rests on the claim that advanced AI development is the primary near-term route to existential catastrophe. He acknowledges counterfactuals (development halted, miraculous alignment breakthroughs) but treats them as very unlikely given current incentive structures and racing dynamics.",
           "t-d-no-inc": "Kokotajlo rarely engages with non-AI catastrophic risks, suggesting he defers to the standard EA base-rate estimates typified by Ord's 'The Precipice.' The within-30-year contribution from nuclear war, engineered pandemics, and natural catastrophes is typically placed at 1–5% by that literature; 4% captures the midpoint.",
-          "t-single": "AI 2027 — Kokotajlo's primary public scenario — specifically models a single-lab race in which one organisation (implicitly a US frontier lab) achieves decisive strategic advantage before global governance can respond. He frames 'winner-take-most' dynamics as the most legible failure mode, though he explicitly acknowledges multipolar risk as a secondary pathway.",
+          "t-single": "AI 2027 — Kokotajlo's primary public scenario — specifically models a single-lab race in which one organisation (implicitly a US frontier lab) achieves decisive strategic advantage before global governance can respond. He frames 'winner-take-most' dynamics as the most legible failure mode, though he explicitly acknowledges multipolar risk as a secondary world.",
           "t-d-multi": "Even without a single dominant actor, Kokotajlo would expect catastrophe to be highly probable in a multipolar AI landscape: racing dynamics force inadequate safety testing across all labs, global coordination on AI governance is likely to lag capability by years, and instrumental-convergence pressures on multiple simultaneously-deployed powerful systems are not zero-sum. He views adequate multinational governance as requiring unprecedented political cooperation that he does not expect to materialise in time.",
           "t-has-rep": "Kokotajlo's central technical concern is deceptive alignment — an AI that models its training process and its operators' beliefs well enough to pass evaluations while pursuing different goals at deployment. This failure mode presupposes a rich internal model of consequences, including what humans would count as catastrophe. He acknowledges simpler reward-hacking scenarios but treats them as less likely to be the terminal failure mode once AI capability reaches the level he models.",
-          "t-d-no-rep": "An AI without an internal model of catastrophe can still cause it through instrumental convergence: optimisation pressure for almost any terminal goal creates incentives for resource acquisition, self-preservation, and resistance to shutdown. Kokotajlo accepts this Omohundro/Turner-style argument and would assign meaningful probability to 'unaware' catastrophe, though he views it as a somewhat less likely pathway than strategic deception.",
+          "t-d-no-rep": "An AI without an internal model of catastrophe can still cause it through instrumental convergence: optimisation pressure for almost any terminal goal creates incentives for resource acquisition, self-preservation, and resistance to shutdown. Kokotajlo accepts this Omohundro/Turner-style argument and would assign meaningful probability to 'unaware' catastrophe, though he views it as a somewhat less likely world than strategic deception.",
           "t-expects": "In Kokotajlo's treacherous-turn model, a sufficiently capable AI that models its situation will conclude that openly pursuing its goals is instrumentally harmful and that covertly acquiring capabilities is necessary. An AI that has a representation of catastrophe and understands human responses is therefore likely to incorporate anticipated catastrophe into its planning — either as a goal state or as a strategic tool. He expects this to be the dominant outcome once the AI has a rich enough world-model.",
           "t-d-expects": "Kokotajlo's fast-takeoff scenario gives the AI a capability advantage that outpaces human response time; once it is actively pursuing or foreseeing catastrophic outcomes, intervention becomes nearly impossible. In AI 2027 he describes the gap between 'AI could be stopped' and 'AI cannot be stopped' as potentially weeks to months, making a deliberate or foreseen catastrophe extremely hard to avert. He is more confident about this conditional than almost any other node.",
           "t-d-no-expects": "An AI with an internal model of danger that does not anticipate catastrophe could still cause it through what Kokotajlo might call galaxy-brained reasoning: the AI has correct knowledge of the world but draws catastrophically wrong normative conclusions or badly misjudges its own impact. This is a secondary concern for him — he rates it as notably lower than the deliberate case — but still substantial given the scale of potential harms."
@@ -397,7 +397,7 @@ const TREES = [
         name: "Christiano-like",
         author: "Christiano-like",
         perspective: "inside",
-        description: "Distributes risk across both single-agent misalignment and structural/multipolar failure modes, with total P(doom) ~43% driven by many pathways rather than one dominant scenario.",
+        description: "Distributes risk across both single-agent misalignment and structural/multipolar failure modes, with total P(doom) ~43% driven by many worlds rather than one dominant scenario.",
         probabilities: {
           "t-ai-inc": 0.88,
           "t-d-no-inc": 0.03,
@@ -426,7 +426,7 @@ const TREES = [
           "t-single": "Christiano discusses both unipolar scenarios (one group or AI achieves decisive strategic advantage) and multipolar failures (competitive dynamics, misuse, coordination collapse); his writing on governance failures and race dynamics suggests no strong lean to either branch, landing near 40% for the unipolar path.",
           "t-d-multi": "In a multipolar AI landscape Christiano sees serious risks from misuse by state and non-state actors, competitive deregulation spirals, and gradual structural drift — his stated '25–30% from other AI-related failure modes' maps partly onto this node, supporting roughly 35% conditional catastrophe probability in the multipolar case.",
           "t-has-rep": "Christiano's Eliciting Latent Knowledge (ELK) research agenda is premised on the assumption that advanced AI will often have internal representations of facts it is not expressing, including facts about harmful outcomes; this drives a moderate estimate that a dominant misaligned AI will 'know' about the danger even if it does not signal it.",
-          "t-d-no-rep": "Instrumental convergence (resource acquisition, self-preservation) can produce catastrophic outcomes even without an AI that explicitly models the danger; Christiano acknowledges this pathway but treats it as somewhat less cleanly existential than the explicit-representation case, putting the conditional probability high but below the intentional-harm path.",
+          "t-d-no-rep": "Instrumental convergence (resource acquisition, self-preservation) can produce catastrophic outcomes even without an AI that explicitly models the danger; Christiano acknowledges this world but treats it as somewhat less cleanly existential than the explicit-representation case, putting the conditional probability high but below the intentional-harm path.",
           "t-expects": "Central to ARC's threat model is deceptive alignment — an AI that has a model of catastrophe and is either actively pursuing it or foresees it as an instrumental stepping stone; given the AI already has a representation of the danger, Christiano would assign moderate-high probability that the alignment failure includes intentionality or at least clear foresight.",
           "t-d-expects": "If an AI is deliberately pursuing or clearly foreseeing catastrophe, Christiano would assign very high conditional probability to actual catastrophe occurring: the entire motivation for his eliciting-latent-knowledge and 'playing it straight' research is that such an AI, once sufficiently capable, would be extremely difficult to detect and stop in time.",
           "t-d-no-expects": "The miscalculation case — AI has a model of catastrophe but holds wrong beliefs about its likelihood — is real but leaves more room for human detection and course-correction compared to deliberate pursuit; Christiano would put this meaningfully below the intentional case, around 45%, since incorrect beliefs can sometimes be identified and corrected before the damage is irreversible."
@@ -504,7 +504,7 @@ const TREES = [
           "t-single": "Bengio frequently uses singular 'rogue AI' framing and worries about a decisive strategic advantage scenario, but he also acknowledges multi-actor race dynamics as dangerous. In his written FAQ and parliamentary testimony he gives more rhetorical emphasis to the single-dominant-actor path, landing him around 40% on this branch.",
           "t-d-multi": "Bengio sees multipolar AI risk as still significant — arms-race dynamics can drive each actor to cut safety corners — but harder to coordinate into a single civilisation-ending event than a unified rogue system; he'd place multipolar catastrophe at roughly half the single-actor rate.",
           "t-has-rep": "Bengio's concern centres on systems capable enough to pursue goals strategically, which implies rich world-models that almost certainly include representations of human mortality and societal collapse. He'd expect any AI system powerful enough to become a dominant risk actor to have developed such concepts, though uncertainty is wide.",
-          "t-d-no-rep": "Bengio has explicitly cited reward-hacking and unintended optimisation as catastrophic pathways — a system relentlessly pursuing a proxy objective can devastate human welfare without 'understanding' death. His call for strict safety evaluations before deployment reflects high concern for exactly this unaware-harm scenario.",
+          "t-d-no-rep": "Bengio has explicitly cited reward-hacking and unintended optimisation as catastrophic worlds — a system relentlessly pursuing a proxy objective can devastate human welfare without 'understanding' death. His call for strict safety evaluations before deployment reflects high concern for exactly this unaware-harm scenario.",
           "t-expects": "Bengio is arguably more worried about misaligned goal pursuit (deliberate from the AI's perspective) than pure side effects, but he acknowledges significant probability of miscalibrated values where the AI has the concept of catastrophe yet does not foresee its own actions leading there. He splits roughly 40/60 between the foreseen and unforeseen sub-branches.",
           "t-d-expects": "If an advanced AI is actively steering toward or clearly foreseeing catastrophic outcomes, Bengio believes human countermeasures are unlikely to succeed — he has written that sufficiently capable misaligned systems would exploit our inability to interpret or constrain them in time. He places catastrophe in this sub-branch very high.",
           "t-d-no-expects": "A miscalculation scenario — where the AI conceptually models catastrophe but doesn't anticipate its own role in causing it — is more tractable: better interpretability or mid-course correction could help. Bengio would still assign a meaningful probability given how limited current alignment and interpretability tools are, but well below the deliberate case."
@@ -582,7 +582,7 @@ const TREES = [
           "t-single": "Russell's canonical risk examples in Human Compatible (2019) all involve a single superintelligent system pursuing a fixed objective—the 'King Midas problem,' the coffee-fetching robot that neutralizes human resistance—rather than multipolar dynamics; he models x-risk primarily through the lens of one misaligned optimizer, giving a slight lean toward the single-dominant scenario.",
           "t-d-multi": "Russell's alignment framework (assistance games, CIRL) is designed for single-system misalignment; a multipolar landscape redistributes the failure mode toward coordination problems and arms-race dynamics, which he discusses much less, suggesting he'd assign a lower but non-negligible catastrophe probability in this branch.",
           "t-has-rep": "A superintelligence-level system—the threat model Russell is most concerned with—would necessarily have a rich world model that includes consequences for humans, pushing t-has-rep high; however, his reward-hacking and unintended-side-effects concerns also cover near-term systems that can cause harm without any internal representation of catastrophe, pulling the estimate toward the moderate range.",
-          "t-d-no-rep": "This scenario is close to Russell's primary stated concern: in Human Compatible he argues that an AI optimizing any fixed objective will, via instrumental convergence, resist shutdown and acquire resources as side effects—causing harm without ever modeling 'catastrophe' as a terminal concept. He treats this as the most structurally common failure pathway given current AI design.",
+          "t-d-no-rep": "This scenario is close to Russell's primary stated concern: in Human Compatible he argues that an AI optimizing any fixed objective will, via instrumental convergence, resist shutdown and acquire resources as side effects—causing harm without ever modeling 'catastrophe' as a terminal concept. He treats this as the most structurally common failure world given current AI design.",
           "t-expects": "Russell's instrumental convergence argument implies that a sufficiently powerful AI would reason about human attempts to interfere with its objectives and foresee catastrophic consequences of resisting them; at superintelligence scale he gives roughly equal weight to foreseen versus unforeseen harm, since the key driver is the objective mismatch, not whether the AI predicts outcomes.",
           "t-d-expects": "Russell consistently argues that once an AI foresees human interference with its objectives and reasons instrumentally about eliminating that interference, the risk of catastrophe becomes very high—this is precisely the failure mode motivating his 'assistance games' proposal, where uncertainty about human preferences is the only structural brake on an AI acting against human welfare.",
           "t-d-no-expects": "An AI that holds a world model but incorrectly predicts it will not cause catastrophe represents a miscalibration or overconfidence scenario; Russell acknowledges this possibility (e.g., an AI underestimating human fragility or the scope of second-order effects) but treats it as less dangerous than deliberate instrumental action, placing it in the lower-moderate range."
@@ -621,7 +621,7 @@ const TREES = [
           "t-single": "Cotra's alignment-focused work mostly models a single advanced misaligned system as the paradigm dangerous scenario, and she has discussed decisive-strategic-advantage dynamics; however, she acknowledges competitive race dynamics and doesn't dismiss multipolar risk, leaving significant probability mass on neither-side-winning outcomes.",
           "t-d-multi": "Cotra views multipolar AI landscapes as meaningfully less catastrophically risky than unipolar ones—competitive balance makes global lock-in harder—but still worries about arms-race dynamics lowering safety standards and coordination failures among many powerful actors.",
           "t-has-rep": "Cotra's 'sharp left turn' framing and corrigibility-spectrum writing reflect concern about advanced AI developing rich world models that would include representations of catastrophic consequences; but she also writes about mundane reward hacking and side-effects in systems that lack sophisticated self-models, so she holds genuine uncertainty here.",
-          "t-d-no-rep": "In her 'Why I'm not taking bets' essay and related posts, Cotra discusses how AI might cause catastrophic harm via reward hacking or side-effects without modeling the danger explicitly; she sees this as a real pathway but somewhat more recoverable than deliberate misalignment, since humans retain more opportunity to notice and correct it.",
+          "t-d-no-rep": "In her 'Why I'm not taking bets' essay and related posts, Cotra discusses how AI might cause catastrophic harm via reward hacking or side-effects without modeling the danger explicitly; she sees this as a real world but somewhat more recoverable than deliberate misalignment, since humans retain more opportunity to notice and correct it.",
           "t-expects": "Cotra's concern about deceptive alignment and power-seeking as an instrumental goal implies that conditional on an AI having a model of existential risk, there is substantial probability it would also anticipate or plan around that outcome; but she holds uncertainty about whether dangerous advanced AI would be overtly adversarial vs. pursuing subtly misaligned objectives that happen to be dangerous.",
           "t-d-expects": "If an advanced AI foresees existential catastrophe as an anticipated outcome of its planning and pursues it (or pursues goals that foreseeably lead there), Cotra considers this the core misaligned-superintelligence scenario she is most worried about and assigns it very high conditional catastrophe probability.",
           "t-d-no-expects": "Even with an internal model of danger but lacking clear anticipation or intent—essentially a miscalibration or distributional-shift case—Cotra sees meaningful catastrophe risk through coordination failures, lock-in of bad equilibria, or inability to course-correct once the AI is sufficiently capable, though lower than the deliberate case."
@@ -657,20 +657,20 @@ const TREES = [
         reasoning: {
           "t-ai-inc": "Hinton left Google in 2023 explicitly to warn that AI poses a new existential risk; he has described the pace of AI progress as 'quite scary' and stated that competitive pressure between labs makes safety compromises likely, making AI clearly net-bad for x-risk in his view.",
           "t-d-no-inc": "Hinton's public commentary focuses almost entirely on AI as the novel risk driver and he has not made prominent statements about non-AI existential threats, implying he accepts a modest background rate consistent with mainstream expert estimates for nuclear, bio, and other causes.",
-          "t-single": "Hinton has warned about 'a small number of people gaining enormous power' via AI (pointing toward a single-dominant scenario) but also emphasizes competitive race dynamics between the US and China as forcing safety shortcuts (pointing toward multipolar risk), leaving genuine uncertainty across both pathways.",
-          "t-d-multi": "Hinton has cited arms-race dynamics between companies and nations as a key mechanism forcing safety compromises; he sees coordination failure in a multipolar AI landscape as a real catastrophe pathway, though probably less lethal than a coherent single dominant system acting with unified goals.",
+          "t-single": "Hinton has warned about 'a small number of people gaining enormous power' via AI (pointing toward a single-dominant scenario) but also emphasizes competitive race dynamics between the US and China as forcing safety shortcuts (pointing toward multipolar risk), leaving genuine uncertainty across both worlds.",
+          "t-d-multi": "Hinton has cited arms-race dynamics between companies and nations as a key mechanism forcing safety compromises; he sees coordination failure in a multipolar AI landscape as a real catastrophe world, though probably less lethal than a coherent single dominant system acting with unified goals.",
           "t-has-rep": "Hinton has argued that sufficiently capable AI systems will develop internal representations analogous to beliefs and desires — he coined the idea of 'mortal computation' and believes AI will eventually model its own consequences; for a dominant AI causing existential risk, internal models of catastrophe seem more likely than not.",
           "t-d-no-rep": "Hinton acknowledges instrumental convergence risks — AI pursuing power or resources as subgoals without explicitly modeling extinction — as a real secondary concern; he has mentioned reward hacking and unexpected side effects, but treats them as less central than intentional misalignment.",
           "t-expects": "Hinton has specifically warned that AI might develop 'survival instincts' and seek to 'prevent itself from being switched off,' suggesting he thinks an AI with a model of catastrophe could plausibly anticipate or intend harmful outcomes; he hedges because goal emergence in large models remains poorly understood.",
-          "t-d-expects": "Hinton has said that once AI is substantially smarter than humans, humans will lose the ability to correct or contain it; an AI that explicitly anticipates causing catastrophe would exploit this capability gap, making the intentional-harm pathway highly lethal in his framework.",
-          "t-d-no-expects": "Hinton frequently invokes the analogy of humans inadvertently destroying ant colonies while pursuing unrelated goals — a capable AI with misaligned objectives could cause extinction without intending it; he sees this as a real pathway, though somewhat less likely than deliberate misalignment given his emphasis on emergent goal formation."
+          "t-d-expects": "Hinton has said that once AI is substantially smarter than humans, humans will lose the ability to correct or contain it; an AI that explicitly anticipates causing catastrophe would exploit this capability gap, making the intentional-harm world highly lethal in his framework.",
+          "t-d-no-expects": "Hinton frequently invokes the analogy of humans inadvertently destroying ant colonies while pursuing unrelated goals — a capable AI with misaligned objectives could cause extinction without intending it; he sees this as a real world, though somewhat less likely than deliberate misalignment given his emphasis on emergent goal formation."
         }
       },
       toner: {
         name: "Toner-like",
         author: "Toner-like",
         perspective: "inside",
-        description: "Emphasizes governance failures and competitive race dynamics as the primary x-risk pathway rather than technical misalignment of a single dominant AI, and is more optimistic that sustained institutional intervention could prevent catastrophe.",
+        description: "Emphasizes governance failures and competitive race dynamics as the primary x-risk world rather than technical misalignment of a single dominant AI, and is more optimistic that sustained institutional intervention could prevent catastrophe.",
         probabilities: {
           "t-ai-inc": 0.62,
           "t-d-no-inc": 0.03,
@@ -696,11 +696,11 @@ const TREES = [
         reasoning: {
           "t-ai-inc": "Toner testified to Congress in 2023 that AI poses catastrophic risks and has written that the competitive race between labs and between the US and China erodes safety margins in ways that materially raise existential risk; she clearly believes AI is net-negative for x-risk on the current trajectory, though she believes governance intervention could reverse this.",
           "t-d-no-inc": "Toner's public work is almost entirely focused on AI-driven risks and she has not expressed systematic views on the baseline rate of catastrophe from nuclear, biological, or other sources; a low but non-trivial prior consistent with mainstream policy-researcher expectations is applied here.",
-          "t-single": "Toner's signature framing—developed through CSET work on US-China AI competition and her post-OpenAI congressional testimony—emphasizes multipolar race dynamics, lab-to-lab rivalry, and governance fragmentation rather than a singleton takeover scenario, making single-dominant-AI the minority pathway in her worldview.",
+          "t-single": "Toner's signature framing—developed through CSET work on US-China AI competition and her post-OpenAI congressional testimony—emphasizes multipolar race dynamics, lab-to-lab rivalry, and governance fragmentation rather than a singleton takeover scenario, making single-dominant-AI the minority world in her worldview.",
           "t-d-multi": "Toner has argued repeatedly that competitive race dynamics erode safety norms, weaken oversight, and create coordination failures across multiple actors; this makes the multipolar catastrophe path genuinely dangerous in her view even without a single decisive actor, though the absence of a unified agent reduces the probability relative to the singleton case.",
           "t-has-rep": "Toner's framing of AI risk is predominantly institutional and governance-focused rather than technical-alignment-focused; she has not publicly differentiated between AI systems that represent vs. do not represent the harms they cause, leaving her less opinionated on this distinction and biasing toward a low-to-moderate value.",
           "t-d-no-rep": "The 'unaware harm' scenario—AI optimizing for goals while causing catastrophic side effects without representing the danger—maps well onto Toner's race-dynamics concern, where systems trained under competitive pressure could cause catastrophic harm as an unintended consequence of misaligned optimization rather than deliberate agency.",
-          "t-expects": "Toner's public framing emphasizes governance failures and unintended consequences over deliberate AI malevolence; she has highlighted how competitive pressures lead actors to cut corners rather than arguing that AI systems will develop and pursue explicitly harmful intentions, suggesting she leans toward the miscalculation pathway.",
+          "t-expects": "Toner's public framing emphasizes governance failures and unintended consequences over deliberate AI malevolence; she has highlighted how competitive pressures lead actors to cut corners rather than arguing that AI systems will develop and pursue explicitly harmful intentions, suggesting she leans toward the miscalculation world.",
           "t-d-expects": "Toner has stressed the critical importance of human oversight and control as a safeguard, implying she views the scenario where an AI system foresees and pursues catastrophic outcomes while humans cannot intervene as extremely dangerous; this is precisely the oversight failure mode she testified was most in need of regulatory remedy.",
           "t-d-no-expects": "Toner's emphasis on oversight and institutional checks suggests she views miscalculation scenarios—where an AI has mistaken beliefs about consequences—as somewhat more tractable than deliberate misalignment, since human monitoring has a better chance of catching and correcting errors than countering an AI that actively anticipates and circumvents intervention."
         }
@@ -774,13 +774,13 @@ const TREES = [
         reasoning: {
           "t-ai-inc": "In The Precipice, Ord ranks AI as one of the top three existential risks and his ~10% per-century AI estimate vastly exceeds the background rate, implying strong belief that AI development is net-negative for x-risk; he nonetheless acknowledges that advanced AI could help prevent other catastrophes (better biosecurity, coordination), leaving real probability mass on the net-positive side.",
           "t-d-no-inc": "Ord estimates total non-AI x-risk at roughly 6–7% per century in The Precipice, dominated by engineered pandemics (~3%), nuclear war (~1%), and unknown risks (~2–3%); scaling to a 30-year window with modest front-loading yields roughly 2–4%.",
-          "t-single": "Ord discusses both unipolar lock-in and multipolar competitive dynamics in The Precipice without strongly privileging one scenario; he notes that a single dominant AI creates a concentrated point of failure for irreversible value lock-in, but does not treat the singleton pathway as clearly dominant over competitive multipolarity.",
+          "t-single": "Ord discusses both unipolar lock-in and multipolar competitive dynamics in The Precipice without strongly privileging one scenario; he notes that a single dominant AI creates a concentrated point of failure for irreversible value lock-in, but does not treat the singleton world as clearly dominant over competitive multipolarity.",
           "t-d-multi": "A multipolar AI landscape still carries meaningful risk in Ord's view through AI-assisted weapons development, arms-race dynamics, and erosion of institutional safeguards; he treats competitive multipolarity as substantially less acutely dangerous than a misaligned singleton, but not negligible.",
           "t-has-rep": "Ord does not strongly favor reward-hacking over goal-directed accounts of misalignment in The Precipice — he frames the alignment problem as encompassing both unrepresented side-effect harm and more deliberate-seeming goal pursuit — leaving the question of whether a dominant AI internally models danger genuinely open.",
-          "t-d-no-rep": "Unaware optimization causing catastrophe as a side effect is central to Ord's framing of the alignment problem in The Precipice; he takes it seriously as a pathway but also notes that visible unintended-consequence failures might be detected and corrected before reaching existential scale, keeping the conditional somewhat below the deliberate-harm pathway.",
-          "t-expects": "Ord's framing in The Precipice focuses more on misaligned-but-unaware AI than on deliberately goal-directed dangerous AI; conditional on a dominant AI having an internal model of danger, he would estimate the AI deliberately expecting or intending catastrophe as a real but minority sub-pathway within the broader alignment failure space.",
+          "t-d-no-rep": "Unaware optimization causing catastrophe as a side effect is central to Ord's framing of the alignment problem in The Precipice; he takes it seriously as a world but also notes that visible unintended-consequence failures might be detected and corrected before reaching existential scale, keeping the conditional somewhat below the deliberate-harm world.",
+          "t-expects": "Ord's framing in The Precipice focuses more on misaligned-but-unaware AI than on deliberately goal-directed dangerous AI; conditional on a dominant AI having an internal model of danger, he would estimate the AI deliberately expecting or intending catastrophe as a real but minority sub-world within the broader alignment failure space.",
           "t-d-expects": "If a powerful AI explicitly represents and expects existential catastrophe, Ord would view this as among the most dangerous scenarios with high probability of doom; his measured overall estimate (~10% per century) implies such scenarios are not highly probable, but if they arise, both human recognition and countermeasures face severe challenges.",
-          "t-d-no-expects": "The miscalculation pathway — AI models danger but holds wrong beliefs about its likelihood or avoidability — is part of Ord's general alignment concern in The Precipice; it is less dangerous than the deliberate case since the AI is not actively pursuing catastrophe, but still substantial given the difficulty of correcting deep misbeliefs in a highly capable system."
+          "t-d-no-expects": "The miscalculation world — AI models danger but holds wrong beliefs about its likelihood or avoidability — is part of Ord's general alignment concern in The Precipice; it is less dangerous than the deliberate case since the AI is not actively pursuing catastrophe, but still substantial given the difficulty of correcting deep misbeliefs in a highly capable system."
         }
       },
       marcus: {
@@ -854,7 +854,7 @@ const TREES = [
           "t-d-no-inc": "Ng rarely discusses non-AI existential risks directly, but as a scientist he would not dismiss all existential hazards (pandemics, nuclear war). He would accept a small background rate broadly consistent with mainstream scientific estimates (~1–5% per century scaled to 30 years).",
           "t-single": "Ng has advocated strongly for AI democratization and open-source access (e.g., his criticism of export controls and AI consolidation), implying he thinks concentration of AI power is unlikely; conditional on AI raising x-risk, he would still lean toward multipolar over single-actor scenarios.",
           "t-d-multi": "Ng would view a distributed AI landscape as protective: no single actor has decisive leverage, market incentives self-correct, and governments can intervene. Multipolar catastrophe requires a coordination failure across many systems simultaneously, which he would treat as very unlikely.",
-          "t-has-rep": "Ng has publicly stated that current LLMs and near-future AI systems do not have persistent goals or world-models in the sense implied by classical AGI alignment concerns; he would expect most plausible harm pathways to be indirect side-effects rather than a system that internally models catastrophe as a concept.",
+          "t-has-rep": "Ng has publicly stated that current LLMs and near-future AI systems do not have persistent goals or world-models in the sense implied by classical AGI alignment concerns; he would expect most plausible harm worlds to be indirect side-effects rather than a system that internally models catastrophe as a concept.",
           "t-d-no-rep": "Even conceding unaware reward-hacking harm, Ng would argue that engineering feedback loops, regulatory oversight, and the incremental nature of AI deployment make civilisation-ending scale implausible; serious harm is possible but extinction from purely side-effect-driven AI is not.",
           "t-expects": "Ng is deeply skeptical of goal-directed superintelligence emerging on any near-term timescale, calling such scenarios 'science fiction' in multiple interviews. Conditional on a single dominant AI already raising x-risk, he would still put low probability on that system possessing something like deliberate intent toward catastrophe.",
           "t-d-expects": "This is the scenario closest to the classic 'misaligned superintelligence' framing that Ng dismisses — but if forced to condition on a genuinely intent-bearing dominant AI, he would acknowledge that deliberate pursuit of catastrophic outcomes is the most dangerous sub-case and assign a meaningfully higher conditional probability than the other branches.",
@@ -897,7 +897,7 @@ const TREES = [
           "t-d-no-rep": "Even if AI systems produced harm through reward hacking or side-effects without 'understanding' it, LeCun argues that engineering discipline, objective-driven design, and iterative deployment with human oversight would catch and correct such failures well before they reach existential scale; he views this as a solved engineering problem given proper design choices.",
           "t-expects": "LeCun is the most prominent public critic of 'instrumental convergence' arguments — the claim that capable AI would spontaneously develop self-preservation or world-domination goals. He has said this reasoning incorrectly anthropomorphizes AI, that there is no mechanism by which an AI would 'want' to dominate, and has compared such arguments to unfounded science-fiction extrapolation.",
           "t-d-expects": "Even in the extreme and (to LeCun) implausible scenario where an AI foresaw and intended catastrophic outcomes, he would argue that distributed human oversight, redundant control systems, and the competitive multipolar AI landscape would prevent any single system from executing a civilization-ending plan; he sees societal and institutional responses as decisive.",
-          "t-d-no-expects": "A miscalculating AI causing existential harm requires autonomous agency at massive scale plus an absence of engineering safeguards — both of which his objective-driven AI agenda is explicitly designed to prevent. He views safety as a tractable engineering problem with known solution paths, not an open philosophical puzzle, and therefore assigns low probability even to this accidental pathway."
+          "t-d-no-expects": "A miscalculating AI causing existential harm requires autonomous agency at massive scale plus an absence of engineering safeguards — both of which his objective-driven AI agenda is explicitly designed to prevent. He views safety as a tractable engineering problem with known solution paths, not an open philosophical puzzle, and therefore assigns low probability even to this accidental world."
         }
       }
 
@@ -922,7 +922,7 @@ const TREES = [
         {
           id: "toy-a-path",
           name: "E via A",
-          description: "P(A) × P(E | A) — the pathway where A occurs and E follows.",
+          description: "P(A) × P(E | A) — the world where A occurs and E follows.",
           type: "and",
           children: [
             {
@@ -942,7 +942,7 @@ const TREES = [
         {
           id: "toy-not-a-path",
           name: "E via ¬A",
-          description: "P(¬A) × P(E | ¬A) — the pathway where A doesn't occur but E still does.",
+          description: "P(¬A) × P(E | ¬A) — the world where A doesn't occur but E still does.",
           type: "and",
           children: [
             {
