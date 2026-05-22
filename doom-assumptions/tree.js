@@ -17,7 +17,6 @@
   let rangeMode = false;
   let rangeIndependent = false;  // false = worst-case bounds, true = independent error propagation
   let probRanges = {};          // node id -> {lo, hi} for leaves in range mode
-  let editMode = false;         // when true, every card shows edit-action chrome
 
   // --- DOM refs ---
   const treeSelect = document.getElementById("tree-select");
@@ -38,13 +37,6 @@
   const importFile = document.getElementById("import-file");
   const shareBtn = document.getElementById("share-btn");
   const worldviewTitle = document.getElementById("worldview-title");
-  const editToggle = document.getElementById("edit-toggle");
-  const editModal = document.getElementById("edit-modal");
-  const editModalTitle = document.getElementById("edit-modal-title");
-  const editModalName = document.getElementById("edit-modal-name");
-  const editModalDesc = document.getElementById("edit-modal-desc");
-  const editModalSave = document.getElementById("edit-modal-save");
-  const editModalCancel = document.getElementById("edit-modal-cancel");
 
   // --- Helpers ---
 
@@ -1130,48 +1122,17 @@
         }
       });
     }
-    // Embed the tree structure when the user has edited it (#57). On load,
-    // loadStateFromHash applies state.tr in place of the bundled tree.
-    if (treeModified) {
-      state.tr = serializeTree(getTree().tree);
-    }
-    // UTF-8-encode before btoa — node descriptions contain em-dashes and
-    // other non-Latin-1 characters that raw btoa rejects.
-    return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-  }
-
-  // Persist the current state into the URL hash. Used after every edit.
-  function saveStateToHash() {
-    try {
-      var h = encodeStateToHash();
-      // Use replaceState so we don't pile up history entries on every edit.
-      history.replaceState(null, "", "#" + h);
-    } catch (e) { /* ignore — likely too-large hash */ }
+    return btoa(JSON.stringify(state));
   }
 
   function loadStateFromHash() {
     var hash = window.location.hash.slice(1);
     if (!hash) return false;
     try {
-      // Mirror of encodeStateToHash: undo UTF-8 wrap first, then JSON parse.
-      // Old hashes without a UTF-8 wrap still decode cleanly because
-      // decodeURIComponent(escape(...)) is a no-op for pure-ASCII.
-      var raw;
-      try { raw = decodeURIComponent(escape(atob(hash))); }
-      catch (e) { raw = atob(hash); }
-      var state = JSON.parse(raw);
+      var state = JSON.parse(atob(hash));
       if (state.t != null && TREES[state.t]) {
         currentTreeIndex = state.t;
         treeSelect.value = state.t;
-      }
-      // Tree-structure override from a previously-edited URL (#57).
-      // Mutates TREES[currentTreeIndex].tree in place so getTree() returns
-      // the edited shape. Marks the tree as modified so subsequent saves
-      // re-emit `tr`.
-      if (state.tr) {
-        TREES[currentTreeIndex].tree = state.tr;
-        treeModified = true;
-        _parentMapByTreeId = {};
       }
       initProbabilities();
       initVariables();
@@ -1507,11 +1468,6 @@
       e.stopPropagation();
       selectNode(node);
     });
-
-    // Edit-mode action chrome. Always built; CSS gates visibility on
-    // `.tg-tree.tg-edit-mode`. Cards inside `.tg-joint-inner` have the row
-    // hidden via the more-specific selector in tree.css.
-    card.appendChild(buildEditActions(node));
 
     wrapper.appendChild(card);
 
@@ -1887,283 +1843,6 @@
   function toggleCollapse(nodeId) {
     collapsedNodes[nodeId] = !collapsedNodes[nodeId];
     renderTree();
-  }
-
-  // --- Tree editing (#57) ---
-  //
-  // Phase 1: edit-mode toggle, plus an action row on every card with an
-  // "Edit" button that opens a modal for renaming + describing the node.
-  // The tree object in TREES[currentTreeIndex] is mutated in place; the
-  // worldview/probability maps follow because they key by node id.
-
-  function buildEditActions(node) {
-    var row = document.createElement("div");
-    row.className = "tg-edit-actions";
-    var isRoot = node.id === getTree().tree.id;
-    var isLeaf = node.type === "leaf";
-    var isComplement = !!node.complement_of;
-    var isBranch = node.type === "and" || node.type === "or";
-
-    function addBtn(cls, glyph, title, handler) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = cls;
-      b.title = title;
-      b.textContent = glyph;
-      b.addEventListener("click", function (e) {
-        e.stopPropagation();
-        handler();
-      });
-      row.appendChild(b);
-    }
-
-    addBtn("tg-edit-edit", "✎", "Edit name and description", function () {
-      openEditModal(node);
-    });
-
-    // Add-child: only on AND/OR nodes
-    if (isBranch) {
-      addBtn("tg-edit-add", "+", "Add child node", function () {
-        openAddChildModal(node);
-      });
-    }
-
-    // Split: leaf only, not on complements (which mirror their source)
-    if (isLeaf && !isComplement) {
-      addBtn("tg-edit-split", "⎇", "Split into world + P(D | world)", function () {
-        if (!confirm("Replace this leaf with an AND[ P(D | world) , OR of sub-branches ]? The current probability becomes the new conditional leaf's value.")) return;
-        splitLeafIntoPattern(node.id);
-      });
-    }
-
-    // Delete: any node except root. Complement leaves get deleted together
-    // with their source if you delete the source.
-    if (!isRoot) {
-      addBtn("tg-edit-delete", "🗑", "Delete this node" + (isLeaf ? "" : " and its subtree"), function () {
-        if (!confirm("Delete “" + (node.name || node.id) + "”" + (isLeaf ? "" : " and its entire subtree") + "? This can't be undone (but you can refresh to reload from the URL or the bundled tree).")) return;
-        deleteNodeById(node.id);
-      });
-    }
-
-    return row;
-  }
-
-  var _editModalTargetId = null;
-  function openEditModal(node) {
-    _editModalTargetId = node.id;
-    editModalTitle.textContent = "Edit “" + (node.name || node.id) + "”";
-    editModalName.value = node.name || "";
-    editModalDesc.value = node.description || "";
-    editModal.classList.add("open");
-    setTimeout(function () { editModalName.focus(); editModalName.select(); }, 0);
-  }
-  function closeEditModal() {
-    editModal.classList.remove("open");
-    _editModalTargetId = null;
-  }
-  function commitEditModal() {
-    if (!_editModalTargetId) return;
-    var node = findNode(getTree().tree, _editModalTargetId);
-    if (!node) { closeEditModal(); return; }
-    var newName = editModalName.value.trim();
-    var newDesc = editModalDesc.value;
-    if (newName) node.name = newName;
-    node.description = newDesc;
-    closeEditModal();
-    postTreeEdit();
-  }
-
-  // Tree-structure mutation helpers — used by buildEditActions handlers.
-
-  var treeModified = false;
-  function generateNodeId() {
-    return "usr-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 6);
-  }
-
-  // Find { parent, index } of a node, or null for root / not found.
-  function findParentLocation(root, nodeId) {
-    if (!root.children) return null;
-    for (var i = 0; i < root.children.length; i++) {
-      if (root.children[i].id === nodeId) return { parent: root, index: i };
-      var rec = findParentLocation(root.children[i], nodeId);
-      if (rec) return rec;
-    }
-    return null;
-  }
-
-  function walkSubtreeIds(node, cb) {
-    cb(node);
-    if (node.children) {
-      for (var i = 0; i < node.children.length; i++) walkSubtreeIds(node.children[i], cb);
-    }
-  }
-
-  function addChildToBranch(parentNode, childType, name) {
-    if (!parentNode.children) parentNode.children = [];
-    var newId = generateNodeId();
-    var node = {
-      id: newId,
-      name: name || ("new " + childType),
-      description: "",
-      type: childType
-    };
-    if (childType !== "leaf") node.children = [];
-    parentNode.children.push(node);
-    if (childType === "leaf") {
-      probabilities[newId] = 0.5;
-    }
-    postTreeEdit();
-    return newId;
-  }
-
-  function deleteNodeById(nodeId) {
-    var loc = findParentLocation(getTree().tree, nodeId);
-    if (!loc) return;
-    var subtree = loc.parent.children[loc.index];
-
-    // Also delete any complement leaf that mirrors a leaf inside the subtree.
-    var deletedIds = {};
-    walkSubtreeIds(subtree, function (n) { deletedIds[n.id] = true; });
-    var rootTree = getTree().tree;
-    var orphans = [];
-    walkSubtreeIds(rootTree, function (n) {
-      if (n.complement_of && deletedIds[n.complement_of]) orphans.push(n.id);
-    });
-
-    // Drop probability / range / pin / collapse state for everything we're removing
-    function dropState(id) {
-      delete probabilities[id];
-      delete probRanges[id];
-      delete pinnedNodes[id];
-      delete overrideValues[id];
-      delete collapsedNodes[id];
-    }
-    walkSubtreeIds(subtree, function (n) { dropState(n.id); });
-    orphans.forEach(function (id) {
-      var oloc = findParentLocation(rootTree, id);
-      if (oloc) {
-        oloc.parent.children.splice(oloc.index, 1);
-        dropState(id);
-      }
-    });
-
-    loc.parent.children.splice(loc.index, 1);
-    postTreeEdit();
-  }
-
-  // Decompose a leaf into the doom-style pattern:
-  //   leaf X  →  AND "X worlds" { leaf "D | X" , OR "X breakdown" { leaf, leaf } }
-  // The original leaf's probability moves to the new "D | X" conditional.
-  function splitLeafIntoPattern(leafId) {
-    var leaf = findNode(getTree().tree, leafId);
-    if (!leaf || leaf.type !== "leaf" || leaf.complement_of) return;
-
-    var origName = leaf.name || leaf.id;
-    var origDesc = leaf.description || "";
-    var origProb = probabilities[leafId];
-
-    var dGivenId = generateNodeId();
-    var orId = generateNodeId();
-    var sub1Id = generateNodeId();
-    var sub2Id = generateNodeId();
-
-    leaf.type = "and";
-    leaf.name = origName + " worlds";
-    leaf.description = origDesc || ("Worlds where " + origName + ", decomposed below.");
-    leaf.children = [
-      {
-        id: dGivenId, type: "leaf",
-        name: "D | " + origName,
-        description: "Among worlds where " + origName + ", your credence that D occurs within T."
-      },
-      {
-        id: orId, type: "or",
-        name: origName + " breakdown",
-        description: "Decomposition of " + origName + " worlds.",
-        children: [
-          { id: sub1Id, type: "leaf", name: "sub-branch A", description: "" },
-          { id: sub2Id, type: "leaf", name: "sub-branch B", description: "" }
-        ]
-      }
-    ];
-
-    delete probabilities[leafId];
-    delete probRanges[leafId];
-    delete overrideValues[leafId];
-    delete pinnedNodes[leafId];
-
-    probabilities[dGivenId] = origProb != null ? origProb : 0.5;
-    probabilities[sub1Id] = 0.5;
-    probabilities[sub2Id] = 0.5;
-
-    postTreeEdit();
-  }
-
-  // Called after any tree-structure or text edit: invalidate caches, mark
-  // dirty, re-render, sync URL hash.
-  function postTreeEdit() {
-    treeModified = true;
-    _parentMapByTreeId = {};
-    invalidateMCCache();
-    invalidateWCCache();
-    renderTree();
-    updateInfoPanel();
-    saveStateToHash();
-  }
-
-  // Serialize a tree to a compact JSON-friendly shape (drops undefined keys).
-  function serializeTree(node) {
-    var s = { id: node.id, type: node.type };
-    if (node.name) s.name = node.name;
-    if (node.description) s.description = node.description;
-    if (node.complement_of) s.complement_of = node.complement_of;
-    if (node.children && node.children.length) s.children = node.children.map(serializeTree);
-    return s;
-  }
-
-  // --- Add-child modal ---
-
-  var _addChildTargetId = null;
-  function openAddChildModal(parentNode) {
-    _addChildTargetId = parentNode.id;
-    addChildModalParentName.textContent = parentNode.name || parentNode.id;
-    addChildModalName.value = "";
-    addChildModalType.value = "leaf";
-    addChildModal.classList.add("open");
-    setTimeout(function () { addChildModalName.focus(); }, 0);
-  }
-  function closeAddChildModal() {
-    addChildModal.classList.remove("open");
-    _addChildTargetId = null;
-  }
-  function commitAddChildModal() {
-    if (!_addChildTargetId) return;
-    var parent = findNode(getTree().tree, _addChildTargetId);
-    if (!parent) { closeAddChildModal(); return; }
-    var name = addChildModalName.value.trim();
-    var type = addChildModalType.value;
-    closeAddChildModal();
-    addChildToBranch(parent, type, name || null);
-  }
-
-  // Lazy-bind add-child modal DOM refs once on first use
-  var addChildModal, addChildModalParentName, addChildModalName, addChildModalType, addChildModalSave, addChildModalCancel;
-  function ensureAddChildModal() {
-    if (addChildModal) return;
-    addChildModal = document.getElementById("add-child-modal");
-    if (!addChildModal) return; // not in DOM yet
-    addChildModalParentName = document.getElementById("add-child-modal-parent");
-    addChildModalName = document.getElementById("add-child-modal-name");
-    addChildModalType = document.getElementById("add-child-modal-type");
-    addChildModalSave = document.getElementById("add-child-modal-save");
-    addChildModalCancel = document.getElementById("add-child-modal-cancel");
-    addChildModalSave.addEventListener("click", function (e) { e.preventDefault(); commitAddChildModal(); });
-    addChildModalCancel.addEventListener("click", function (e) { e.preventDefault(); closeAddChildModal(); });
-    addChildModal.addEventListener("click", function (e) { if (e.target === addChildModal) closeAddChildModal(); });
-    addChildModalName.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); commitAddChildModal(); }
-      if (e.key === "Escape") { e.preventDefault(); closeAddChildModal(); }
-    });
   }
 
   // --- JS-driven tree layout (Reingold-Tilford-style contour packing) ---
@@ -3399,7 +3078,6 @@
   function init() {
     populateTreeSelect();
     updateStickyOffset();
-    ensureAddChildModal();
 
     // Try loading state from URL hash first
     if (!loadStateFromHash()) {
@@ -3479,38 +3157,6 @@
     rangeModeToggle.classList.toggle("active", rangeIndependent);
     renderTree();
     updateInfoPanel();
-  });
-
-  // Edit-mode toggle (#57 phase 1): flip the .tg-edit-mode class on the tree;
-  // CSS surfaces the per-card action chrome. No data changes here — edits
-  // happen via the modal opened from each card's edit button.
-  editToggle.addEventListener("click", function (e) {
-    e.preventDefault();
-    editMode = !editMode;
-    editToggle.textContent = editMode ? "On" : "Off";
-    editToggle.classList.toggle("active", editMode);
-    treeGraph.classList.toggle("tg-edit-mode", editMode);
-  });
-
-  editModalSave.addEventListener("click", function (e) {
-    e.preventDefault();
-    commitEditModal();
-  });
-  editModalCancel.addEventListener("click", function (e) {
-    e.preventDefault();
-    closeEditModal();
-  });
-  // Close on backdrop click (but not on clicks inside the card)
-  editModal.addEventListener("click", function (e) {
-    if (e.target === editModal) closeEditModal();
-  });
-  // Enter to save when focus is in the name field
-  editModalName.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") { e.preventDefault(); commitEditModal(); }
-    if (e.key === "Escape") { e.preventDefault(); closeEditModal(); }
-  });
-  editModalDesc.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") { e.preventDefault(); closeEditModal(); }
   });
 
   resetBtn.addEventListener("click", function (e) {

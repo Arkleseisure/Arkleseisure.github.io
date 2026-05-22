@@ -23,7 +23,7 @@
 
   <!-- Main site styles + local overrides -->
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="tree.css?v=94">
+  <link rel="stylesheet" href="tree.css?v=91">
 </head>
 <body>
   <!-- Header (matches main site) -->
@@ -89,17 +89,12 @@
         <div class="control-group">
           <label class="control-label" for="range-toggle">Ranges</label>
           <button type="button" id="range-toggle" class="btn btn-secondary btn-sm btn-toggle">Off</button>
-          <span class="control-help" tabindex="0" data-tip="Add an uncertainty range to each leaf — the 10/90 quantiles of Beta(np, n(1-p)) at n=20 — and see how the uncertainty propagates up through the tree.">?</span>
+          <span class="control-help" tabindex="0" data-tip="Add an uncertainty range (±10pp by default) to each leaf, and see how the uncertainty propagates up through the tree.">?</span>
         </div>
         <div class="control-group" id="range-mode-group" style="display:none">
           <label class="control-label" for="range-mode-toggle">Propagation</label>
           <button type="button" id="range-mode-toggle" class="btn btn-secondary btn-sm btn-toggle">Worst case</button>
           <span class="control-help" tabindex="0" data-tip="How leaf ranges combine upward. Worst case takes the extremes (all lows together, all highs together). Independent treats each leaf as a Beta distribution and samples them independently, giving 10th–90th percentile bounds.">?</span>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="edit-toggle">Edit tree</label>
-          <button type="button" id="edit-toggle" class="btn btn-secondary btn-sm btn-toggle">Off</button>
-          <span class="control-help" tabindex="0" data-tip="Add, rename, delete, or split nodes. Edits update the URL hash so you can share your modified tree.">?</span>
         </div>
       </div>
     </div>
@@ -221,40 +216,6 @@
     </div>
   </div>
 
-  <!-- Edit Modal: name + description -->
-  <div class="tg-edit-modal" id="edit-modal">
-    <div class="tg-edit-modal-card">
-      <h3 id="edit-modal-title">Edit node</h3>
-      <label for="edit-modal-name">Name</label>
-      <input type="text" id="edit-modal-name" />
-      <label for="edit-modal-desc">Description</label>
-      <textarea id="edit-modal-desc"></textarea>
-      <div class="tg-edit-modal-buttons">
-        <button type="button" class="btn btn-sm" id="edit-modal-cancel">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="edit-modal-save">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add Child Modal: pick type + name for a new child under the chosen branch -->
-  <div class="tg-edit-modal" id="add-child-modal">
-    <div class="tg-edit-modal-card">
-      <h3>Add child to “<span id="add-child-modal-parent"></span>”</h3>
-      <label for="add-child-modal-type">Type</label>
-      <select id="add-child-modal-type">
-        <option value="leaf">Leaf (an atomic probability)</option>
-        <option value="or">OR (a disjunction — exhaustive cases)</option>
-        <option value="and">AND (a conjunction — joint conditions)</option>
-      </select>
-      <label for="add-child-modal-name">Name</label>
-      <input type="text" id="add-child-modal-name" placeholder="e.g. Aligned AI dominates" />
-      <div class="tg-edit-modal-buttons">
-        <button type="button" class="btn btn-sm" id="add-child-modal-cancel">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="add-child-modal-save">Add</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
@@ -268,8 +229,8 @@
     </div>
   </footer>
 
-  <script src="data.js?v=94"></script>
-  <script src="tree.js?v=94"></script>
+  <script src="data.js?v=91"></script>
+  <script src="tree.js?v=91"></script>
   <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="../js/main.js"></script>
 </body>
