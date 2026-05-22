@@ -23,7 +23,7 @@
 
   <!-- Main site styles + local overrides -->
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="tree.css?v=94">
+  <link rel="stylesheet" href="tree.css?v=96">
 </head>
 <body>
   <!-- Header (matches main site) -->
@@ -236,21 +236,22 @@
     </div>
   </div>
 
-  <!-- Add Child Modal: pick type + name for a new child under the chosen branch -->
-  <div class="tg-edit-modal" id="add-child-modal">
+  <!-- Split Modal: name two mutually-exclusive sub-worlds to split a leaf into.
+       Produces an OR with two AND-supernodes (yes / no, complement-linked). -->
+  <div class="tg-edit-modal" id="split-modal">
     <div class="tg-edit-modal-card">
-      <h3>Add child to “<span id="add-child-modal-parent"></span>”</h3>
-      <label for="add-child-modal-type">Type</label>
-      <select id="add-child-modal-type">
-        <option value="leaf">Leaf (an atomic probability)</option>
-        <option value="or">OR (a disjunction — exhaustive cases)</option>
-        <option value="and">AND (a conjunction — joint conditions)</option>
-      </select>
-      <label for="add-child-modal-name">Name</label>
-      <input type="text" id="add-child-modal-name" placeholder="e.g. Aligned AI dominates" />
+      <h3>Split “<span id="split-modal-leaf"></span>” into two supernodes</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0;">
+        Give the two mutually-exclusive sub-worlds. They become the two new
+        supernodes, with their world-defining probabilities complement-linked.
+      </p>
+      <label for="split-modal-yes">First sub-world</label>
+      <input type="text" id="split-modal-yes" placeholder="e.g. multipolar AI" />
+      <label for="split-modal-no">Second sub-world</label>
+      <input type="text" id="split-modal-no" placeholder="e.g. single dominant AI" />
       <div class="tg-edit-modal-buttons">
-        <button type="button" class="btn btn-sm" id="add-child-modal-cancel">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="add-child-modal-save">Add</button>
+        <button type="button" class="btn btn-sm" id="split-modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="split-modal-save">Split</button>
       </div>
     </div>
   </div>
@@ -268,8 +269,8 @@
     </div>
   </footer>
 
-  <script src="data.js?v=94"></script>
-  <script src="tree.js?v=94"></script>
+  <script src="data.js?v=96"></script>
+  <script src="tree.js?v=96"></script>
   <script data-goatcounter="https://arkleseisure.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="../js/main.js"></script>
 </body>
