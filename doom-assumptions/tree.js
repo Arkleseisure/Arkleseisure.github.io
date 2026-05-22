@@ -1899,33 +1899,10 @@
   function buildEditActions(node) {
     var row = document.createElement("div");
     row.className = "tg-edit-actions";
+    var isRoot = node.id === getTree().tree.id;
     var isLeaf = node.type === "leaf";
     var isComplement = !!node.complement_of;
-    var isRoot = node.id === getTree().tree.id;
-    var jointInfo = isJointAnd(node);
-
-    // A split-able leaf is any non-complement leaf. In the doom tree this
-    // is meant for P(D|world) leaves but world-leaves work too. Leaves
-    // absorbed inside a joint card don't get their own edit row (CSS
-    // hides them) so this check is intentionally permissive.
-    var canSplit = isLeaf && !isComplement;
-
-    // Mergeable nodes are the inverse of split: either an OR with
-    // AND-supernode children, OR a joint-subtree AND whose absorbed OR
-    // has AND-supernode children. In the latter case the merge target is
-    // the absorbed OR — collapsing it turns the joint-subtree into a
-    // joint-double.
-    var mergeTargetId = null;
-    if (node.type === "or" && node.children && node.children.length >= 1 &&
-        node.children.every(function (c) { return c.type === "and"; })) {
-      mergeTargetId = node.id;
-    } else if (jointInfo && jointInfo.kind === "subtree") {
-      var inner = jointInfo.subtree;
-      if (inner && inner.children && inner.children.length >= 1 &&
-          inner.children.every(function (c) { return c.type === "and"; })) {
-        mergeTargetId = inner.id;
-      }
-    }
+    var isBranch = node.type === "and" || node.type === "or";
 
     function addBtn(cls, glyph, title, handler) {
       var b = document.createElement("button");
@@ -1944,18 +1921,27 @@
       openEditModal(node);
     });
 
-    if (canSplit) {
-      addBtn("tg-edit-split", "⎇", "Split this leaf into two supernodes", function () {
-        openSplitModal(node);
+    // Add-child: only on AND/OR nodes
+    if (isBranch) {
+      addBtn("tg-edit-add", "+", "Add child node", function () {
+        openAddChildModal(node);
       });
     }
 
-    if (mergeTargetId && !isRoot) {
-      addBtn("tg-edit-merge", "⊟", "Collapse this split back into a single P(D | world) leaf", function () {
-        var target = findNode(getTree().tree, mergeTargetId);
-        if (!target) return;
-        if (!confirm("Collapse “" + (target.name || target.id) + "” back into a single leaf? Its " + target.children.length + " supernode children and their subtrees will be discarded; the leaf inherits the current computed value.")) return;
-        mergeSplit(mergeTargetId);
+    // Split: leaf only, not on complements (which mirror their source)
+    if (isLeaf && !isComplement) {
+      addBtn("tg-edit-split", "⎇", "Split into world + P(D | world)", function () {
+        if (!confirm("Replace this leaf with an AND[ P(D | world) , OR of sub-branches ]? The current probability becomes the new conditional leaf's value.")) return;
+        splitLeafIntoPattern(node.id);
+      });
+    }
+
+    // Delete: any node except root. Complement leaves get deleted together
+    // with their source if you delete the source.
+    if (!isRoot) {
+      addBtn("tg-edit-delete", "🗑", "Delete this node" + (isLeaf ? "" : " and its subtree"), function () {
+        if (!confirm("Delete “" + (node.name || node.id) + "”" + (isLeaf ? "" : " and its entire subtree") + "? This can't be undone (but you can refresh to reload from the URL or the bundled tree).")) return;
+        deleteNodeById(node.id);
       });
     }
 
@@ -2012,112 +1998,39 @@
     }
   }
 
-  // Split a P(D|world) leaf into two mutually-exclusive supernodes —
-  // the structural primitive that produces the 4 existing splits in the
-  // bundled tree. Replaces the leaf with an OR (keeping the leaf's id and
-  // name as the "D | parent" label) that contains 2 AND-supernode children:
-  //
-  //   OR  "<original name>"           (was the leaf)
-  //   ├── AND "<yes> worlds"          (yes supernode)
-  //   │   ├── leaf "<yes>"            (world-defining; gets a slider)
-  //   │   └── leaf "D | <yes>"        (conditional; gets a slider)
-  //   └── AND "<no> worlds"           (no supernode)
-  //       ├── leaf "<no>"             (complement_of the yes-world leaf)
-  //       └── leaf "D | <no>"
-  //
-  // The original leaf's probability is preserved as the default value for
-  // both new "D | <branch>" leaves so the computed P(D|parent) doesn't
-  // jump on first split.
-  function splitLeafIntoSupernodes(leafId, yesName, noName) {
-    var leaf = findNode(getTree().tree, leafId);
-    if (!leaf || leaf.type !== "leaf" || leaf.complement_of) return;
-    if (!yesName) yesName = "yes";
-    if (!noName) noName = "no";
-
-    var origName = leaf.name || leaf.id;
-    var origDesc = leaf.description || "";
-    var origProb = probabilities[leafId];
-
-    var yesAndId = generateNodeId();
-    var noAndId = generateNodeId();
-    var yesWorldId = generateNodeId();
-    var noWorldId = generateNodeId();
-    var yesDId = generateNodeId();
-    var noDId = generateNodeId();
-
-    // Mutate the leaf into an OR (keep id so existing references stick).
-    leaf.type = "or";
-    leaf.name = origName;
-    leaf.description = origDesc;
-    leaf.children = [
-      {
-        id: yesAndId, type: "and",
-        name: yesName + " worlds",
-        description: "Worlds where " + yesName + ".",
-        children: [
-          {
-            id: yesWorldId, type: "leaf",
-            name: yesName,
-            description: "Your credence that we're in a world where " + yesName + "."
-          },
-          {
-            id: yesDId, type: "leaf",
-            name: "D | " + yesName,
-            description: "Among worlds where " + yesName + ", your credence that D occurs within T."
-          }
-        ]
-      },
-      {
-        id: noAndId, type: "and",
-        name: noName + " worlds",
-        description: "Worlds where " + noName + ".",
-        children: [
-          {
-            id: noWorldId, type: "leaf",
-            name: noName,
-            description: "Your credence that we're in a world where " + noName + ". Computed as 1 − P(" + yesName + ").",
-            complement_of: yesWorldId
-          },
-          {
-            id: noDId, type: "leaf",
-            name: "D | " + noName,
-            description: "Among worlds where " + noName + ", your credence that D occurs within T."
-          }
-        ]
-      }
-    ];
-
-    // Drop the old leaf's slider state, seed defaults for the new leaves.
-    delete probabilities[leafId];
-    delete probRanges[leafId];
-    delete overrideValues[leafId];
-    delete pinnedNodes[leafId];
-
-    probabilities[yesWorldId] = 0.5;
-    // noWorldId is complement — auto-computed, no entry needed.
-    probabilities[yesDId] = origProb != null ? origProb : 0.5;
-    probabilities[noDId]  = origProb != null ? origProb : 0.5;
-
+  function addChildToBranch(parentNode, childType, name) {
+    if (!parentNode.children) parentNode.children = [];
+    var newId = generateNodeId();
+    var node = {
+      id: newId,
+      name: name || ("new " + childType),
+      description: "",
+      type: childType
+    };
+    if (childType !== "leaf") node.children = [];
+    parentNode.children.push(node);
+    if (childType === "leaf") {
+      probabilities[newId] = 0.5;
+    }
     postTreeEdit();
+    return newId;
   }
 
-  // Inverse of splitLeafIntoSupernodes: collapse an OR (and its subtree)
-  // back into a single leaf carrying the OR's current computed value.
-  function mergeSplit(orId) {
-    var orNode = findNode(getTree().tree, orId);
-    if (!orNode || orNode.type !== "or") return;
+  function deleteNodeById(nodeId) {
+    var loc = findParentLocation(getTree().tree, nodeId);
+    if (!loc) return;
+    var subtree = loc.parent.children[loc.index];
 
-    // Preserve the value the user is currently seeing for this branch.
-    var currentP = computeProb(orNode);
-
-    // Collect ids in the subtree (excluding the OR itself, whose slot
-    // we'll reuse for the new leaf). Then drop their slider state and
-    // clean up any complement references *outside* the subtree that
-    // pointed *into* it.
+    // Also delete any complement leaf that mirrors a leaf inside the subtree.
     var deletedIds = {};
-    walkSubtreeIds(orNode, function (n) {
-      if (n.id !== orNode.id) deletedIds[n.id] = true;
+    walkSubtreeIds(subtree, function (n) { deletedIds[n.id] = true; });
+    var rootTree = getTree().tree;
+    var orphans = [];
+    walkSubtreeIds(rootTree, function (n) {
+      if (n.complement_of && deletedIds[n.complement_of]) orphans.push(n.id);
     });
+
+    // Drop probability / range / pin / collapse state for everything we're removing
     function dropState(id) {
       delete probabilities[id];
       delete probRanges[id];
@@ -2125,23 +2038,63 @@
       delete overrideValues[id];
       delete collapsedNodes[id];
     }
-    Object.keys(deletedIds).forEach(dropState);
-
-    // Any leaf outside the subtree whose complement_of pointed into the
-    // subtree becomes a standalone leaf with a sensible default.
-    var rootTree = getTree().tree;
-    walkSubtreeIds(rootTree, function (n) {
-      if (n === orNode || deletedIds[n.id]) return;
-      if (n.complement_of && deletedIds[n.complement_of]) {
-        delete n.complement_of;
-        if (probabilities[n.id] == null) probabilities[n.id] = 0.5;
+    walkSubtreeIds(subtree, function (n) { dropState(n.id); });
+    orphans.forEach(function (id) {
+      var oloc = findParentLocation(rootTree, id);
+      if (oloc) {
+        oloc.parent.children.splice(oloc.index, 1);
+        dropState(id);
       }
     });
 
-    // Convert the OR into a leaf in place.
-    orNode.type = "leaf";
-    delete orNode.children;
-    probabilities[orId] = currentP != null ? currentP : 0.5;
+    loc.parent.children.splice(loc.index, 1);
+    postTreeEdit();
+  }
+
+  // Decompose a leaf into the doom-style pattern:
+  //   leaf X  →  AND "X worlds" { leaf "D | X" , OR "X breakdown" { leaf, leaf } }
+  // The original leaf's probability moves to the new "D | X" conditional.
+  function splitLeafIntoPattern(leafId) {
+    var leaf = findNode(getTree().tree, leafId);
+    if (!leaf || leaf.type !== "leaf" || leaf.complement_of) return;
+
+    var origName = leaf.name || leaf.id;
+    var origDesc = leaf.description || "";
+    var origProb = probabilities[leafId];
+
+    var dGivenId = generateNodeId();
+    var orId = generateNodeId();
+    var sub1Id = generateNodeId();
+    var sub2Id = generateNodeId();
+
+    leaf.type = "and";
+    leaf.name = origName + " worlds";
+    leaf.description = origDesc || ("Worlds where " + origName + ", decomposed below.");
+    leaf.children = [
+      {
+        id: dGivenId, type: "leaf",
+        name: "D | " + origName,
+        description: "Among worlds where " + origName + ", your credence that D occurs within T."
+      },
+      {
+        id: orId, type: "or",
+        name: origName + " breakdown",
+        description: "Decomposition of " + origName + " worlds.",
+        children: [
+          { id: sub1Id, type: "leaf", name: "sub-branch A", description: "" },
+          { id: sub2Id, type: "leaf", name: "sub-branch B", description: "" }
+        ]
+      }
+    ];
+
+    delete probabilities[leafId];
+    delete probRanges[leafId];
+    delete overrideValues[leafId];
+    delete pinnedNodes[leafId];
+
+    probabilities[dGivenId] = origProb != null ? origProb : 0.5;
+    probabilities[sub1Id] = 0.5;
+    probabilities[sub2Id] = 0.5;
 
     postTreeEdit();
   }
@@ -2168,54 +2121,49 @@
     return s;
   }
 
-  // --- Split modal — collect names for the two new mutually-exclusive sub-worlds ---
+  // --- Add-child modal ---
 
-  var _splitTargetId = null;
-  function openSplitModal(leafNode) {
-    _splitTargetId = leafNode.id;
-    splitModalLeaf.textContent = leafNode.name || leafNode.id;
-    splitModalYes.value = "";
-    splitModalNo.value = "";
-    splitModal.classList.add("open");
-    setTimeout(function () { splitModalYes.focus(); }, 0);
+  var _addChildTargetId = null;
+  function openAddChildModal(parentNode) {
+    _addChildTargetId = parentNode.id;
+    addChildModalParentName.textContent = parentNode.name || parentNode.id;
+    addChildModalName.value = "";
+    addChildModalType.value = "leaf";
+    addChildModal.classList.add("open");
+    setTimeout(function () { addChildModalName.focus(); }, 0);
   }
-  function closeSplitModal() {
-    splitModal.classList.remove("open");
-    _splitTargetId = null;
+  function closeAddChildModal() {
+    addChildModal.classList.remove("open");
+    _addChildTargetId = null;
   }
-  function commitSplitModal() {
-    if (!_splitTargetId) return;
-    var yes = splitModalYes.value.trim();
-    var no = splitModalNo.value.trim();
-    if (!yes || !no) {
-      // Highlight whichever's missing; don't close.
-      (yes ? splitModalNo : splitModalYes).focus();
-      return;
-    }
-    var id = _splitTargetId;
-    closeSplitModal();
-    splitLeafIntoSupernodes(id, yes, no);
+  function commitAddChildModal() {
+    if (!_addChildTargetId) return;
+    var parent = findNode(getTree().tree, _addChildTargetId);
+    if (!parent) { closeAddChildModal(); return; }
+    var name = addChildModalName.value.trim();
+    var type = addChildModalType.value;
+    closeAddChildModal();
+    addChildToBranch(parent, type, name || null);
   }
 
-  var splitModal, splitModalLeaf, splitModalYes, splitModalNo, splitModalSave, splitModalCancel;
-  function ensureSplitModal() {
-    if (splitModal) return;
-    splitModal = document.getElementById("split-modal");
-    if (!splitModal) return;
-    splitModalLeaf = document.getElementById("split-modal-leaf");
-    splitModalYes = document.getElementById("split-modal-yes");
-    splitModalNo = document.getElementById("split-modal-no");
-    splitModalSave = document.getElementById("split-modal-save");
-    splitModalCancel = document.getElementById("split-modal-cancel");
-    splitModalSave.addEventListener("click", function (e) { e.preventDefault(); commitSplitModal(); });
-    splitModalCancel.addEventListener("click", function (e) { e.preventDefault(); closeSplitModal(); });
-    splitModal.addEventListener("click", function (e) { if (e.target === splitModal) closeSplitModal(); });
-    function handleKey(e) {
-      if (e.key === "Enter") { e.preventDefault(); commitSplitModal(); }
-      if (e.key === "Escape") { e.preventDefault(); closeSplitModal(); }
-    }
-    splitModalYes.addEventListener("keydown", handleKey);
-    splitModalNo.addEventListener("keydown", handleKey);
+  // Lazy-bind add-child modal DOM refs once on first use
+  var addChildModal, addChildModalParentName, addChildModalName, addChildModalType, addChildModalSave, addChildModalCancel;
+  function ensureAddChildModal() {
+    if (addChildModal) return;
+    addChildModal = document.getElementById("add-child-modal");
+    if (!addChildModal) return; // not in DOM yet
+    addChildModalParentName = document.getElementById("add-child-modal-parent");
+    addChildModalName = document.getElementById("add-child-modal-name");
+    addChildModalType = document.getElementById("add-child-modal-type");
+    addChildModalSave = document.getElementById("add-child-modal-save");
+    addChildModalCancel = document.getElementById("add-child-modal-cancel");
+    addChildModalSave.addEventListener("click", function (e) { e.preventDefault(); commitAddChildModal(); });
+    addChildModalCancel.addEventListener("click", function (e) { e.preventDefault(); closeAddChildModal(); });
+    addChildModal.addEventListener("click", function (e) { if (e.target === addChildModal) closeAddChildModal(); });
+    addChildModalName.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); commitAddChildModal(); }
+      if (e.key === "Escape") { e.preventDefault(); closeAddChildModal(); }
+    });
   }
 
   // --- JS-driven tree layout (Reingold-Tilford-style contour packing) ---
@@ -3451,7 +3399,7 @@
   function init() {
     populateTreeSelect();
     updateStickyOffset();
-    ensureSplitModal();
+    ensureAddChildModal();
 
     // Try loading state from URL hash first
     if (!loadStateFromHash()) {

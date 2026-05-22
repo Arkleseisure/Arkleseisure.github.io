@@ -577,14 +577,10 @@
 .tg-tree.tg-edit-mode .tg-edit-actions {
   display: flex;
 }
-/* Edit chrome inside joint-inner cards: we DO want these surfaced (so the
-   user can split a P(D|world) leaf that's been absorbed into a
-   joint-double), but they need static positioning so they sit in the
-   joint card's flow instead of overflowing into the next supernode. */
+/* Cards rendered inside a joint inner (absorbed leaves) shouldn't surface
+   their own edit chrome — edit happens on the outer joint card. */
 .tg-joint-inner .tg-edit-actions {
-  position: static;
-  margin-top: 4px;
-  justify-content: flex-end;
+  display: none !important;
 }
 .tg-edit-actions button {
   background: rgba(255,255,255,0.06);
