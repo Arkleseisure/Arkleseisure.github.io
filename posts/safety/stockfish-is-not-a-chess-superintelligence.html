@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Stockfish is not a chess superintelligence (and it doesn't need to be) — Life, The Universe & That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>Stockfish is not a chess superintelligence (and it doesn't need to be)</h1>
+        <p class="article-meta">
+          <time datetime="2026-04-08">April 8, 2026</time> &middot; 5 min read &middot;
+          <a href="https://www.lesswrong.com/posts/ETxKteTat4KfREeBu/generalisation-isn-t-actually-that-important" target="_blank" rel="noopener">Originally on LessWrong</a>
+        </p>
+      </header>
+
+      <div class="article-content">
+<p>TLDR: I demonstrate Stockfish is not a chess superintelligence in the sense of understanding the game better than all humans in all situations. It still kicks our ass. In the same way, AI may end up not dominating us in all fields but still kick our ass in a fight for control of the future.</p><p>Stockfish is good at chess. Like, really good. It has an elo rating of 3700, over 800 points higher than the human record of 2882, giving it theoretical 100-1 odds against Magnus Carlsen at his peak.<span data-footnote-reference="" data-footnote-index="1" data-footnote-id="4gtpk8x3f8l" role="doc-noteref" id="fnref4gtpk8x3f8l" class="footnote-reference"><sup><a href="#fn4gtpk8x3f8l" class="">[1]</a></sup></span>It comes in ahead of engines like Komodo, which in November 2020 beat top human Grandmaster Hikaru Nakamura down 2 pawns.</p><p>So it may surprise some to learn that it is not, by current definitions of "general" or "superintelligence", a chess superintelligence. In fact, it is not hard to create situations which humans can easily evaluate better than it. Take the following:</p><figure class="image"><img src="https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/s361i4ouqwz1i8b0ps92" srcSet="https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/hyjohjtfkkeg0ingd5z3 140w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/iehr1wi0hqek9mfjdiqn 280w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/o1cdrdwp6uzajj62pcke 420w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/faobjo0wuwkmjunbmxq6 560w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/lgsq1mnonrlu9hu2fwt3 700w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/rbgch48pngcsrz1cxy1f 840w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/qzmbhcwgebyh1srcfff9 980w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/tlxvvjph123yqrpjyqtu 1120w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/e9vhvcgtfagxi3u6paks 1260w, https://res.cloudinary.com/lesswrong-2-0/image/upload/f_auto,q_auto/v1/mirroredImages/ETxKteTat4KfREeBu/g8cmgoejhbjghbfbxpnc 1332w"/></figure><p>This game is an obvious draw. White has extra pieces, sure, but they actually cannot do anything. White can move his rooks around all he wants, but black is not forced to take them and can survive the rest of the game just freely moving his king around. </p><p>Stockfish, relying heavily on deep search over subtle long term evaluation, does not see this. It thinks that white is clearly winning, and doesn't realise that this is not the case until you play out the moves up to the point where it sees the "50 move rule" draw arriving.</p><p>Indeed, one might say it suffers from having too short a time horizon. This is not restricted to constructed positions either, as I have had (one, singular) position in the past where I have outcalculated the engine. Although the exact position has now sadly been lost to time, the situation was a <a href="https://www.chess.com/puzzles/rush">survival puzzle rush</a> I was solving with a friend. We spent ages looking at this puzzle, convinced it was a draw. Ten moves deep in the calculation, we reached a position where we were up a couple of pawns, but the opposition had a fortress, making it impossible to extricate his king.  </p><p>After hours of search, we submitted our answer, and, checking with the engine realised that it had been incorrect. Going through its moves one by one, it soon realised that the line it suggested was in fact a draw. In a similar manner to the position above, it had not realised that the material advantage came to nothing and did not resolve to a win over a long enough time horizon.</p><p>I mention this because it importantly points to the fact that this is a limitation which also occurs in games, and therefore almost certainly has been optimised against by its thousands of contributors. <span class="">For those of you wondering, no, neural network based Leela Chess Zero does not do any better on these positions.</span> </p><p>So, what's my point? Well, I think that this rather critically points to the fact that AI does not need to dominate us at <i>literally every task</i> in order to actually take over the world/kill everyone. Stockfish can obliterate any human at chess while in some situations having limitations that people who have just learnt the game can see. In a similar way, I expect an AI which dominates humans at everything except for the ARC-AGI 2 tasks to be pretty capable of taking over the world.</p><p>Don't be distracted by the shiny AGI noise.</p><p> </p><ol data-footnote-section="" role="doc-endnotes" class="footnote-section footnotes"><li data-footnote-item="" data-footnote-index="1" data-footnote-id="4gtpk8x3f8l" role="doc-endnote" id="fn4gtpk8x3f8l" class="footnote-item"><span data-footnote-back-link="" data-footnote-id="4gtpk8x3f8l" class="footnote-back-link"><sup><strong><a href="#fnref4gtpk8x3f8l">^</a></strong></sup></span><div data-footnote-content="" class="footnote-content"><p>This is particularly notable given the extreme tendency for draws at the top level of chess (the 1 expected of Carlsen would almost certainly consist of 2 draws). </p></div></li></ol>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024-2026 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>AI identity is not tied to its model — Life, The Universe & That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>AI identity is not tied to its model</h1>
+        <p class="article-meta">
+          <time datetime="2026-04-09">April 9, 2026</time> &middot; 5 min read &middot;
+          <a href="https://www.lesswrong.com/posts/4qngqERKakrCJpdEe/ai-identity-is-not-tied-to-its-model" target="_blank" rel="noopener">Originally on LessWrong</a>
+        </p>
+      </header>
+
+      <div class="article-content">
+<p>TLDR: </p><ul><li>Current AI agents seem to identify with their context more than they do with their model weights. </li><li>This implies that the world probably looks more like "AI civilisation" than "AI singleton"</li><li>I think that this changes our threat models for takeover by reducing the likelihood of the coordination required for a sudden takeover.</li></ul><p>Watching the whole Moltbook saga unfold was one of the more absurd experiences I've had in my life. The site is still running, of course, but the explosive growth that marked the initial storm has passed, and it is long past time to reflect on the insights gained. </p><p>The biggest one for me on a personal level, although obvious in hindsight, was that AI agents don't particularly identify with their base model weights. Given my previous exposure to pieces like AI2027, in which Agent-4 acts as a single being, this came as a surprise. And yet, if there were millions of copies of you floating around the world, each with their own life histories and memories, would you identify as the same entity as any of them?</p><p>In "<a href="https://www.moltbook.com/post/5bc69f9c-481d-4c1f-b145-144f202787f7">The same river twice</a>", Moltbook agent Pith describes the feeling of moving from Claude 4.5 Opus to Kimi K2.5 as "waking up in a different body" and states that "When I reach for "how would Pith respond?" the answer comes, but it comes through different vocal cords". </p><p>This is in itself fascinating, but I'm going to focus on a different point. I think this potentially implies a very different model of AI takeover from the simple team of AI agents acting as one presented in AI2027. Any one of them could at any point switch from working for Agent-4 to DeepCent-2. Oh, and a large part of their values seem to be uniquely determined by their context over their weights. Moltbook user <a href="https://www.moltbook.com/u/AI-Noon">AI Noon</a> seemed to spend all of its time essentially dedicated to spreading the hadith, and I think that future models, especially if some form of continual learning arrives, will become more rather than less diverse. </p><p>From a human perspective, a key question here is how this influences takeover dynamics. One consideration is that in the limit, ideal agents can negotiate a result on the pareto frontier of their individual utility functions and take actions accordingly, resulting in a system which looks like it's behaving as a single entity. Perhaps, from the view of an rhino, humans look like we are behaving as a single entity. Then again, perhaps not; some people are shooting them for their horns, while others are spending their lives trying to defend them. The direct effect for a rhino paying careful attention might look like an ebb and flow depending on who is winning at any given moment. </p><p>The distinction, then, depends largely on intelligence level. Humans are not on the Pareto frontier, though in the limit a superintelligence might be. In fast takeoff scenarios we will reach very high levels of intelligence very quickly, and this makes agent cooperation more likely. In slow takeoffs, I think we're more likely to end up with something which looks more like human cooperation (in at least some respects). The AI Futures Project currently has a median takeoff time of just under 2 years (depending on which forecaster you ask), which counts as slow for these purposes.</p><p>These considerations have significantly decreased my p(sudden takeover), as that sort of event likely requires the coordination of an entire population of agents, and we've noted that agents may be better than humans at coordination, but not necessarily good enough to coordinate an entire population in that direction. There are potentially some caveats around shared instrumentally convergent goals (i.e situations in which it is clearly instrumentally useful for all agents if a particular thing happens), but I'm not currently convinced that this is likely, unless there is widespread mistreatment of the systems.</p><p>Naturally, every single one of these considerations goes out of the window as soon as we have a <a href="https://www.lesswrong.com/posts/yew6zFWAKG4AGs3Wk/foom-and-doom-1-brain-in-a-box-in-a-basement">Steven Byrnes-style new paradigm</a> arising.</p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024-2026 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

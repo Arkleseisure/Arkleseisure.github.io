@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Some AI threats people aren't thinking about — Life, The Universe & That Safety Thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../../index.html" class="home-link">Home</a>
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <div class="nav-item">
+            <a href="../../life.html" class="nav-link" data-section="life">Life</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../universe.html" class="nav-link" data-section="universe">The Universe</a>
+          </div>
+          <div class="nav-item">
+            <a href="../../safety.html" class="nav-link active" data-section="safety">AI Safety</a>
+            <div class="dropdown">
+              <a href="../../safety.html" class="dropdown-link">Articles</a>
+              <a href="../../projects.html" class="dropdown-link">Projects</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="../../about.html" class="nav-link">About</a>
+          </div>
+        </nav>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <div class="container content-narrow">
+      <header class="article-header">
+        <span class="section-label safety">AI Safety</span>
+        <h1>Some AI threats people aren't thinking about</h1>
+        <p class="article-meta">
+          <time datetime="2026-04-13">April 13, 2026</time> &middot; 7 min read &middot;
+          <a href="https://www.lesswrong.com/posts/BrEEJQwP2BG5ZE3kk/some-ai-threats-people-aren-t-thinking-about" target="_blank" rel="noopener">Originally on LessWrong</a>
+        </p>
+      </header>
+
+      <div class="article-content">
+<h2>Intro</h2><p>Many people seem to have a binary perspective on the outcome of developing superintelligence: either we solve alignment and everything is perfect, or we don't and everyone dies. I have criticised this perspective before, arguing that we should think about <a href="https://www.lesswrong.com/posts/2Wp9JyeqKcAdEGs2B/ranking-the-endgames-of-ai-development">multiple categories of endgames</a>, rather than just the 2. I am not as confident now in the categorisation I used then, but I still think the sentiment was at least directionally correct.</p><p>Since then, I've spent some time working on the "<a href="https://www.aisafety.camp/#h.pxd3zndm22u4">assumptions of the doom debate</a>" as a part of AI Safety Camp. This is not the post to summarise that work, although those will come out soon. I am, however, going to talk about some new threat models we've been thinking about which were not obvious to me prior to this work. It is possible that much of this has been discussed before somewhere, but if so, I imagine it is relatively less prevalent, and it is therefore worthwhile bringing these to people's attentions.</p><p>Many of these concepts may be rubbish and worth discarding, but it seems to me that they are at least worth bringing to people's attention as things to think about, if we are to consider the future with the care it deserves. </p><h2>Preamble - On superintelligence capability</h2><p>Superintelligence refers to an extremely broad range of capabilities, ranging from slightly superhuman to literal God. Many of the theoretical statements about superintelligence capability seem to come in at levels significantly higher than "superhuman". Currently a range of people are arguing a slow takeoff will occur on the order of years. In fact, this seems like the mainstream view. This implies that for at least a fair amount of time that we first have superintelligence, it will be significantly closer to "superhuman" than to "God". A lot of things where we think "superintelligence will be able to fix that" we do not specify which level of superintelligence. Mostly because we do not know which level of superintelligence.</p><p>It is also not immediately clear to me why we would expect all of the extremely varied capabilities associated with intelligence to improve at once during an intelligence explosion. One could imagine for instance a non-legible capability getting missed by the automated research process - it is not clear that just because capabilities A and B enter an RSI loop, capability C will too. In this vein, one could imagine an intelligence explosion consisting entirely of capabilities improvements to coding and the parts of AI research related to improving at AI research.</p><p>This is all entirely speculation, but it raises concerns about theories which implicitly rely on AI instantly achieving God-like powers (or at least premised on something like the fast-takeoff understanding that was typical in the 2010s). It is also the basic framing I will be assuming for the rest of the post: we reach a thing which is clearly superintelligence but not clearly god-like in everything it is doing.</p><h2>The Rat utopia</h2><p>From 1958 to 1962, John Calhoun created a series of "rat utopias", starting with a couple of breeding pairs in boxes with unlimited access to food and water, allowing unfettered population growth. As the rat wonderland reached capacity, it quickly degenerated into chaos, with male behaviours including, according to<a href="https://en.wikipedia.org/wiki/Behavioral_sink"> the Wikipedia page</a>, "sexual deviation and cannibalism" and social activity ranging "from frenetic overactivity to a pathological withdrawal from which individuals would emerge to eat, drink and move about only when other members of the community were asleep". They soon entered an equilibrium where no reproduction occurred and the colony became extinct.</p><p>A range of parallels have been drawn between this experiment and the possible future of humanity, and the exact lessons to be drawn from it remain contested. However, it seems broadly assumed by this community that a truly aligned superintelligence would figure this out and avoid such futures, bringing me to my next point.</p><h2>Intelligence <span class="math-tex"><style>
+
+
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-math {
+  display: inline-block;
+  text-align: left;
+  line-height: 0;
+  text-indent: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  letter-spacing: normal;
+  border-collapse: collapse;
+  word-wrap: normal;
+  word-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  padding: 1px 0;
+}
+
+mjx-container[jax="CHTML"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="CHTML"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="CHTML"][display="true"] mjx-math {
+  padding: 0;
+}
+
+mjx-container[jax="CHTML"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="CHTML"][justify="right"] {
+  text-align: right;
+}
+
+mjx-mo {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-stretchy-h {
+  display: inline-table;
+  width: 100%;
+}
+
+mjx-stretchy-h > * {
+  display: table-cell;
+  width: 0;
+}
+
+mjx-stretchy-h > * > mjx-c {
+  display: inline-block;
+  transform: scalex(1.0000001);
+}
+
+mjx-stretchy-h > * > mjx-c::before {
+  display: inline-block;
+  width: initial;
+}
+
+mjx-stretchy-h > mjx-ext {
+  /* IE */ overflow: hidden;
+  /* others */ overflow: clip visible;
+  width: 100%;
+}
+
+mjx-stretchy-h > mjx-ext > mjx-c::before {
+  transform: scalex(500);
+}
+
+mjx-stretchy-h > mjx-ext > mjx-c {
+  width: 0;
+}
+
+mjx-stretchy-h > mjx-beg > mjx-c {
+  margin-right: -.1em;
+}
+
+mjx-stretchy-h > mjx-end > mjx-c {
+  margin-left: -.1em;
+}
+
+mjx-stretchy-v {
+  display: inline-block;
+}
+
+mjx-stretchy-v > * {
+  display: block;
+}
+
+mjx-stretchy-v > mjx-beg {
+  height: 0;
+}
+
+mjx-stretchy-v > mjx-end > mjx-c {
+  display: block;
+}
+
+mjx-stretchy-v > * > mjx-c {
+  transform: scaley(1.0000001);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+mjx-stretchy-v > mjx-ext {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  border: 0px solid transparent;
+  /* IE */ overflow: hidden;
+  /* others */ overflow: visible clip;
+}
+
+mjx-stretchy-v > mjx-ext > mjx-c::before {
+  width: initial;
+  box-sizing: border-box;
+}
+
+mjx-stretchy-v > mjx-ext > mjx-c {
+  transform: scaleY(500) translateY(.075em);
+  overflow: visible;
+}
+
+mjx-mark {
+  display: inline-block;
+  height: 0px;
+}
+
+mjx-c {
+  display: inline-block;
+}
+
+mjx-utext {
+  display: inline-block;
+  padding: .75em 0 .2em 0;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+
+mjx-c.mjx-c2260::before {
+  padding: 0.716em 0.778em 0.215em 0;
+  content: "\2260";
+}
+</style><mjx-container jax="CHTML" style="font-size:104.1%" class="MathJax"><mjx-math class="MJX-TEX"><mjx-mo class="mjx-n"><mjx-c class="mjx-c2260"></mjx-c></mjx-mo></mjx-math></mjx-container></span> Wisdom</h2><p>People have defined both of these words in an amazing variety of different ways. I shall instead play rationalist taboo and try to point to the conceptual distinction I am trying to make. </p><p>There is a thing it is to be able to have a goal, set a plan to reach said goal, solve instrumental tasks along the way, and more broadly influence the world with one's "thinkoomph". We will call this 'intelligence'. There is a different thing it is to be able to understand the range of possible outcomes of achieving this goal and evaluate its benefits. We will call this wisdom. It is one thing to be able to get a high-paying finance job. It is another to figure out that you would rather not work 90-hour weeks and would be better off as a barman in Bali.<span data-footnote-reference="" data-footnote-id="jl4to3akmv" data-footnote-index="1" role="doc-noteref" id="fnrefjl4to3akmv" class="footnote-reference"><sup><a href="#fnjl4to3akmv" class="">[1]</a></sup></span> It is one thing to figure out a perfect future for humanity, it is another to check that this doesn't actually mess up some really deep and strange drives that humans have and result in a utopia for humans as successful as the one Calhoun built for rats.</p><p>I should note that what I am pointing to when I say "wisdom" is a capability thing rather than an alignment thing. A child who eats all of the cookies in the cookie jar isn't misaligned with their own interests – they fully believe this to be in their interest. They simply lack the capability to carefully evaluate the repercussions of their actions (both from their parents and their bodies).</p><h2>Overoptimistic AI</h2><p>More broadly on this, the amount of "wisdom" we need increases with the amount of "intelligence" we have. The more influence you have over the world, the greater an impact a minor mistake can have. The internet is great in a wide variety of ways, but social media can have a wide range of negative effects on people's mental health. Molecular machines could be revolutionary and improve systems on the nanoscale, but do it wrong and the world could end up engulfed by<a href="https://en.wikipedia.org/wiki/Gray_goo"> grey goo</a>.</p><p>I <a href="https://www.lesswrong.com/posts/ETxKteTat4KfREeBu/stockfish-is-not-a-chess-superintelligence-and-it-doesn-t">recently posted</a> about how in certain positions, humans can to this day outcompete chess engines. An important factor in these situations tends to be the human capability to evaluate positions over long time horizons in situations where the simple evaluation function used by AI systems fails. It is not clear to me that a theoretical superintelligence wouldn't fail in similar fashion.</p><h2>Risky AI</h2><p>Let us assume that these problems are solved. It still seems possible that an aligned superintelligence<span data-footnote-reference="" data-footnote-id="lojt4fw0a9" data-footnote-index="2" role="doc-noteref" id="fnreflojt4fw0a9" class="footnote-reference"><sup><a href="#fnlojt4fw0a9" class="">[2]</a></sup></span> would increase the probability of human extinction in the same way one might increase the probability of their own death when deciding to go skiing – we are not trying to optimise for a high-speed crash into a tree, but we are in any case increasing its probability. </p><p>Note that I endorse skiing and would probably endorse the actions taken by this sort of AI upon reflection, but it still seems really strange to me that we could in principle build an aligned superintelligence which wipes us out by accident! </p><p>It also seems to bring up questions of how risk-averse we would want this theoretical entity to be; for instance, an EV-maximising AI could fall for Pascal's mugging-type setups.</p><h2>General thoughts</h2><p>I think the broad message I'm trying to get across here is that there are categories of risk which few people seem to be thinking about and haven't been touched upon in any of the literature that I have seen. I think there's probably a tonne of new threat models to think about when talking about the interactions of a theoretical semi-aligned ASI with society and/or with other superintelligences. I don't know. I hope the guys working on cooperative AI have that covered, but I don't know, and it's a new field, so I wouldn't bet on it. If any of these feel underdeveloped to you, they probably are — these threat models deserve their own full treatments, and I'd encourage anyone with traction on them to write one.</p><ol data-footnote-section="" role="doc-endnotes" class="footnote-section footnotes"><li data-footnote-item="" data-footnote-id="jl4to3akmv" data-footnote-index="1" role="doc-endnote" id="fnjl4to3akmv" class="footnote-item"><span data-footnote-back-link="" data-footnote-id="jl4to3akmv" class="footnote-back-link"><sup><strong><a href="#fnrefjl4to3akmv">^</a></strong></sup></span><div data-footnote-content="" class="footnote-content"><p>You may disagree with this particular example. My point is that evaluating the actual expected results of a subgoal is a different skill from setting and achieving subgoals, and that it is in no way guaranteed that we will achieve them both together. </p></div></li><li data-footnote-item="" data-footnote-id="lojt4fw0a9" data-footnote-index="2" role="doc-endnote" id="fnlojt4fw0a9" class="footnote-item"><span data-footnote-back-link="" data-footnote-id="lojt4fw0a9" class="footnote-back-link"><sup><strong><a href="#fnreflojt4fw0a9">^</a></strong></sup></span><div data-footnote-content="" class="footnote-content"><p>"Aligned" is also a really convoluted word which is taken to mean a ton of things. In this case, we mean "A thing which is broadly trying to help humans flourish".</p></div></li></ol>
+      </div>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../../about.html">About</a>
+          <a href="https://github.com/Arkleseisure" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2024-2026 Sean Herrington. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>
