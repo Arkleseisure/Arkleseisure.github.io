@@ -398,14 +398,14 @@ const TREES = [
         perspective: "inside",
         description: "High-risk technical insider who distributes catastrophe probability across both single-actor takeover and diffuse multipolar failures, and takes reward-hacking unintentional harm as seriously as deceptive alignment.",
         probabilities: {
-          "t-ai-inc": 0.87,
+          "t-ai-inc": 0.78,
           "t-d-no-inc": 0.03,
           "t-single": 0.4,
-          "t-d-multi": 0.3,
+          "t-d-multi": 0.22,
           "t-has-rep": 0.5,
           "t-d-no-rep": 0.4,
           "t-expects": 0.48,
-          "t-d-expects": 0.82,
+          "t-d-expects": 0.75,
           "t-d-no-expects": 0.42
         },
         ranges: {
