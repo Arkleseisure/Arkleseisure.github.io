@@ -534,6 +534,33 @@
   /* Children stay interactive while parent is pinned; they just look muted. */
 }
 
+/* ---------- JS-driven Reingold-Tilford layout overrides ----------
+   When .tg-rt-layout is active on .tg-tree, layoutTreePositions() in
+   tree.js positions every top-level .tg-card absolutely. The nested
+   .tg-node / .tg-children containers stay in the DOM for collapse
+   handling (display:none on .tg-children.collapsed still hides
+   descendants), but they don't lay anything out. */
+.tg-tree.tg-rt-layout .tg-node {
+  display: block;
+  position: static;
+  align-items: initial;
+}
+.tg-tree.tg-rt-layout .tg-children {
+  display: block;
+  padding: 0;
+  gap: 0;
+  height: 0;
+  overflow: visible;
+}
+.tg-tree.tg-rt-layout .tg-children.collapsed {
+  display: none;
+}
+/* Cards inside a joint-inner stay in normal flow (display:contents on
+   the inner .tg-node is more specific and still applies). */
+.tg-tree.tg-rt-layout .tg-joint-inner .tg-node {
+  display: contents;
+}
+
 /* ---------- Node Card ---------- */
 .tg-tree.formal .tg-card {
   width: 210px;

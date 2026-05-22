@@ -362,6 +362,40 @@
     return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
   }
 
+  // Quantile of Beta(a, b): find x with betaCDF(x, a, b) = q. Bisection.
+  function betaQuantile(q, a, b) {
+    if (q <= 0) return 0;
+    if (q >= 1) return 1;
+    var lo = 0, hi = 1;
+    for (var i = 0; i < 60; i++) {
+      var mid = (lo + hi) / 2;
+      if (betaCDF(mid, a, b) < q) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+  }
+
+  // Generate a default [lo, hi] range from a point estimate p using a Beta
+  // with effective sample size n. Mean-parameterised (alpha = n*p, beta =
+  // n*(1-p)), with alpha/beta floored at 1 to keep the distribution
+  // unimodal at endpoints. The displayed range is the 10/90 quantiles —
+  // the same percentiles fitBeta() inverts back to (a, b) for MC sampling,
+  // so generation and propagation use a coherent Beta family throughout.
+  //
+  // n=20 gives roughly: p=0.5→[0.32,0.68], p=0.9→[0.74,0.98], p=0.99→
+  // [0.95,0.999]. Higher n → tighter ranges; not yet user-tunable.
+  var RANGE_DEFAULT_N = 20;
+  function rangeFromPoint(p, n) {
+    if (n == null) n = RANGE_DEFAULT_N;
+    if (p <= 0) return { lo: 0, hi: 0 };
+    if (p >= 1) return { lo: 1, hi: 1 };
+    var a = Math.max(1, n * p);
+    var b = Math.max(1, n * (1 - p));
+    return {
+      lo: betaQuantile(0.1, a, b),
+      hi: betaQuantile(0.9, a, b)
+    };
+  }
+
   // Fit Beta(a, b) so that 10th percentile ≈ lo, 90th percentile ≈ hi
   // Uses binary search on concentration parameter nu = a + b, with mean pinned
   var _betaFitCache = {};
@@ -1060,10 +1094,7 @@
       if (leaf.complement_of) return;
       if (probRanges[leaf.id]) return;
       var p = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
-      probRanges[leaf.id] = {
-        lo: Math.max(0, p - 0.1),
-        hi: Math.min(1, p + 0.1)
-      };
+      probRanges[leaf.id] = rangeFromPoint(p);
     });
   }
 
@@ -1244,9 +1275,13 @@
     var el = buildNodeEl(getTree().tree);
     treeRoot.appendChild(el);
 
-    // Draw connectors after layout settles
+    // Compute layout, then draw connectors. Two rAFs so the browser has
+    // settled into one paint frame before we measure card sizes.
     requestAnimationFrame(function () {
-      requestAnimationFrame(drawConnectors);
+      requestAnimationFrame(function () {
+        layoutTreePositions();
+        drawConnectors();
+      });
     });
 
     renderSensitivity();
@@ -1810,6 +1845,225 @@
     renderTree();
   }
 
+  // --- JS-driven tree layout (Reingold-Tilford-style contour packing) ---
+  //
+  // After buildNodeEl creates the DOM with regular flex flow, we measure
+  // each card's natural size, then compute (x, y) per visible card and
+  // position them absolutely within .tg-tree. The .tg-children containers
+  // stay in the DOM for collapse handling but don't lay anything out
+  // themselves (.tg-rt-layout overrides in tree.css). Subtrees are packed
+  // against each other using left/right contour comparison, so a small
+  // sibling next to a wide subtree nudges right up against it instead of
+  // sitting out at its subtree's right edge.
+
+  var LAYOUT_SIBLING_GAP = 20;   // horizontal gap between adjacent subtrees
+  var LAYOUT_ROW_GAP = 50;       // vertical gap between depth levels
+  var LAYOUT_X_PADDING = 12;     // horizontal padding inside .tg-tree
+  var LAYOUT_Y_PADDING = 6;      // vertical padding inside .tg-tree
+
+  // Build a "visual node" for layout from a data node. Handles:
+  //   - joint-double: single combined card, no visual children
+  //   - joint-subtree: single combined card, absorbed subtree's children
+  //     become this node's visual children
+  //   - collapsed branches: no visual children
+  function buildVisualNode(dataNode) {
+    var card = treeRoot.querySelector('[data-id="' + dataNode.id + '"] > .tg-card');
+    if (!card) return null;
+    var visual = {
+      id: dataNode.id,
+      card: card,
+      cardW: card.offsetWidth,
+      cardH: card.offsetHeight,
+      children: [],
+      offsetX: 0,
+      leftContour: null,
+      rightContour: null,
+      absX: 0,
+      absY: 0,
+    };
+
+    var jointInfo = isJointAnd(dataNode);
+    // For joint-subtree, the absorbed OR's id controls collapse of the
+    // lifted children below.
+    var collapseGuardId = (jointInfo && jointInfo.kind === "subtree")
+      ? jointInfo.subtree.id : dataNode.id;
+
+    var visualChildren;
+    if (jointInfo && jointInfo.kind === "double") {
+      visualChildren = [];                            // no children below
+    } else if (jointInfo && jointInfo.kind === "subtree") {
+      visualChildren = jointInfo.subtree.children || [];
+    } else {
+      visualChildren = dataNode.children || [];
+    }
+
+    if (collapsedNodes[collapseGuardId]) visualChildren = [];
+
+    for (var i = 0; i < visualChildren.length; i++) {
+      var childVisual = buildVisualNode(visualChildren[i]);
+      if (childVisual) visual.children.push(childVisual);
+    }
+    return visual;
+  }
+
+  // Walk visual tree, recording max card height per depth.
+  function collectLevelHeights(visual, depth, out) {
+    if (!out[depth] || visual.cardH > out[depth]) out[depth] = visual.cardH;
+    for (var i = 0; i < visual.children.length; i++) {
+      collectLevelHeights(visual.children[i], depth + 1, out);
+    }
+  }
+
+  // First pass (postorder): compute each child's offsetX relative to its
+  // parent and build left/right contour arrays for each subtree.
+  function layoutSubtree(visual) {
+    if (visual.children.length === 0) {
+      visual.leftContour = [-visual.cardW / 2];
+      visual.rightContour = [visual.cardW / 2];
+      return;
+    }
+
+    // Recurse first so each child has contours.
+    for (var i = 0; i < visual.children.length; i++) layoutSubtree(visual.children[i]);
+
+    // Pack children left-to-right. First child anchored at 0; each
+    // subsequent child shifted right just enough to clear the previous
+    // sibling's rightContour at every overlapping depth.
+    var offsets = [];
+    offsets[0] = 0;
+    visual.children[0].offsetX = 0;
+
+    for (var i = 1; i < visual.children.length; i++) {
+      var prev = visual.children[i - 1];
+      var curr = visual.children[i];
+      var prevRight = prev.rightContour;
+      var currLeft = curr.leftContour;
+      var maxDepth = Math.min(prevRight.length, currLeft.length);
+      var minOffset = -Infinity;
+      for (var d = 0; d < maxDepth; d++) {
+        // We need (offsets[i] + currLeft[d]) >= (offsets[i-1] + prevRight[d]) + GAP
+        var needed = offsets[i - 1] + prevRight[d] + LAYOUT_SIBLING_GAP - currLeft[d];
+        if (needed > minOffset) minOffset = needed;
+      }
+      if (minOffset === -Infinity) minOffset = 0;
+      offsets[i] = minOffset;
+      curr.offsetX = minOffset;
+    }
+
+    // Center children under the parent: shift all children so the midpoint
+    // of the first and last is at x=0 (the parent's local origin).
+    var firstX = offsets[0];
+    var lastX = offsets[visual.children.length - 1];
+    var rowCenter = (firstX + lastX) / 2;
+    for (var i = 0; i < visual.children.length; i++) {
+      visual.children[i].offsetX -= rowCenter;
+    }
+
+    // Build this subtree's contours. Level 0 is just this card.
+    visual.leftContour = [-visual.cardW / 2];
+    visual.rightContour = [visual.cardW / 2];
+
+    var maxChildDepth = 0;
+    for (var i = 0; i < visual.children.length; i++) {
+      var len = visual.children[i].leftContour.length;
+      if (len > maxChildDepth) maxChildDepth = len;
+    }
+    for (var d = 0; d < maxChildDepth; d++) {
+      var minLeft = Infinity, maxRight = -Infinity;
+      for (var i = 0; i < visual.children.length; i++) {
+        var c = visual.children[i];
+        if (d < c.leftContour.length) {
+          var l = c.offsetX + c.leftContour[d];
+          var r = c.offsetX + c.rightContour[d];
+          if (l < minLeft) minLeft = l;
+          if (r > maxRight) maxRight = r;
+        }
+      }
+      if (minLeft !== Infinity) {
+        visual.leftContour[d + 1] = minLeft;
+        visual.rightContour[d + 1] = maxRight;
+      }
+    }
+  }
+
+  // Second pass (preorder): convert relative offsets into absolute x.
+  // Y is assigned from precomputed per-level y positions.
+  function applyAbsolutePositions(visual, parentX, depth, levelYs) {
+    visual.absX = parentX + visual.offsetX;
+    visual.absY = levelYs[depth];
+    for (var i = 0; i < visual.children.length; i++) {
+      applyAbsolutePositions(visual.children[i], visual.absX, depth + 1, levelYs);
+    }
+  }
+
+  // Walk visual tree and emit each node to a callback.
+  function walkVisual(visual, cb) {
+    cb(visual);
+    for (var i = 0; i < visual.children.length; i++) walkVisual(visual.children[i], cb);
+  }
+
+  function layoutTreePositions() {
+    // Clear any prior absolute positioning before measuring so we read
+    // each card's natural size, not a stale absolute layout.
+    treeGraph.classList.remove("tg-rt-layout");
+    var allCards = treeRoot.querySelectorAll(".tg-card");
+    for (var i = 0; i < allCards.length; i++) {
+      var c = allCards[i];
+      c.style.position = "";
+      c.style.left = "";
+      c.style.top = "";
+      c.style.transform = "";
+      c.style.margin = "";
+    }
+    treeGraph.style.width = "";
+    treeGraph.style.height = "";
+
+    // Build visual tree (queries DOM for current card sizes).
+    var visual = buildVisualNode(getTree().tree);
+    if (!visual) return;
+
+    // Compute per-depth y positions (max card height at each level + gap).
+    var levelHeights = [];
+    collectLevelHeights(visual, 0, levelHeights);
+    var levelYs = [];
+    var y = LAYOUT_Y_PADDING;
+    for (var i = 0; i < levelHeights.length; i++) {
+      levelYs.push(y);
+      y += (levelHeights[i] || 0) + LAYOUT_ROW_GAP;
+    }
+    var totalH = y - LAYOUT_ROW_GAP + LAYOUT_Y_PADDING;
+
+    // Layout: contour-pack subtrees, then assign absolute positions.
+    layoutSubtree(visual);
+    applyAbsolutePositions(visual, 0, 0, levelYs);
+
+    // Find horizontal bounds and shift so leftmost = padding.
+    var bounds = { minX: Infinity, maxX: -Infinity };
+    walkVisual(visual, function (n) {
+      var l = n.absX - n.cardW / 2;
+      var r = n.absX + n.cardW / 2;
+      if (l < bounds.minX) bounds.minX = l;
+      if (r > bounds.maxX) bounds.maxX = r;
+    });
+    var shift = LAYOUT_X_PADDING - bounds.minX;
+    var totalW = (bounds.maxX - bounds.minX) + LAYOUT_X_PADDING * 2;
+
+    // Apply positions to the DOM. We set `left` to the card's LEFT edge
+    // (not its center) so drawConnectors' existing `offsetLeft +
+    // offsetWidth/2 → center` arithmetic keeps working.
+    walkVisual(visual, function (n) {
+      n.card.style.position = "absolute";
+      n.card.style.left = (n.absX + shift - n.cardW / 2) + "px";
+      n.card.style.top = n.absY + "px";
+      n.card.style.transform = "";
+      n.card.style.margin = "0";
+    });
+
+    treeGraph.style.width = totalW + "px";
+    treeGraph.style.height = totalH + "px";
+    treeGraph.classList.add("tg-rt-layout");
+  }
+
   // --- SVG Connectors (#5 fix: use offset-based positioning) ---
 
   function getOffsetPos(el, ancestor) {
@@ -1826,7 +2080,13 @@
   function drawConnectors() {
     // Measure / draw at natural scale so offset-based positioning is correct.
     treeGraph.style.zoom = "";
-    equalizeRowHeights();
+    // equalizeRowHeights was needed to keep complement links from going
+    // diagonal under the old flex layout. With JS layout (tg-rt-layout),
+    // siblings share a y and growing cards via min-height would push them
+    // past the per-level row spacing we just computed, so we skip it.
+    if (!treeGraph.classList.contains("tg-rt-layout")) {
+      equalizeRowHeights();
+    }
     var w = treeGraph.scrollWidth;
     var h = treeGraph.scrollHeight;
 
@@ -2724,10 +2984,14 @@
     document.getElementById("info-title").textContent = getTree().substituteNames === false ? rawName : subVars(rawName);
 
     var typeEl = document.getElementById("info-type");
-    var typeText = node.type === "and" ? "AND node" : node.type === "or" ? "OR node" : "Leaf assumption";
-    if (pinnedNodes[node.id]) typeText += " (pinned)";
-    typeEl.textContent = typeText;
-    typeEl.className = "info-type " + node.type;
+    if (pinnedNodes[node.id]) {
+      typeEl.textContent = "pinned";
+      typeEl.className = "info-type " + node.type;
+      typeEl.style.display = "";
+    } else {
+      typeEl.textContent = "";
+      typeEl.style.display = "none";
+    }
 
     var desc = node.description || "No description available.";
     document.getElementById("info-description").textContent = getTree().substituteNames === false ? desc : subVars(desc);
@@ -2869,15 +3133,13 @@
     rangeToggle.classList.toggle("active", rangeMode);
     rangeModeGroup.style.display = rangeMode ? "" : "none";
     if (rangeMode) {
-      // Initialize ranges from current point estimates with ±10pp spread
+      // Wrap each leaf's current point estimate with a Beta-derived 90% CI
+      // (n=20). See rangeFromPoint() — same Beta family used for MC sampling.
       var leaves = getLeaves(getTree().tree);
       leaves.forEach(function (leaf) {
         if (!leaf.complement_of && !probRanges[leaf.id]) {
           var p = probabilities[leaf.id] != null ? probabilities[leaf.id] : 0.5;
-          probRanges[leaf.id] = {
-            lo: Math.max(0, p - 0.1),
-            hi: Math.min(1, p + 0.1)
-          };
+          probRanges[leaf.id] = rangeFromPoint(p);
         }
       });
     }
