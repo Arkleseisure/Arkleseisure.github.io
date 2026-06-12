@@ -12,6 +12,7 @@ a{color:var(--blue);text-decoration:none;cursor:pointer}a:hover{text-decoration:
 .coursecard{display:flex;gap:13px;align-items:center;padding:0 6px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
 .cc-ic{width:48px;height:48px;border-radius:11px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 48px}
 .cc-t{font-weight:800;font-size:18px;color:var(--navy);line-height:1.15}.cc-s{font-size:12.5px;color:var(--muted)}
+.cc-s .cc-cur{font-weight:700;color:var(--navy)}.cc-s a{font-weight:600}
 .navlink.solo{display:block;font-weight:600;color:var(--ink);padding:9px 10px;border-radius:8px;font-size:14px}
 .navlink.solo.active{background:#eef2fd;color:var(--blue2)}
 .unit-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 10px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px}
@@ -67,9 +68,8 @@ table{border-collapse:collapse;width:100%;font-size:13.5px;margin:14px 0}
 th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{background:#f7f8fa;font-weight:700}
 @media (max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex:none;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:18px 16px 10px;overflow:visible}main{padding:0 18px 90px}.topbar{margin-bottom:18px}}</style></head><body>
 <div class="layout"><aside class="sidebar">
-<div class="coursecard"><div class="cc-ic">◆</div><div><div class="cc-t">The Alignment Problem</div><div class="cc-s">Course B · early draft</div></div></div>
+<div class="coursecard"><div class="cc-ic">◆</div><div><div class="cc-t">The Alignment Problem</div><div class="cc-s"><a href="alignment-problem-preview-7c2a.html">Course A</a> · <span class="cc-cur">Course B</span> <span class="cc-draft">· early draft</span></div></div></div>
 <a class="navlink solo" data-target="overview" onclick="show('overview')">Overview</a>
-<a class="navlink solo" href="alignment-problem-preview-7c2a.html">← Course A</a>
 <div class="unit" data-week="1"><div class="unit-h" onclick="show('w1l1')"><span class="ut">1. The formal language of agents</span><span class="chev">›</span></div><div class="lessons"><a class="lesson" data-target="w1l1" onclick="show('w1l1')"><span class="ldot"></span><span class="lwrap"><span class="lt">The formal language of agents</span></span></a></div></div>
 <div class="unit" data-week="2"><div class="unit-h" onclick="show('w2l1')"><span class="ut">2. Agent foundations as a research paradigm</span><span class="chev">›</span></div><div class="lessons"><a class="lesson" data-target="w2l1" onclick="show('w2l1')"><span class="ldot"></span><span class="lwrap"><span class="lt">Agent foundations as a research paradigm</span></span></a></div></div>
 <div class="unit" data-week="3"><div class="unit-h" onclick="show('w3l1')"><span class="ut">3. Getting the AI&#x27;s concepts right: ontology &amp; abstraction</span><span class="chev">›</span></div><div class="lessons"><a class="lesson" data-target="w3l1" onclick="show('w3l1')"><span class="ldot"></span><span class="lwrap"><span class="lt">Getting the AI&#x27;s concepts right: ontology &amp; abstraction</span></span></a></div></div>
