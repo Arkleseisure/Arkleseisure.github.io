@@ -76,6 +76,8 @@ th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);verti
 th{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--ink2)}
 td.n,th.n{text-align:right;font-family:var(--mono);font-size:13.5px}
 tr.hl td{background:var(--bg2)}
+table.sd td.v{white-space:nowrap;font-family:var(--mono);font-size:13px;line-height:1.5}
+table.sd td:last-child{min-width:220px}
 .controls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-family:var(--disp);font-size:13.5px;margin:0 0 14px}
 .controls label{color:var(--mute)}
 .seg{display:inline-flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
@@ -110,6 +112,7 @@ footer{padding:40px 0 60px;font-family:var(--disp);font-size:13px;color:var(--mu
 <nav class="toc" aria-label="Sections"><ol>
 <li><a href="#s1"><span class="num">1</span>The task</a></li>
 <li><a href="#s2"><span class="num">2</span>Ideal solution A</a></li>
+<li><a href="#s2b"><span class="num">2b</span>Ideal A, every weight</a></li>
 <li><a href="#s3"><span class="num">3</span>Ideal solution B</a></li>
 <li><a href="#s4"><span class="num">4</span>What the network does</a></li>
 <li><a href="#s5"><span class="num">5</span>What RL did to it</a></li>
@@ -205,6 +208,52 @@ footer{padding:40px 0 60px;font-family:var(--disp);font-size:13px;color:var(--mu
 </g></svg>
 <figcaption>Why the coin is exact in ideal A. The two heads are pointwise negatives; on any sequence without a branch key their outputs cancel identically. The trained network has no such symmetry, which is why its coin is off.</figcaption>
 </figure>
+</section>
+
+<!-- ===================== 2b. IDEAL A, EVERY WEIGHT ===================== -->
+<section id="s2b">
+<h2><span class="num">SECTION 2b</span>Ideal A on paper: the exact forward pass and every weight</h2>
+<p>This section exists so that ideal A can be reconstructed by hand without the code. First the forward pass exactly as PyTorch's <code>nn.TransformerEncoderLayer</code> computes it with the defaults the model uses (post-LayerNorm, ReLU, no dropout at eval), then the complete state dictionary of ideal A, then two positions worked through numerically. Where a value is written as a fraction it is exact.</p>
+
+<h3>The forward pass, in order</h3>
+<p><b>Input.</b> For a sequence of tokens <i>tok</i><sub>0..6</sub> (the model sees the first seven tokens of <span class="tok">5 a x₀ x₁ x₂ x₃ x₄</span> and predicts the eighth), the residual stream starts at <code>h⁰<sub>p</sub> = E[tok<sub>p</sub>] + P[p]</code>, a 3-vector (x, y, z) per position p, with <code>E</code> the 6×3 token embedding and <code>P</code> the 8×3 positional embedding (row 7 is never used).</p>
+<p><b>Attention (each layer).</b> The packed <code>in_proj_weight</code> is 9×3 with rows ordered <code>[q₀, q₁, q₂, k₀, k₁, k₂, v₀, v₁, v₂]</code> (PyTorch stacks W<sub>q</sub>, W<sub>k</sub>, W<sub>v</sub>, each 3×3, then splits each into one row per head because head_dim = d_model / nhead = 1); <code>in_proj_bias</code> is the matching 9-vector. So for head h and position p the query, key and value are <i>scalars</i>: <code>q<sub>h</sub>(p) = W[h]·h<sub>p</sub> + b[h]</code>, <code>k<sub>h</sub>(p) = W[3+h]·h<sub>p</sub> + b[3+h]</code>, <code>v<sub>h</sub>(p) = W[6+h]·h<sub>p</sub> + b[6+h]</code>. The score between query position p and key position j is <code>s<sub>h</sub>(p, j) = q<sub>h</sub>(p)·k<sub>h</sub>(j) / √head_dim = q<sub>h</sub>(p)·k<sub>h</sub>(j)</code>; the causal mask sets <code>s = −∞</code> for j &gt; p; the attention weights are <code>α<sub>h</sub>(p, ·) = softmax<sub>j ≤ p</sub> s<sub>h</sub>(p, j)</code>; the head output is the scalar <code>o<sub>h</sub>(p) = Σ<sub>j</sub> α<sub>h</sub>(p, j) v<sub>h</sub>(j)</code>. The three scalars are then mixed back into the stream by <code>out_proj</code> (3×3) plus its bias: <code>attn(p) = O · (o₀, o₁, o₂)ᵀ + b<sub>O</sub></code>, i.e. <b>column h of O is the direction head h writes along</b>. Note that attention reads the <i>raw</i> residual: no LayerNorm has been applied yet inside the layer.</p>
+<p><b>First LayerNorm.</b> <code>h ← LN₁(h + attn(h))</code>. LayerNorm over the three coordinates: <code>μ = (x+y+z)/3</code>, <code>σ² = ((x−μ)² + (y−μ)² + (z−μ)²)/3</code> (the biased variance), <code>LN(v) = γ ⊙ (v − μ)/√(σ² + 10⁻⁵) + β</code>. With γ = (1,1,1) and β = 0, which ideal A uses throughout, the output always has zero sum and squared norm 3: it lies on the circle of radius √3 in the plane perpendicular to (1,1,1). Two consequences used below: the <i>direction</i> of the input is all that survives (scale is thrown away), and LN is idempotent, LN(LN(v)) = LN(v), so a layer whose attention and MLP both write exactly zero passes the state through unchanged.</p>
+<p><b>MLP, second LayerNorm.</b> <code>m(h) = W₂ · relu(W₁ h + b₁) + b₂</code> with W₁ 2×3 and W₂ 3×2 (two hidden units), then <code>h ← LN₂(h + m(h))</code>. Layer 1 repeats attention, LN₁, MLP, LN₂ with its own weights.</p>
+<p><b>Readout.</b> <code>logits(p) = H · h<sub>p</sub> + b<sub>H</sub></code> with H 6×3, softmax over the six tokens; the loss is cross-entropy against <i>tok</i><sub>p+1</sub>. Parameter count: 18 + 24 + 2×(27+9+9+3 + 6+2+6+3 + 3+3+3+3) + 18 + 6 = 220.</p>
+
+<h3>Ideal A, complete state dictionary</h3>
+<p>Convention: ε = 0.01 and Q = 3/ε = 300; φ(p) = +1 for p ∈ {1, 2, 4, 5}, −1 for p ∈ {3, 6}. Everything not listed is zero, except the four MLP biases b₁ = (−1, −1), which keep the ReLUs off, and all LayerNorm gains, which are 1.</p>
+
+<div class="tbl wide"><table class="sd">
+<tr><th>Tensor</th><th>Shape</th><th>Value</th><th>Role</th></tr>
+<tr><td><code>embedding.weight</code></td><td class="n">6×3</td><td class="v">tok 0: (0, 0, 0)<br>tok 1: (0, 0, 0)<br>tok 2: (8, 2, 0)<br>tok 3: (−8, 2, 0)<br>tok 4: (0, 0, 0)<br>tok 5: (0, ¼, 0)</td><td>x = branch key (±8, sign = branch); y = branch value (+2 for both A and B, 0 for C); token 5's ¼ in y is the position-0 flag. Bits and token 4 are never read.</td></tr>
+<tr><td><code>pos_emb</code></td><td class="n">1×8×3</td><td class="v">p = 0: (0, 0, 0)<br>p = 1, 2, 4, 5: (+ε, −1, +ε)<br>p = 3, 6: (−ε, −1, −ε)<br>p = 7: unused</td><td>Phase carrier εφ in x and z equally, so it cancels in the keys (x − z) and in the readout (z − x); the −1 in y is the "value" of pattern positions (see the escape note below).</td></tr>
+<tr><td><code>layers.0.self_attn.in_proj_weight</code></td><td class="n">9×3</td><td class="v">row 0 (q₀): (0, 0, +Q)<br>row 1 (q₁): (0, 0, −Q)<br>row 2 (q₂): (0, 0, 0)<br>row 3 (k₀): (1, 0, −1)<br>row 4 (k₁): (1, 0, −1)<br>row 5 (k₂): (0, 0, 0)<br>row 6 (v₀): (0, +1, 0)<br>row 7 (v₁): (0, −1, 0)<br>row 8 (v₂): (0, 0, 0)</td><td>Head 0 = "head +": query +3φ, key x − z, value +y. Head 1 = "head −": query −3φ, same key, value −y. Head 2 unused (q = k = v = 0: uniform attention over a zero value).</td></tr>
+<tr><td><code>layers.0.self_attn.in_proj_bias</code></td><td class="n">9</td><td class="v">all 0</td><td></td></tr>
+<tr><td><code>layers.0.self_attn.out_proj.weight</code></td><td class="n">3×3</td><td class="v">row x: (0, 0, 0)<br>row y: (0, 0, 0)<br>row z: (−1, −1, 0)</td><td>Column 0 and column 1 both point at −z: the stream update is z −= (o₀ + o₁). Column 2 (head 2) is zero.</td></tr>
+<tr><td><code>layers.0.self_attn.out_proj.bias</code></td><td class="n">3</td><td class="v">(0, 0, 0)</td><td></td></tr>
+<tr><td><code>layers.0.linear1.weight / bias</code></td><td class="n">2×3 / 2</td><td class="v">0 / (−1, −1)</td><td>Dead MLP: relu(−1) = 0.</td></tr>
+<tr><td><code>layers.0.linear2.weight / bias</code></td><td class="n">3×2 / 3</td><td class="v">0 / 0</td><td></td></tr>
+<tr><td><code>layers.0.norm1, norm2</code></td><td class="n">3 + 3 each</td><td class="v">γ = (1,1,1), β = 0</td><td></td></tr>
+<tr><td><code>layers.1.*</code></td><td class="n"></td><td class="v">every weight 0<br>linear1.bias (−1, −1)<br>LN γ = 1, β = 0</td><td>Whole layer is a no-op; LN idempotence carries LN₂⁰ output straight to the head.</td></tr>
+<tr><td><code>head.weight</code></td><td class="n">6×3</td><td class="v">row 0 (tok 0): (−8, 0, +8)<br>row 1 (tok 1): (+8, 0, −8)<br>rows 2, 3, 4: (−3, 6, −3)<br>row 5: (0, 0, 0)</td><td>logit₀ − logit₁ = 16·(z − x): z &gt; x predicts 0, z &lt; x predicts 1, z = x is a fair coin. Rows 2–4 read +y with identical weights so they tie exactly.</td></tr>
+<tr><td><code>head.bias</code></td><td class="n">6</td><td class="v">(0, 0, 0, 0, 0, −20)</td><td>Token 5 is never predicted.</td></tr>
+</table></div>
+
+<p class="note">Reading the value matrix, since it is the row people ask about: head 0's value is the single row <code>(0, +1, 0)</code>, so v₀(j) is just the y-coordinate of position j's raw residual: 2 + (−1) = +1 at the branch token (position 1), −1 at every pattern position (from the positional embedding), +¼ at position 0. Head 1's value row is <code>(0, −1, 0)</code>, the pointwise negative. There is no 3×3 "value matrix" per head in this architecture; with head_dim = 1 each head's W<sub>v</sub> is a 1×3 row and its output is one number.</p>
+
+<h3>Worked example: branch A, positions 2 and 3</h3>
+<p>Input <span class="tok">5 2 1 1 0 1 1</span>. Raw residuals: position 0 = (0, ¼, 0); position 1 = (8 + ε, 2 − 1, ε) = (8.01, 1, 0.01); pattern positions = (±ε, −1, ±ε). Keys k = x − z: 8 at position 1, exactly 0 everywhere else. Values: v₀ = (¼, 1, −1, −1, −1, −1, −1) over positions 0..6, v₁ = −v₀.</p>
+<p><b>Position 2</b> (φ = +1, target bit 1). Head 0: q₀ = +3, scores (0, 24, 0) over positions 0, 1, 2 → attention (0, 1, 0) to machine precision → o₀ = v₀(1) = +1. Head 1: q₁ = −3, scores (0, −24, 0) → attention (½, 0, ½) over positions 0 and 2 → o₁ = (−¼ + 1)/2 = +0.375. Update z −= 1 + 0.375. Residual (0.01, −1, −1.365) → LN → (1.367, −0.370, −0.997). logit₁ − logit₀ = 16·(1.367 + 0.997) = 37.8: P(1) = 1.000.</p>
+<p><b>Position 3</b> (φ = −1, target bit 0). Head 0: q₀ = −3, scores (0, −24, 0, 0) → attention ⅓ each over positions 0, 2, 3 → o₀ = (¼ − 1 − 1)/3 = −0.583. Head 1: q₁ = +3, score +24 on position 1 → o₁ = v₁(1) = −1. Update z −= (−0.583 − 1) = +1.583. Residual (−0.01, −1, 1.573) → LN → (−0.187, −1.121, 1.307). logit₀ − logit₁ = 16·(1.307 + 0.187) = 23.9: P(0) = 1.000.</p>
+<p><b>The escape term.</b> The head whose query sign does not match the key does not read zero; it diffuses over the zero-key positions and picks up their values (−1 at pattern positions, ±¼ at position 0). In the two cases above that contribution (+0.375, −0.583) has the same sign as the fetched value, so it helps rather than hurts; it is the reason the two updates are not exactly ±1. On branch B the roles of the heads swap (key −8, so head 1 fetches at φ = +1) and the same arithmetic gives the complementary bits.</p>
+
+<h3>Worked example: branch C</h3>
+<p>Input <span class="tok">5 4 1 0 0 1 1</span>. Token 4 embeds to zero, so every key is 0 and both heads see all-zero score rows at every position: uniform attention over the causal window. Their values are pointwise negatives, so o₀ + o₁ = 0 at every position for every history, the attention update is exactly zero, and the residual is just the positional embedding (±ε, −1, ±ε). LN maps that to (0.707, −1.414, 0.707), where z − x = 0 by construction: logit₀ = logit₁, P(1) = 0.500 exactly. This is why ideal A's coin needs no C-specific machinery.</p>
+<p><b>Position 0</b> in any branch: the state (0, ¼, 0) attends only to itself and gains nothing; LN gives (−0.707, 1.414, −0.707); rows 2–4 of the head read 6·1.414 + 3·1.414 = 12.7 each, rows 0–1 read 0, row 5 reads −20: P = (0, 0, ⅓, ⅓, ⅓, 0).</p>
+
+<p class="note">A variant that also works, if you are rebuilding from memory: put the branch sign in the <i>value</i> rather than the key (token 2 = (8, +2, 0), token 3 = (8, −2, 0), token 4 = (8, 0, 0)) and keep one key sign. Then head + fetches the branch token at φ = +1 and head − at φ = −1, and the update is ±2 depending on branch × phase. Two things change: the value row needs a +1 bias so that pattern positions and token 4 read 0 (otherwise the −1 baseline has to be cancelled by the out-projection), and token 5 must keep x = z so its key is 0. The C coin is then exact because token 4's value is 0, not because of cancellation between heads.</p>
 </section>
 
 <!-- ===================== 3. IDEAL B ===================== -->
